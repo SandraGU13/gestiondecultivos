@@ -16,7 +16,7 @@ function Template() {
           
           <Topbar /> {/*<!-- Topbar -->*/}
 
-          {/*<!-->>> CONTENIDO DE PAGINA AQUI ABAJO <<<-->*/}
+          {/*<!-->>> CONTENIDO DE LA PAGINA DENTRO DEL DIV CONTAINER-FLUID <<<-->*/}
           <div className="container-fluid"> 
             
             <h1 className="h3 mb-2 text-gray-800">Bienvenido</h1> {/*<!-- Page Heading -->*/}

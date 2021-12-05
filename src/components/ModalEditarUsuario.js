@@ -1,4 +1,5 @@
 import React from "react";
+import ModalHeader from "./ModalHeader";
 import { Link } from "react-router-dom";
 
 function ModalEditarUsuario() {
@@ -6,14 +7,7 @@ function ModalEditarUsuario() {
     <div class="modal fade" id="editarUsuarioModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
         <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="text-gray-800" id="exampleModalLabel">
-              Editar usuario
-            </h5>
-            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">×</span>
-            </button>
-          </div>
+          <ModalHeader titulo="Editar usuario"/>
           <div class="modal-body">
             <div class="row">
               <div class="col-md-6">
