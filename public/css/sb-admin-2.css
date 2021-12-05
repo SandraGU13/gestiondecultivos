@@ -58,11 +58,6 @@ article, aside, figcaption, figure, footer, header, hgroup, main, nav, section {
   display: block;
 }
 
-.back-img {
-  background-image: url("https://mdn.mozillademos.org/files/6457/mdn_logo_only_color.png");
-  height: 1000px;
-}
-
 body {
   margin: 0;
   font-family: "Nunito", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
@@ -10866,7 +10861,7 @@ a:focus {
 }
 
 .bg-login-image {
-  background-image: url('../img/airplane.svg');
+  background: url("https://source.unsplash.com/K4mSJ7kc0As/600x800");
   background-position: center;
   background-size: cover;
 }

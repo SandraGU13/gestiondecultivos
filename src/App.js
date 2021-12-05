@@ -1,12 +1,14 @@
 import React from "react";
-import Inicio from './Inicio';
+import Bienvenido from './pages/Bienvenido';
+import Usuarios from './pages/Usuarios';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
-          <Route path={"/"} element={<Inicio/>}/>
+          <Route path={"/"} element={<Bienvenido/>}/>
+          <Route path={"/usuarios"} element={<Usuarios/>}/>
       </Routes>
     </BrowserRouter>
   );
