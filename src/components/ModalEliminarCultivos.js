@@ -2,22 +2,22 @@ import React from "react";
 import ModalHeader from "./ModalHeader";
 import { Link } from "react-router-dom";
 
-function ModalEliminarCultivos(){
+function ModalEliminarCultivos(){    
   return (
-    <div class="modal fade" id="eliminarCultivoModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    <div className="modal fade" id="eliminarCultivoModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
         aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Eliminar cultivo</h5>
-                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+        <div className="modal-dialog modal-dialog-centered" role="document">
+            <div className="modal-content">
+                <div className="modal-header">
+                    <h5 className="modal-title" id="exampleModalLabel">Eliminar cultivo</h5>
+                    <button className="close" type="button" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">×</span>
                     </button>
                 </div>
-                <div class="modal-body">Seguro que desea eliminar este cultivo ?</div>
-                <div class="modal-footer">
-                    <a class="btn btn-danger" href="cultivos.html">Eliminar</a>
-                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
+                <div className="modal-body">Seguro que desea eliminar este cultivo ?</div>
+                <div className="modal-footer">
+                    <button className="btn btn-danger" type="submit">Eliminar</button>
+                    <button className="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
                 </div>
             </div>
         </div>

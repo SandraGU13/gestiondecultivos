@@ -6,6 +6,7 @@ import ModalCerrarSesion from "../components/ModalCerrarSesion";
 import ModalAgregarCultivos from "../components/ModalAgregarCultivos";
 import ModalEliminarCultivos from "../components/ModalEliminarCultivos";
 import ModalEditarCultivos from "../components/ModalEditarCultivos";
+import { Link } from "react-router-dom";
 
 function Cultivos() {
   return (
@@ -29,12 +30,12 @@ function Cultivos() {
             <div className="card shadow mb-4">
               <div className="card-header py-3">
                 <h6 className="m-0 font-weight-bold text-primary">Cultivos</h6>
-                <a to="" className="btn btn-primary btn-icon-split float-right" data-toggle="modal" data-target="#agregarCultivoModal">
+                <Link to="" className="btn btn-primary btn-icon-split float-right" data-toggle="modal" data-target="#agregarCultivoModal">
                   <span className="icon text-white-50">
                     <i className="fas fa-plus"></i>
                   </span>
                   <span className="text">Agregar cultivo</span>
-                </a>
+                </Link>
               </div>
               <div className="card-body">
                 <div className="table-responsive">
