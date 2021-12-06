@@ -8,6 +8,8 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Semillas from "./pages/Semillas";
 
 function App() {
+
+
   return (
     <BrowserRouter>
       <Routes>
