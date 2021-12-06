@@ -4,16 +4,16 @@ import { Link } from "react-router-dom";
 
 function ModalEliminarUsuario() {
   return (
-    <div class="modal fade" id="eliminarUsuarioModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
+    <div className="modal fade" id="eliminarUsuarioModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div className="modal-dialog modal-dialog-centered" role="document">
+        <div className="modal-content">
         <ModalHeader titulo="Eliminar usuario"/>
-          <div class="modal-body">Seguro que desea eliminar este usuario ?</div>
-          <div class="modal-footer">
-            <Link to="/usuarios" class="btn btn-danger">
+          <div className="modal-body">Seguro que desea eliminar este usuario ?</div>
+          <div className="modal-footer">
+            <button className="btn btn-danger">
               Eliminar
-            </Link>
-            <button class="btn btn-secondary" type="button" data-dismiss="modal">
+            </button>
+            <button className="btn btn-secondary" type="button" data-dismiss="modal">
               Cancelar
             </button>
           </div>
