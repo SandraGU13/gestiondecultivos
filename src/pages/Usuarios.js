@@ -9,6 +9,33 @@ import ModalEliminarUsuario from "../components/ModalEliminarUsuario";
 import { Link } from "react-router-dom";
 
 function Usuarios() {
+  let usuariosDB = [
+                  { 
+                    id: "001", 
+                    nombre: "Nestor", 
+                    apellido: "Barrios", 
+                    email: "nestor@gmail.com", 
+                    telefono: "300-1234567", 
+                    tipoUsuario: "Configuracion" 
+                  },
+                  { 
+                    id: "002", 
+                    nombre: "Keiny", 
+                    apellido: "Salgado", 
+                    email: "keiny@gmail.com", 
+                    telefono: "300-1234567", 
+                    tipoUsuario: "Gestion" 
+                  },
+                  { 
+                    id: "003", 
+                    nombre: "Sandra", 
+                    apellido: "Gutierrez", 
+                    email: "sandra@gmail.com", 
+                    telefono: "300-1234567", 
+                    tipoUsuario: "Gestion" 
+                  }
+                ];
+
   return (
     <div id="wrapper"> {/*<!-- Page Wrapper -->*/}
       
@@ -22,7 +49,7 @@ function Usuarios() {
           {/*<!-->>> CONTENIDO DE LA PAGINA DENTRO DEL DIV CONTAINER-FLUID <<<-->*/}
           <div className="container-fluid">
             {/*<!-- Page Heading -->*/}
-            <h1 className="h3 mb-2 text-gray-800">Usuarios</h1>
+            <h1 className="h3 mb-2 text-gray-800">{usuariosDB[0].email}</h1>
             <p className="mb-4"></p>
 
             {/*<!-- DataTales Example -->*/}
@@ -140,9 +167,9 @@ function Usuarios() {
         </div>
         <Footer /> {/*<!-- Footer -->*/}
       </div>
-      <ModalAgregarUsuario/>
-      <ModalEditarUsuario/>
-      <ModalEliminarUsuario/>
+      <ModalAgregarUsuario />
+      <ModalEditarUsuario />
+      <ModalEliminarUsuario />
       <ModalCerrarSesion /> {/*<!-- Modal Cerrar-->*/}
     </div>
   );
