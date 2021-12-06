@@ -4,7 +4,7 @@ import Topbar from "../components/Topbar";
 import Footer from "../components/Footer";
 import ModalCerrarSesion from "../components/ModalCerrarSesion";
 
-function Template() {
+function Bienvenido() {
   return (
     <div id="wrapper"> {/*<!-- Page Wrapper -->*/}
       
@@ -39,4 +39,4 @@ function Template() {
   );
 }
 
-export default Template;
+export default Bienvenido;
