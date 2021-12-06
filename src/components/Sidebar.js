@@ -39,7 +39,7 @@ function Sidebar() {
         </Link>
       </li>
       <li className="nav-item">
-        <Link to="semillas" className="nav-link">
+        <Link to="/semillas" className="nav-link">
           <i className="fas fa-fw fa-seedling"></i>
           <span>Semillas</span>
         </Link>
