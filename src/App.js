@@ -1,4 +1,5 @@
 import React from "react";
+import Login from "./components/Login";
 import Bienvenido from './pages/Bienvenido';
 import Usuarios from './pages/Usuarios';
 import Perfil from './pages/Perfil';
@@ -13,7 +14,8 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-          <Route path={"/"} element={<Bienvenido/>}/>
+          <Route path={"/"} element={<Login/>}/>
+          <Route path={"/Bienvenido"} element={<Bienvenido/>}/>
           <Route path={"/usuarios"} element={<Usuarios/>}/>
           <Route path={"/perfil"} element={<Perfil/>}/>
           <Route path={"/cultivos"} element={<Cultivos/>}/>
