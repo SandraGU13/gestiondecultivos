@@ -21,8 +21,11 @@ function Bienvenido() {
             
             <h1 className="h3 mb-2 text-gray-800">Bienvenido</h1> {/*<!-- Page Heading -->*/}
             <p className="mb-4"></p>
-            <div className="col-lg-0 d-none d-lg-block">
+            <div className="d-none d-sm-block">
               <img src="img/fondo.png" alt="" />
+            </div>
+            <div className="d-block d-sm-none">
+            <img src="img/cultivos.jpg" alt="" />
             </div>
           </div>
           {/*<!-->>> CONTENIDO DE PAGINA ARRIBA <<<-->*/}
