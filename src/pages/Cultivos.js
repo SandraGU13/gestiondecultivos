@@ -8,7 +8,98 @@ import ModalEliminarCultivos from "../components/ModalEliminarCultivos";
 import ModalEditarCultivos from "../components/ModalEditarCultivos";
 import { Link } from "react-router-dom";
 
+import { Table, Header, HeaderRow, HeaderCell, Body, Row, Cell } from "@table-library/react-table-library/table";
+import { usePagination } from "@table-library/react-table-library/pagination";
+import { useRowSelect, HeaderCellSelect, CellSelect, SELECT_TYPES } from "@table-library/react-table-library/select";
+
 function Cultivos() {
+  let cultivosDB = [
+    {
+      id: "001",
+      tipodecultivos: "arroz",
+      area: "lo que sea",
+      cantidadsemillas: "11",
+      tiempodelcultivo: "14 dias",
+      metroscubicosdeagua: "2m3",
+      kgfertilizante: "40kg",
+      tiempopararecoleccion:"5 dias",
+      kgrecolectados: "70"
+    },
+    {
+      id: "002",
+      tipodecultivos: "Yuca",
+      area: "lo que sea",
+      cantidadsemillas: "11",
+      tiempodelcultivo: "14 dias",
+      metroscubicosdeagua: "2m3",
+      kgfertilizante: "40kg",
+      tiempopararecoleccion:"5 dias",
+      kgrecolectados: "70"
+    },
+    {
+      id: "003",
+      tipodecultivos: "Limon",
+      area: "lo que sea",
+      cantidadsemillas: "11",
+      tiempodelcultivo: "14 dias",
+      metroscubicosdeagua: "2m3",
+      kgfertilizante: "40kg",
+      tiempopararecoleccion:"5 dias",
+      kgrecolectados: "70"
+    },
+  ];
+
+  const [search, setSearch] = React.useState("");
+
+  const handleSearch = (event) => {
+    //console.log(event.target)
+    setSearch(event.target.value);
+  };
+
+  const data = {
+    nodes: cultivosDB.filter((item) => {
+      let todos;
+      let ids,tipodecultivos,area,cantidadsemillas,tiempodelcultivo,metroscubicosdeagua, kgfertilizante,tiempopararecoleccion, kgrecolectados;
+      ids = item.id;
+      tipodecultivos = item.tipodecultivos;
+      area = item.area;
+      cantidadsemillas = item.cantidadsemillas;
+      tiempodelcultivo = item.tiempodelcultivo;
+      metroscubicosdeagua = item.metroscubicosdeagua;
+      kgfertilizante = item.kgfertilizante;
+      tiempopararecoleccion = item.tiempopararecoleccion;
+      kgrecolectados = item. kgrecolectados;
+      todos = ids + tipodecultivos + area + cantidadsemillas + tiempodelcultivo + metroscubicosdeagua + kgfertilizante + tiempopararecoleccion + kgrecolectados;
+      return todos.includes(search);
+    }),
+  };
+
+  const select = useRowSelect(
+    data,
+    {
+      onChange: onSelectChange,
+    },
+    {
+      rowSelect: SELECT_TYPES.SingleSelect,
+      buttonSelect: SELECT_TYPES.MultiSelect,
+    }
+  );
+
+  function onSelectChange(action, state) {
+    console.log(action, state);
+  }
+
+  const pagination = usePagination(data, {
+    state: {
+      page: 0,
+      size: 10,
+    },
+    onChange: onPaginationChange,
+  });
+
+  function onPaginationChange(action, state) {
+    console.log(action, state);
+  }
   return (
     <div id="wrapper"> {/*<!-- Page Wrapper -->*/}
 
@@ -22,147 +113,118 @@ function Cultivos() {
 
           {/*<!-->>> CONTENIDO DE LA PAGINA DENTRO DEL DIV CONTAINER-FLUID <<<-->*/}
           <div className="container-fluid">
-            {/* <!-- Page Heading --> */}
+            {/*<!-- Page Heading -->*/}
             <h1 className="h3 mb-2 text-gray-800">Cultivos</h1>
             <p className="mb-4"></p>
 
             {/*<!-- DataTales Example -->*/}
             <div className="card shadow mb-4">
               <div className="card-header py-3">
-                <h6 className="m-0 font-weight-bold text-primary">Cultivos</h6>
-                <Link to="" className="btn btn-primary btn-icon-split float-right" data-toggle="modal" data-target="#agregarCultivoModal">
-                  <span className="icon text-white-50">
-                    <i className="fas fa-plus"></i>
-                  </span>
-                  <span className="text">Agregar cultivo</span>
-                </Link>
+              <div className="">
+                    <h6 className="m-0 font-weight-bold text-primary">Cultivos</h6>
+                  </div>
+                <div className="row float-right">
+                  <div className="">
+                    <button to="#" className="btn btn-primary btn-icon-split float-right" data-toggle="modal" data-target="#agregarCultivoModal">
+                      <span className="icon text-white-50">
+                        <i className="fas fa-plus"></i>
+                      </span>
+                      <span className="text">Agregar cultivos</span>
+                    </button>
+                  </div>
+                  <div className="">
+                    <button className="btn btn-warning btn-icon-split float-right" data-toggle="modal" data-target="#editarCultivoModal">
+                      <span className="icon text-white-50">
+                        <i className="fas fa-edit"></i>
+                      </span>
+                      <span className="text">Editar</span>
+                    </button>
+                  </div>
+                  <div className="">
+                    <button className="btn btn-danger btn-icon-split float-right" data-toggle="modal" data-target="#eliminarCultivoModal">
+                      <span className="icon text-white-50">
+                        <i className="fas fa-trash"></i>
+                      </span>
+                      <span className="text">Eliminar</span>
+                    </button>
+                  </div>
+                </div>
               </div>
               <div className="card-body">
                 <div className="table-responsive">
-                  <table className="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                    <thead>
-                      <tr>
-                        <th>Id</th>
-                        <th>Tipo de cultivo</th>
-                        <th>Area (ha)</th>
-                        <th>Cantidad Semillas (ha)</th>
-                        <th>Tiempo del cultivo</th>
-                        <th>Metros cubicos de agua</th>
-                        <th>Kg Fertilizante (ha)</th>
-                        <th>Tiempo necesario para la recoleccion (ha)</th>
-                        <th>Kg recolectados (ha)</th>
-                        <th></th>
-                        <th></th>
-                      </tr>
-                    </thead>
-                    <tfoot>
-                      <tr>
-                        <th>Id</th>
-                        <th>Tipo de cultivo</th>
-                        <th>Area (ha)</th>
-                        <th>Cantidad Semillas (ha)</th>
-                        <th>Tiempo del cultivo</th>
-                        <th>Metros cubicos de agua</th>
-                        <th>Kg Fertilizante (ha)</th>
-                        <th>Tiempo necesario para la recoleccion (ha)</th>
-                        <th>Kg recolectados (ha)</th>
-                        <th></th>
-                        <th></th>
-                      </tr>
-                    </tfoot>
-                    <tbody>
-                      <tr>
-                        <td>0001</td>
-                        <td>001</td>
-                        <td>15</td>
-                        <td>1500</td>
-                        <td>6</td>
-                        <td>1300</td>
-                        <td>200</td>
-                        <td>7</td>
-                        <td>500</td>
-                        <td><button type="button" className="btn btn-warning" data-toggle="modal" data-target="#editarCultivoModal">
-                          <span className="icon text-white">
-                            <i className="fas fa-edit"></i>
-                          </span>
+                  <label htmlFor="search">
+                    Buscar:&nbsp;
+                    <input id="search" type="text" onChange={handleSearch} />
+                  </label>
+                  <Table data={data} pagination={pagination} select={select}>
+                    {(tableList) => (
+                      <>
+                        <Header>
+                          <HeaderRow>
+                            <HeaderCellSelect />
+                            <HeaderCell>Id</HeaderCell>
+                            <HeaderCell>Tipo de Cultivos</HeaderCell>
+                            <HeaderCell>Area</HeaderCell>
+                            <HeaderCell>Cantidad Semillas</HeaderCell>
+                            <HeaderCell>Tiempo del cultivo</HeaderCell>
+                            <HeaderCell>Metros cubicos de agua</HeaderCell>
+                            <HeaderCell>Kg Fertilizante (ha)</HeaderCell>
+                            <HeaderCell>Tiempo necesario para la recoleccion (ha)</HeaderCell>
+                            <HeaderCell>Kg recolectados (ha)</HeaderCell>
+                          </HeaderRow>
+                        </Header>
+                        <Body>
+                          {tableList.map((item) => (
+                            <Row key={item.id} item={item}>
+                              <CellSelect item={item} />
+                              <Cell>{item.id}</Cell>
+                              <Cell>{item.tipodecultivos}</Cell>
+                              <Cell>{item.area}</Cell>
+                              <Cell>{item.cantidadsemillas}</Cell>
+                              <Cell>{item.tiempodelcultivo}</Cell>
+                              <Cell>{item.metroscubicosdeagua}</Cell>
+                              <Cell>{item.kgfertilizante}</Cell>
+                              <Cell>{item.tiempopararecoleccion}</Cell>
+                              <Cell>{item.kgrecolectados}</Cell>
+                             
+                            </Row>
+                          ))}
+                        </Body>
+                      </>
+                    )}
+                  </Table>
+                  <div style={{ display: "flex", justifyContent: "space-between" }}>
+                    <span>Total Pages: {pagination.state.getTotalPages(data.nodes)}</span>
+
+                    <span>
+                      Page:{" "}
+                      {pagination.state.getPages(data.nodes).map((_, index) => (
+                        <button
+                          key={index}
+                          type="button"
+                          style={{
+                            fontWeight: pagination.state.page === index ? "bold" : "normal",
+                          }}
+                          onClick={() => pagination.fns.onSetPage(index)}
+                        >
+                          {index + 1}
                         </button>
-                        </td>
-                        <td><button type="button" className="btn btn-danger" data-toggle="modal" data-target="#eliminarCultivoModal">
-                          <span className="icon text-white">
-                            <i className="fas fa-trash"></i>
-                          </span>
-                        </button>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>0002</td>
-                        <td>002</td>
-                        <td>7</td>
-                        <td>1100</td>
-                        <td>8</td>
-                        <td>1800</td>
-                        <td>300</td>
-                        <td>8</td>
-                        <td>450</td>
-                        <td><button type="button" className="btn btn-warning" data-toggle="modal" data-target="#editarCultivoModal">
-                          <span className="icon text-white">
-                            <i className="fas fa-edit"></i>
-                          </span>
-                        </button>
-                        </td>
-                        <td><button type="button" className="btn btn-danger" data-toggle="modal" data-target="#eliminarCultivoModal">
-                          <span className="icon text-white">
-                            <i className="fas fa-trash"></i>
-                          </span>
-                        </button>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>0003</td>
-                        <td>002</td>
-                        <td>12</td>
-                        <td>1300</td>
-                        <td>6</td>
-                        <td>1600</td>
-                        <td>350</td>
-                        <td>5</td>
-                        <td>720</td>
-                        <td><button type="button" className="btn btn-warning" data-toggle="modal" data-target="#editarCultivoModal">
-                          <span className="icon text-white">
-                            <i className="fas fa-edit"></i>
-                          </span>
-                        </button>
-                        </td>
-                        <td><button type="button" className="btn btn-danger" data-toggle="modal" data-target="#eliminarCultivoModal">
-                          <span className="icon text-white">
-                            <i className="fas fa-trash"></i>
-                          </span>
-                        </button>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
+                      ))}
+                    </span>
+                  </div>
                 </div>
               </div>
             </div>
-
           </div>
           {/*<!-->>> CONTENIDO DE PAGINA ARRIBA <<<-->*/}
-
         </div>
-
         <Footer /> {/*<!-- Footer -->*/}
-
       </div>
-
       <ModalCerrarSesion /> {/*<!-- Modal Cerrar-->*/}
       <ModalAgregarCultivos /> {/*<!-- Modal Agregar-->*/}
       <ModalEliminarCultivos /> {/*<!-- Modal Eliminar-->*/}
       <ModalEditarCultivos /> {/*<!-- Modal Editar-->*/}
-
-
     </div>
   );
 }
-
 export default Cultivos;
