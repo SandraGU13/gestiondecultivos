@@ -64,9 +64,9 @@ function Login() {
                                 </label>
                             </div>
                             </div>
-                            <button className="btn btn-primary btn-user btn-block" type="submit">
+                            <Link to="Bienvenido" className="btn btn-primary btn-user btn-block" type="submit">
                             Entrar
-                            </button>
+                            </Link>
                         <div className="text-center">
                             <Link className="small" to="forgot-password.html">
                             Olvidaste la contraseña?
