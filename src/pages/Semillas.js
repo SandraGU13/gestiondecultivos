@@ -8,7 +8,85 @@ import ModalEditarSemilla from "../components/ModalEditarSemilla";
 import { Link } from "react-router-dom";
 import ModalEliminarSemilla from "../components/ModalEliminarSemilla";
 
+import { Table, Header, HeaderRow, HeaderCell, Body, Row, Cell } from "@table-library/react-table-library/table";
+import { usePagination } from "@table-library/react-table-library/pagination";
+import { useRowSelect, HeaderCellSelect, CellSelect, SELECT_TYPES } from "@table-library/react-table-library/select";
+
+
 function Semillas() {
+    let semillasDB = [
+        {
+          id: "0001",
+          descripcion: "Cereales",
+          CostoAgua: "200",
+          CostoSemilla: "350",
+          CostoFertilizante: "250",
+        },
+        {
+            id: "0002",
+            descripcion: "Leguminosas",
+            CostoAgua: "150",
+            CostoSemilla: "180",
+            CostoFertilizante: "250",
+        },
+        {
+            id: "0003",
+            descripcion: "Hortalizas",
+            CostoAgua: "180",
+            CostoSemilla: "300",
+            CostoFertilizante: "230",
+        },
+      ];
+    
+      const [search, setSearch] = React.useState("");
+    
+      const handleSearch = (event) => {
+        //console.log(event.target)
+        setSearch(event.target.value);
+      };
+    
+      const data = {
+        nodes: semillasDB.filter((item) => {
+          let todos;
+          let ids, descripcion, CostoAgua, CostoSemilla, CostoFertilizante;
+          ids = item.id;
+          descripcion = item.descripcion;
+          CostoAgua = item.CostoAgua;
+          CostoSemilla = item.CostoSemilla;
+          CostoFertilizante = item.CostoFertilizante;
+          todos = ids + descripcion + CostoAgua + CostoSemilla + CostoFertilizante;
+          console.log(descripcion);
+          console.log("AAA");
+          return todos.includes(search);
+        }),
+      };
+    
+      const select = useRowSelect(
+        data,
+        {
+          onChange: onSelectChange,
+        },
+        {
+          rowSelect: SELECT_TYPES.SingleSelect,
+          buttonSelect: SELECT_TYPES.MultiSelect,
+        }
+      );
+    
+      function onSelectChange(action, state) {
+        console.log(action, state);
+      }
+    
+      const pagination = usePagination(data, {
+        state: {
+          page: 0,
+          size: 10,
+        },
+        onChange: onPaginationChange,
+      });
+    
+      function onPaginationChange(action, state) {
+        console.log(action, state);
+      }
   return (
     <div id="wrapper"> {/*<!-- Page Wrapper -->*/}
       
@@ -21,112 +99,100 @@ function Semillas() {
           <Topbar /> {/*<!-- Topbar -->*/}
 
           {/*<!-->>> CONTENIDO DE LA PAGINA DENTRO DEL DIV CONTAINER-FLUID <<<-->*/}
-          <div className="container-fluid"> 
+          <div className="container-fluid">
+            {/*<!-- Page Heading -->*/}
+            <h1 className="h3 mb-2 text-gray-800">Semillas</h1>
+            <p className="mb-4"></p>
 
-          {/*<!-- Page Heading -->*/}
-                    <h1 class="h3 mb-2 text-gray-800">Semillas</h1>
-                    <p class="mb-4"></p>
+            {/*<!-- DataTales Example -->*/}
+            <div className="card shadow mb-4">
+              <div className="card-header py-3">
+              <div className="">
+                    <h6 className="m-0 font-weight-bold text-primary">Semillas</h6>
+                  </div>
+                <div className="row float-right">
+                  <div className="">
+                    <button to="#" className="btn btn-primary btn-icon-split float-right" data-toggle="modal" data-target="#agregarSemillaModal">
+                      <span className="icon text-white-50">
+                        <i className="fas fa-plus"></i>
+                      </span>
+                      <span className="text">Agregar semillas</span>
+                    </button>
+                  </div>
+                  <div className="">
+                    <button className="btn btn-warning btn-icon-split float-right" data-toggle="modal" data-target="#editarSemillaModal">
+                      <span className="icon text-white-50">
+                        <i className="fas fa-edit"></i>
+                      </span>
+                      <span className="text">Editar</span>
+                    </button>
+                  </div>
+                  <div className="">
+                    <button className="btn btn-danger btn-icon-split float-right" data-toggle="modal" data-target="#eliminarSemillaModal">
+                      <span className="icon text-white-50">
+                        <i className="fas fa-trash"></i>
+                      </span>
+                      <span className="text">Eliminar</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <div className="card-body">
+                <div className="table-responsive">
+                  <label htmlFor="search">
+                    Buscar:&nbsp;
+                    <input id="search" type="text" onChange={handleSearch} />
+                  </label>
+                  <Table data={data} pagination={pagination} select={select}>
+                    {(tableList) => (
+                      <>
+                        <Header>
+                          <HeaderRow>
+                            <HeaderCellSelect />
+                            <HeaderCell>Id</HeaderCell>
+                            <HeaderCell>Descripcion</HeaderCell>
+                            <HeaderCell>Costo de Agua (m^3)</HeaderCell>
+                            <HeaderCell>Costo de Semilla</HeaderCell>
+                            <HeaderCell>Costo de Fertilizante (Kg)</HeaderCell>
+                          </HeaderRow>
+                        </Header>
+                        <Body>
+                          {tableList.map((item) => (
+                            <Row key={item.id} item={item}>
+                              <CellSelect item={item} />
+                              <Cell>{item.id}</Cell>
+                              <Cell>{item.descripcion}</Cell>
+                              <Cell>{item.CostoAgua}</Cell>
+                              <Cell>{item.CostoSemilla}</Cell>
+                              <Cell>{item.CostoFertilizante}</Cell>
+                            </Row>
+                          ))}
+                        </Body>
+                      </>
+                    )}
+                  </Table>
+                  <div style={{ display: "flex", justifyContent: "space-between" }}>
+                    <span>Total Pages: {pagination.state.getTotalPages(data.nodes)}</span>
 
-                    {/*<!-- DataTales Example -->*/}
-                    <div class="card shadow mb-4">
-                        <div class="card-header py-3">
-                            <h6 class="m-0 font-weight-bold text-primary">Semillas</h6>
-                            <Link to="#" class="btn btn-primary btn-icon-split float-right" data-toggle="modal" data-target="#agregarSemillaModal">
-                                <span class="icon text-white-50">
-                                    <i class="fas fa-plus"></i>
-                                </span>
-                                <span class="text">Agregar semillas</span>
-                            </Link>
-                        </div>
-                        <div class="card-body">
-                            <div class="table-responsive">
-                                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                                    <thead>
-                                        <tr>
-                                            <th>Id</th>
-                                            <th>Descripcion</th>
-                                            <th>Costo de Agua (m^3)</th>
-                                            <th>Costo de Semilla</th>
-                                            <th>Costo de Fertilizante (Kg)</th>
-                                            <th></th>
-                                            <th></th>
-                                        </tr>
-                                    </thead>
-                                    <tfoot>
-                                        <tr>
-                                            <th>Id</th>
-                                            <th>Descripcion</th>
-                                            <th>Costo de Agua (m^3)</th>
-                                            <th>Costo de Semilla</th>
-                                            <th>Costo de Fertilizante (Kg)</th>
-                                            <th></th>
-                                            <th></th>
-                                        </tr>
-                                    </tfoot>
-                                    <tbody>
-                                        <tr>
-                                            <td>0001</td>
-                                            <td>Cereales</td>
-                                            <td>200</td>
-                                            <td>350</td>
-                                            <td>250</td>
-                                            <td><button type="button" class="btn btn-warning" data-toggle="modal" data-target="#editarSemillaModal">
-                                                    <span class="icon text-white">
-                                                    <i class="fas fa-edit"></i>
-                                                    </span>
-                                                    
-                                                </button>
-                                            </td>
-                                            <td><button type="button" class="btn btn-danger" data-toggle="modal" data-target="#eliminarSemillaModal">
-                                                    <span class="icon text-white">
-                                                    <i class="fas fa-trash"></i>
-                                                    </span>
-                                                </button>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>0002</td>
-                                            <td>Leguminosas</td>
-                                            <td>150</td>
-                                            <td>180</td>
-                                            <td>250</td>
-                                            <td><button type="button" class="btn btn-warning" data-toggle="modal" data-target="#editarSemillaModal">
-                                                    <span class="icon text-white">
-                                                    <i class="fas fa-edit"></i>
-                                                    </span>
-                                                </button>
-                                            </td>
-                                            <td><button type="button" class="btn btn-danger" data-toggle="modal" data-target="#eliminarSemillaModal">
-                                                    <span class="icon text-white">
-                                                    <i class="fas fa-trash"></i>
-                                                    </span>
-                                                </button>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>0003</td>
-                                            <td>Hortalizas</td>
-                                            <td>180</td>
-                                            <td>300</td>
-                                            <td>230</td>
-                                            <td><button type="button" class="btn btn-warning" data-toggle="modal" data-target="#editarSemillaModal">
-                                                    <span class="icon text-white">
-                                                    <i class="fas fa-edit"></i>
-                                                    </span>
-                                                </button>
-                                            </td>
-                                            <td ><button type="button" class="btn btn-danger" data-toggle="modal" data-target="#eliminarSemillaModal">
-                                                    <span class="icon text-white">
-                                                    <i class="fas fa-trash"></i>
-                                                    </span>
-                                                </button>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
+                    <span>
+                      Page:{" "}
+                      {pagination.state.getPages(data.nodes).map((_, index) => (
+                        <button
+                          key={index}
+                          type="button"
+                          style={{
+                            fontWeight: pagination.state.page === index ? "bold" : "normal",
+                          }}
+                          onClick={() => pagination.fns.onSetPage(index)}
+                        >
+                          {index + 1}
+                        </button>
+                      ))}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
           {/*<!-->>> CONTENIDO DE PAGINA ARRIBA <<<-->*/}
 
