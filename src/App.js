@@ -1,5 +1,5 @@
 import React from "react";
-import Login from "./components/Login";
+import Login from "./pages/Login";
 import Bienvenido from './pages/Bienvenido';
 import Usuarios from './pages/Usuarios';
 import Perfil from './pages/Perfil';
