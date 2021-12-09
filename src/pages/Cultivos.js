@@ -6,48 +6,24 @@ import ModalCerrarSesion from "../components/ModalCerrarSesion";
 import ModalAgregarCultivos from "../components/ModalAgregarCultivos";
 import ModalEliminarCultivos from "../components/ModalEliminarCultivos";
 import ModalEditarCultivos from "../components/ModalEditarCultivos";
-import { Link } from "react-router-dom";
 
 import { Table, Header, HeaderRow, HeaderCell, Body, Row, Cell } from "@table-library/react-table-library/table";
 import { usePagination } from "@table-library/react-table-library/pagination";
 import { useRowSelect, HeaderCellSelect, CellSelect, SELECT_TYPES } from "@table-library/react-table-library/select";
 
+import { useState, useEffect } from "react";
+
 function Cultivos() {
-  let cultivosDB = [
-    {
-      id: "001",
-      tipodecultivos: "arroz",
-      area: "lo que sea",
-      cantidadsemillas: "11",
-      tiempodelcultivo: "14 dias",
-      metroscubicosdeagua: "2m3",
-      kgfertilizante: "40kg",
-      tiempopararecoleccion:"5 dias",
-      kgrecolectados: "70"
-    },
-    {
-      id: "002",
-      tipodecultivos: "Yuca",
-      area: "lo que sea",
-      cantidadsemillas: "11",
-      tiempodelcultivo: "14 dias",
-      metroscubicosdeagua: "2m3",
-      kgfertilizante: "40kg",
-      tiempopararecoleccion:"5 dias",
-      kgrecolectados: "70"
-    },
-    {
-      id: "003",
-      tipodecultivos: "Limon",
-      area: "lo que sea",
-      cantidadsemillas: "11",
-      tiempodelcultivo: "14 dias",
-      metroscubicosdeagua: "2m3",
-      kgfertilizante: "40kg",
-      tiempopararecoleccion:"5 dias",
-      kgrecolectados: "70"
-    },
-  ];
+
+  const [cultivosDB, setCultivosDB] = useState([]);
+
+  useEffect(() => {
+    fetch("http://localhost:8000/api/cultivos")
+      .then((response) => response.json())
+      .then((data) => {
+        setCultivosDB(data);
+      });
+  }, []);
 
   const [search, setSearch] = React.useState("");
 
@@ -59,17 +35,17 @@ function Cultivos() {
   const data = {
     nodes: cultivosDB.filter((item) => {
       let todos;
-      let ids,tipodecultivos,area,cantidadsemillas,tiempodelcultivo,metroscubicosdeagua, kgfertilizante,tiempopararecoleccion, kgrecolectados;
+      let ids, tipodecultivos, areas, cantidadsemillas, tiempodelcultivo, metroscubicosdeagua, kgfertilizante, tiempopararecoleccion, kgrecolectados;
       ids = item.id;
       tipodecultivos = item.tipodecultivos;
-      area = item.area;
+      areas = item.area;
       cantidadsemillas = item.cantidadsemillas;
       tiempodelcultivo = item.tiempodelcultivo;
       metroscubicosdeagua = item.metroscubicosdeagua;
       kgfertilizante = item.kgfertilizante;
       tiempopararecoleccion = item.tiempopararecoleccion;
-      kgrecolectados = item. kgrecolectados;
-      todos = ids + tipodecultivos + area + cantidadsemillas + tiempodelcultivo + metroscubicosdeagua + kgfertilizante + tiempopararecoleccion + kgrecolectados;
+      kgrecolectados = item.kgrecolectados;
+      todos = ids + tipodecultivos + areas + cantidadsemillas + tiempodelcultivo + metroscubicosdeagua + kgfertilizante + tiempopararecoleccion + kgrecolectados;
       return todos.includes(search);
     }),
   };
@@ -101,16 +77,17 @@ function Cultivos() {
     console.log(action, state);
   }
   return (
-    <div id="wrapper"> {/*<!-- Page Wrapper -->*/}
-
+    <div id="wrapper">
+      {" "}
+      {/*<!-- Page Wrapper -->*/}
       <Sidebar /> {/*<!-- Sidebar -->*/}
-
-      <div id="content-wrapper" className="d-flex flex-column"> {/*<!-- Content Wrapper -->*/}
-
-        <div id="content"> {/*<!-- Main Content -->*/}
-
+      <div id="content-wrapper" className="d-flex flex-column">
+        {" "}
+        {/*<!-- Content Wrapper -->*/}
+        <div id="content">
+          {" "}
+          {/*<!-- Main Content -->*/}
           <Topbar /> {/*<!-- Topbar -->*/}
-
           {/*<!-->>> CONTENIDO DE LA PAGINA DENTRO DEL DIV CONTAINER-FLUID <<<-->*/}
           <div className="container-fluid">
             {/*<!-- Page Heading -->*/}
@@ -120,9 +97,9 @@ function Cultivos() {
             {/*<!-- DataTales Example -->*/}
             <div className="card shadow mb-4">
               <div className="card-header py-3">
-              <div className="">
-                    <h6 className="m-0 font-weight-bold text-primary">Cultivos</h6>
-                  </div>
+                <div className="">
+                  <h6 className="m-0 font-weight-bold text-primary">Cultivos</h6>
+                </div>
                 <div className="row float-right">
                   <div className="">
                     <button to="#" className="btn btn-primary btn-icon-split float-right" data-toggle="modal" data-target="#agregarCultivoModal">
@@ -186,7 +163,6 @@ function Cultivos() {
                               <Cell>{item.kgfertilizante}</Cell>
                               <Cell>{item.tiempopararecoleccion}</Cell>
                               <Cell>{item.kgrecolectados}</Cell>
-                             
                             </Row>
                           ))}
                         </Body>

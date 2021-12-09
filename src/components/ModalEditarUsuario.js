@@ -1,6 +1,5 @@
 import React from "react";
 import ModalHeader from "./ModalHeader";
-import { Link } from "react-router-dom";
 
 function ModalEditarUsuario() {
   var enviar = (e) => {

@@ -6,17 +6,37 @@ import ModalCerrarSesion from "../components/ModalCerrarSesion";
 import { Link } from "react-router-dom";
 import ModalCambiarContrasena from "../components/ModalCambiarContrasena";
 
-function Perfil() {
-  return (
-    <div id="wrapper"> {/*<!-- Page Wrapper -->*/}
-      
-      <Sidebar /> {/*<!-- Sidebar -->*/}
-      <div id="content-wrapper" className="d-flex flex-column"> {/*<!-- Content Wrapper -->*/}
-        
-        <div id="content"> {/*<!-- Main Content -->*/}
-          
-          <Topbar /> {/*<!-- Topbar -->*/}
+import { useState, useEffect } from "react";
 
+function Perfil() {
+
+  const [perfilDB, setPerfilDB] = useState({});
+
+  //console.log(usuariosDB);
+
+  useEffect(() => {
+    fetch("http://localhost:8000/api/perfil")
+      .then((response) => response.json())
+      .then((data) => {
+        //console.log(data);
+        for (const row of data) {
+          setPerfilDB(row);
+        }
+      });
+  }, []);
+
+  return (
+    <div id="wrapper">
+      {" "}
+      {/*<!-- Page Wrapper -->*/}
+      <Sidebar /> {/*<!-- Sidebar -->*/}
+      <div id="content-wrapper" className="d-flex flex-column">
+        {" "}
+        {/*<!-- Content Wrapper -->*/}
+        <div id="content">
+          {" "}
+          {/*<!-- Main Content -->*/}
+          <Topbar /> {/*<!-- Topbar -->*/}
           {/*<!-->>> CONTENIDO DE LA PAGINA DENTRO DEL DIV CONTAINER-FLUID <<<-->*/}
           <div className="container-fluid">
             <div className="row bg-title">
@@ -49,7 +69,7 @@ function Perfil() {
                         </label>
                       </div>
                       <div className="col-sm-6">
-                        <label className="col-md-12">Sandra Milena</label>
+                        <label className="col-md-12">{perfilDB.nombre}</label>
                       </div>
                     </div>
                     <br />
@@ -60,7 +80,7 @@ function Perfil() {
                         </label>
                       </div>
                       <div className="col-sm-6">
-                        <label className="col-md-12">Gutierrez</label>
+                        <label className="col-md-12">{perfilDB.apellido}</label>
                       </div>
                     </div>
                     <br />
@@ -71,7 +91,7 @@ function Perfil() {
                         </label>
                       </div>
                       <div className="col-sm-6">
-                        <label className="col-md-12">sgutierrez@uninorte.edu.co</label>
+                        <label className="col-md-12">{perfilDB.email}</label>
                       </div>
                     </div>
                     <br />
@@ -82,7 +102,7 @@ function Perfil() {
                         </label>
                       </div>
                       <div className="col-sm-6">
-                        <label className="col-md-12">3009895214</label>
+                        <label className="col-md-12">{perfilDB.telefono}</label>
                       </div>
                     </div>
                     <br />
@@ -93,7 +113,7 @@ function Perfil() {
                         </label>
                       </div>
                       <div className="col-sm-6">
-                        <label className="col-md-12">Administrador</label>
+                        <label className="col-md-12">{perfilDB.tipoUsuario}</label>
                       </div>
                     </div>
                     <br />
@@ -115,7 +135,7 @@ function Perfil() {
         </div>
         <Footer /> {/*<!-- Footer -->*/}
       </div>
-      <ModalCambiarContrasena/>
+      <ModalCambiarContrasena />
       <ModalCerrarSesion /> {/*<!-- Modal Cerrar-->*/}
     </div>
   );

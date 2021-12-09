@@ -1,12 +1,9 @@
 import React from "react";
 import ModalHeader from "./ModalHeader";
-import { Link } from "react-router-dom";
 
 function ModalAgregarUsuario() {
-
   var enviar = (e) => {
-
-    e.preventDefault()
+    e.preventDefault();
 
     const datos = {
       nombre: e.target.nombre.value,
@@ -16,17 +13,21 @@ function ModalAgregarUsuario() {
       tipoUsuario: e.target.tipoUsuario.children[e.target.tipoUsuario.value].text,
       contrasena: e.target.contrasena.value,
       confirmarContrasena: e.target.confirmarContrasena.value,
-    }
+    };
 
-    console.log(datos)
-  }
+    console.log(datos);
+
+    //return fetch("http://localhost:8000/api/usuarios")
+    //  .then(response => response.json())
+    //  .then((data) => console.log(data) );
+  };
 
   return (
     <form onSubmit={enviar}>
       <div className="modal fade" id="agregarUsuarioModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div className="modal-dialog modal-dialog-centered modal-lg" role="document">
           <div className="modal-content">
-            <ModalHeader titulo="Agregar usuario"/>
+            <ModalHeader titulo="Agregar usuario" />
             <div className="modal-body">
               <div className="row">
                 <div className="col-md-6">

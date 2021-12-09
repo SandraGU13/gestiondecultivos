@@ -3,11 +3,9 @@ import { Link } from "react-router-dom";
 
 function Sidebar() {
   return (
-    <ul
-      className="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion"
-      id="accordionSidebar">
+    <ul className="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
       {/*{/*<!-- Sidebar - Brand -->*/}
-      <Link to="/" className="sidebar-brand d-flex align-items-center justify-content-center">
+      <Link to="/bienvenido" className="sidebar-brand d-flex align-items-center justify-content-center">
         <div className="sidebar-brand-icon rotate-n-15">
           <i className="fas fa-tractor"></i>
         </div>
@@ -17,7 +15,7 @@ function Sidebar() {
       <hr className="sidebar-divider my-0" />
       {/*<!-- Nav Item - Dashboard -->*/}
       <li className="nav-item active">
-        <Link to="/" className="nav-link">
+        <Link to="/bienvenido" className="nav-link">
           <i className="fas fa-fw fa-door-open"></i>
           <span>Pagina de inicio</span>
         </Link>
