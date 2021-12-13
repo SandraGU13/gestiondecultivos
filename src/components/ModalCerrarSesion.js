@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 
 function ModalCerrarSesion() {
   return (
-    <div className="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div className="modal fade" id="logoutModal" tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
       <div className="modal-dialog" role="document">
         <div className="modal-content">
           <ModalHeader titulo="Cerrar sesion" />

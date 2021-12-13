@@ -20,7 +20,7 @@ function ModalAgregarCultivos() {
 
   return (
     <form onSubmit={enviar}>
-      <div className="modal fade" id="agregarCultivoModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div className="modal fade" id="agregarCultivoModal" tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div className="modal-dialog modal-dialog-centered modal-lg" role="document">
           <div className="modal-content">
             <div className="modal-header">
@@ -35,7 +35,7 @@ function ModalAgregarCultivos() {
               <div className="row">
                 <div className="col-md-6">
                   <div className="form-group">
-                    <label for="semilla">Semilla</label>
+                    <label htmlFor="semilla">Semilla</label>
                     <select className="form-control" name="Semilla">
                       <option value="0">Selecione</option>
                       <option value="1">Trigo</option>
@@ -46,7 +46,7 @@ function ModalAgregarCultivos() {
                 </div>
                 <div className="col-md-6">
                   <div className="form-group">
-                    <label for="area">Area (Hectáreas)</label>
+                    <label htmlFor="area">Area (Hectáreas)</label>
                     <input type="text" className="form-control" name="area" placeholder="" />
                   </div>
                 </div>
@@ -54,13 +54,13 @@ function ModalAgregarCultivos() {
               <div className="row">
                 <div className="col-md-6">
                   <div className="form-group">
-                    <label for="cantidadSemillas">Cantidad de semillas por hectárea</label>
+                    <label htmlFor="cantidadSemillas">Cantidad de semillas por hectárea</label>
                     <input type="text" className="form-control" name="cantidadSemillas" placeholder="" />
                   </div>
                 </div>
                 <div className="col-md-6">
                   <div className="form-group">
-                    <label for="tiempoCultivo">Tiempo de cultivo (Semanas)</label>
+                    <label htmlFor="tiempoCultivo">Tiempo de cultivo (Semanas)</label>
                     <input type="text" className="form-control" name="tiempoCultivo" placeholder="" />
                   </div>
                 </div>
@@ -68,13 +68,13 @@ function ModalAgregarCultivos() {
               <div className="row">
                 <div className="col-md-6">
                   <div className="form-group">
-                    <label for="agua">Metros cubicos de agua por semana</label>
+                    <label htmlFor="agua">Metros cubicos de agua por semana</label>
                     <input type="text" className="form-control" name="agua" placeholder="" />
                   </div>
                 </div>
                 <div className="col-md-6">
                   <div className="form-group">
-                    <label for="fertilizante">Cantidad de fertilizante por hectarea</label>
+                    <label htmlFor="fertilizante">Cantidad de fertilizante por hectarea</label>
                     <input type="text" className="form-control" name="fertilizante" placeholder="" />
                   </div>
                 </div>
@@ -82,13 +82,13 @@ function ModalAgregarCultivos() {
               <div className="row">
                 <div className="col-md-6">
                   <div className="form-group">
-                    <label for="tiempoHectarea">Tiempo de recolección por hectarea</label>
+                    <label htmlFor="tiempoHectarea">Tiempo de recolección por hectarea</label>
                     <input type="text" className="form-control" name="tiempoHectarea" placeholder="" />
                   </div>
                 </div>
                 <div className="col-md-6">
                   <div className="form-group">
-                    <label for="kgHectarea">kilogramos recolectados por hectarea</label>
+                    <label htmlFor="kgHectarea">kilogramos recolectados por hectarea</label>
                     <input type="text" className="form-control" name="kgHectarea" placeholder="" />
                   </div>
                 </div>

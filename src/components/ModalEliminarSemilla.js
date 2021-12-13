@@ -2,7 +2,7 @@ import React from "react";
 
 function ModalEliminarSemilla() {
   return (
-    <div className="modal fade" id="eliminarSemillaModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div className="modal fade" id="eliminarSemillaModal" tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
       <div className="modal-dialog modal-dialog-centered" role="document">
         <div className="modal-content">
           <div className="modal-header">

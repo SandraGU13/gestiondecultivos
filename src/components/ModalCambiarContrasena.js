@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 
 function ModalCambiarContrasena() {
   return (
-    <div className="modal fade" id="cambiarcontraseña" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div className="modal fade" id="cambiarcontraseña" tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
       <div className="modal-dialog modal-dialog-centered modal-lg" role="document">
         <div className="modal-content">
           <ModalHeader titulo="CambiarContrasena" />

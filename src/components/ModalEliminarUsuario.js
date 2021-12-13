@@ -3,7 +3,7 @@ import ModalHeader from "./ModalHeader";
 
 function ModalEliminarUsuario() {
   return (
-    <div className="modal fade" id="eliminarUsuarioModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div className="modal fade" id="eliminarUsuarioModal" tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
       <div className="modal-dialog modal-dialog-centered" role="document">
         <div className="modal-content">
           <ModalHeader titulo="Eliminar usuario" />

@@ -22,7 +22,10 @@ function Usuarios() {
     fetch("http://localhost:8000/api/usuarios")
       .then((response) => response.json())
       .then((data) => {
-        //console.log(data);
+        console.log(data);
+        let cadena = ['QWERTY','QWERTY']
+        console.log(cadena.includes('QWERT', (a)=>{
+          console.log(a)}))
         setUsariosDB(data);
       });
   }, []);
@@ -63,7 +66,7 @@ function Usuarios() {
   );
 
   function onSelectChange(action, state) {
-    console.log(action, state);
+    //console.log(action, state);
   }
 
   const pagination = usePagination(data, {

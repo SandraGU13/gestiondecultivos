@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 function ModalEliminarPredio() {
   return (
-    <div className="modal fade" id="eliminarPredioModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div className="modal fade" id="eliminarPredioModal" tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
       <div className="modal-dialog modal-dialog-centered" role="document">
         <div className="modal-content">
           <div className="modal-header">

@@ -16,7 +16,7 @@ function ModalEditarPredio() {
 
   return (
     <form onSubmit={enviar}>
-      <div className="modal fade" id="editarPredioModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div className="modal fade" id="editarPredioModal" tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div className="modal-dialog modal-dialog-centered modal-lg" role="document">
           <div className="modal-content">
             <div className="modal-header">
@@ -31,14 +31,14 @@ function ModalEditarPredio() {
               <div className="row">
                 <div className="col-md-6">
                   <div className="form-group">
-                    <label for="nombre">Nombre</label>
+                    <label htmlFor="nombre">Nombre</label>
                     <input type="text" className="form-control" id="nombre" placeholder="" />
                     {/*<!--<small id="emailHelp" className="form-text text-muted">We'll never share your email with anyone else.</small>-->*/}
                   </div>
                 </div>
                 <div className="col-md-6">
                   <div className="form-group">
-                    <label for="tipoUsuario">Usuario</label>
+                    <label htmlFor="tipoUsuario">Usuario</label>
                     <select className="form-control" name="Usuario">
                       <option value="0">Seleccione</option>
                       <option value="1">Sandra</option>
@@ -51,13 +51,13 @@ function ModalEditarPredio() {
               <div className="row">
                 <div className="col-md-6">
                   <div className="form-group">
-                    <label for="latitud">Latitud</label>
+                    <label htmlFor="latitud">Latitud</label>
                     <input type="text" className="form-control" id="latitud" placeholder="" />
                   </div>
                 </div>
                 <div className="col-md-6">
                   <div className="form-group">
-                    <label for="longitud">Longitud</label>
+                    <label htmlFor="longitud">Longitud</label>
                     <input type="text" className="form-control" id="longitud" placeholder="" />
                   </div>
                 </div>

@@ -15,7 +15,7 @@ function ModalAgregarSemilla() {
   return (
     /*<!-- Agregar Modal-->*/
     <form onSubmit={enviar}>
-      <div className="modal fade" id="agregarSemillaModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div className="modal fade" id="agregarSemillaModal" tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div className="modal-dialog modal-dialog-centered modal-lg" role="document">
           <div className="modal-content">
             <div className="modal-header">
@@ -30,7 +30,7 @@ function ModalAgregarSemilla() {
               <div className="row">
                 <div className="col-md-6">
                   <div className="form-group">
-                    <label for="nombre">Nombre</label>
+                    <label htmlFor="nombre">Nombre</label>
                     <input type="text" className="form-control" name={"nombre"} placeholder="">
                       {/*<!--<small id="emailHelp" className="form-text text-muted">We'll never share your email with anyone else.</small>-->*/}
                     </input>
@@ -38,7 +38,7 @@ function ModalAgregarSemilla() {
                 </div>
                 <div className="col-md-6">
                   <div className="form-group">
-                    <label for="precio">Costo de Agua</label>
+                    <label htmlFor="precio">Costo de Agua</label>
                     <input type="text" className="form-control" name={"cost_agua"} placeholder=""></input>
                   </div>
                 </div>
@@ -46,13 +46,13 @@ function ModalAgregarSemilla() {
               <div className="row">
                 <div className="col-md-6">
                   <div className="form-group">
-                    <label for="precio">Costo de Semilla</label>
+                    <label htmlFor="precio">Costo de Semilla</label>
                     <input type="text" className="form-control" name={"cost_semilla"} placeholder=""></input>
                   </div>
                 </div>
                 <div className="col-md-6">
                   <div className="form-group">
-                    <label for="precio">Costo de Fertilizante</label>
+                    <label htmlFor="precio">Costo de Fertilizante</label>
                     <input type="text" className="form-control" name={"cost_fert"} placeholder=""></input>
                   </div>
                 </div>
