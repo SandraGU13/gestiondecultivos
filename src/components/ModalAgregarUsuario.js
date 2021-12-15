@@ -1,7 +1,11 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import ModalHeader from "./ModalHeader";
 
 function ModalAgregarUsuario() {
+
+  const navigate = useNavigate()
+
   var enviar = (e) => {
     e.preventDefault();
 
@@ -11,15 +15,29 @@ function ModalAgregarUsuario() {
       email: e.target.email.value,
       telefono: e.target.telefono.value,
       tipoUsuario: e.target.tipoUsuario.children[e.target.tipoUsuario.value].text,
-      contrasena: e.target.contrasena.value,
-      confirmarContrasena: e.target.confirmarContrasena.value,
+      //contrasena: e.target.contrasena.value,
+      //confirmarContrasena: e.target.confirmarContrasena.value,
     };
+
+
+    fetch("http://localhost:8000/api/agregarUsuario", {
+      method: 'POST', // or 'PUT'
+      body: JSON.stringify(datos), // data can be `string` or {object}!
+      headers:{
+        'Content-Type': 'application/json'
+      }
+    }).then(res => res.json())
+    .catch(error => {
+      console.error('Error:', error)
+    })
+    .then(response => {
+      console.log('Success:', response)
+      document.getElementById('cancelModal').click()
+      navigate('/usuarios')
+    });
 
     console.log(datos);
 
-    //return fetch("http://localhost:8000/api/usuarios")
-    //  .then(response => response.json())
-    //  .then((data) => console.log(data) );
   };
 
   return (
@@ -89,7 +107,7 @@ function ModalAgregarUsuario() {
               <button type="submit" className="btn btn-primary">
                 Agregar
               </button>
-              <button className="btn btn-secondary" type="button" data-dismiss="modal">
+              <button className="btn btn-secondary" type="button" data-dismiss="modal" id="cancelModal"> 
                 Cancelar
               </button>
             </div>

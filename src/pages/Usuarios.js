@@ -23,9 +23,9 @@ function Usuarios() {
       .then((response) => response.json())
       .then((data) => {
         console.log(data);
-        let cadena = ['QWERTY','QWERTY']
-        console.log(cadena.includes('QWERT', (a)=>{
-          console.log(a)}))
+        //let cadena = ['QWERTY','QWERTY']
+        //console.log(cadena.includes('QWERT', (a)=>{
+        //  console.log(a)}))
         setUsariosDB(data);
       });
   }, []);
@@ -153,9 +153,9 @@ function Usuarios() {
                         </Header>
                         <Body>
                           {tableList.map((item) => (
-                            <Row key={item.id} item={item}>
+                            <Row key={item._id} item={item}>
                               <CellSelect item={item} />
-                              <Cell>{item.id}</Cell>
+                              <Cell>{item._id}</Cell>
                               <Cell>{item.nombre}</Cell>
                               <Cell>{item.apellido}</Cell>
                               <Cell>{item.email}</Cell>
