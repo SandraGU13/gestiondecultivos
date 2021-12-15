@@ -1,6 +1,6 @@
 import React from "react";
 
-function ModalAgregarCultivos() {
+function ModalEditarCultivo() {
   var enviar = (e) => {
     e.preventDefault();
 
@@ -17,15 +17,14 @@ function ModalAgregarCultivos() {
 
     console.log(data);
   };
-
   return (
     <form onSubmit={enviar}>
-      <div className="modal fade" id="agregarCultivoModal" tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div className="modal fade" id="editarCultivoModal" tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div className="modal-dialog modal-dialog-centered modal-lg" role="document">
           <div className="modal-content">
             <div className="modal-header">
               <h5 className="text-gray-800" id="exampleModalLabel">
-                Agregar cultivo
+                Editar cultivo
               </h5>
               <button className="close" type="button" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">×</span>
@@ -95,8 +94,8 @@ function ModalAgregarCultivos() {
               </div>
             </div>
             <div className="modal-footer">
-              <button className="btn btn-primary" type="submit">
-                Agregar
+              <button className="btn btn-warning" type="submit">
+                Editar
               </button>
               <button className="btn btn-secondary" type="button" data-dismiss="modal">
                 Cancelar
@@ -109,4 +108,4 @@ function ModalAgregarCultivos() {
   );
 }
 
-export default ModalAgregarCultivos;
+export default ModalEditarCultivo;

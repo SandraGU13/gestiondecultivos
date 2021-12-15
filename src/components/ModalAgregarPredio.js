@@ -1,15 +1,33 @@
 import React from "react";
+import ModalHeader from "./ModalHeader";
 
-function ModalAgregarPredio() {
+function ModalAgregarPredio(props) {
   var enviar = (e) => {
     e.preventDefault();
 
     const data = {
       nombre: e.target.nombre.value,
-      Usuario: e.target.Usuario.children[e.target.Usuario.value].text,
+      usuario: e.target.usuario.children[e.target.usuario.value].text,
       latitud: e.target.latitud.value,
       longitud: e.target.longitud.value,
     };
+
+    fetch("http://localhost:8000/api/agregarPredio", {
+      method: 'POST', 
+      body: JSON.stringify(data),
+      headers:{
+        'Content-Type': 'application/json'
+      }
+    }).then(res => res.json())
+    .catch(error => {
+      console.error('Error:', error)
+    })
+    .then(response => {
+      console.log('Success:', response)
+      document.getElementById('cancelModal').click()
+      props.actDatos();
+    });
+
 
     console.log(data);
   };
@@ -19,14 +37,7 @@ function ModalAgregarPredio() {
       <div className="modal fade" id="agregarPredioModal" tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div className="modal-dialog modal-dialog-centered modal-lg" role="document">
           <div className="modal-content">
-            <div className="modal-header">
-              <h5 className="text-gray-800" id="exampleModalLabel">
-                Agregar predio
-              </h5>
-              <button className="close" type="button" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">×</span>
-              </button>
-            </div>
+          <ModalHeader titulo="Agregar predio" />
             <div className="modal-body">
               <div className="row">
                 <div className="col-md-6">
@@ -39,7 +50,7 @@ function ModalAgregarPredio() {
                 <div className="col-md-6">
                   <div className="form-group">
                     <label htmlFor="Usuario">Usuario</label>
-                    <select className="form-control" name="Usuario">
+                    <select className="form-control" name="usuario">
                       <option value="0">Seleccione</option>
                       <option value="1">Sandra</option>
                       <option value="2">Keiny</option>
@@ -67,7 +78,7 @@ function ModalAgregarPredio() {
               <button className="btn btn-primary" type="submit">
                 Agregar
               </button>
-              <button className="btn btn-secondary" type="button" data-dismiss="modal">
+              <button className="btn btn-secondary" type="button" data-dismiss="modal" id="cancelModal">
                 Cancelar
               </button>
             </div>

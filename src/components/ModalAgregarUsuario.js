@@ -1,17 +1,14 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
 import ModalHeader from "./ModalHeader";
 
-function ModalAgregarUsuario() {
-
-  const navigate = useNavigate()
+function ModalAgregarUsuario(props) {
 
   var enviar = (e) => {
     e.preventDefault();
 
     const datos = {
       nombre: e.target.nombre.value,
-      apellido: e.target.nombre.value,
+      apellido: e.target.apellido.value,
       email: e.target.email.value,
       telefono: e.target.telefono.value,
       tipoUsuario: e.target.tipoUsuario.children[e.target.tipoUsuario.value].text,
@@ -19,10 +16,9 @@ function ModalAgregarUsuario() {
       //confirmarContrasena: e.target.confirmarContrasena.value,
     };
 
-
     fetch("http://localhost:8000/api/agregarUsuario", {
-      method: 'POST', // or 'PUT'
-      body: JSON.stringify(datos), // data can be `string` or {object}!
+      method: 'POST', 
+      body: JSON.stringify(datos),
       headers:{
         'Content-Type': 'application/json'
       }
@@ -33,7 +29,7 @@ function ModalAgregarUsuario() {
     .then(response => {
       console.log('Success:', response)
       document.getElementById('cancelModal').click()
-      navigate('/usuarios')
+      props.actDatos();
     });
 
     console.log(datos);

@@ -7,74 +7,47 @@ import ModalAgregarSemilla from "../components/ModalAgregarSemilla";
 import ModalEditarSemilla from "../components/ModalEditarSemilla";
 import ModalEliminarSemilla from "../components/ModalEliminarSemilla";
 
-import { Table, Header, HeaderRow, HeaderCell, Body, Row, Cell } from "@table-library/react-table-library/table";
-import { usePagination } from "@table-library/react-table-library/pagination";
-import { useRowSelect, HeaderCellSelect, CellSelect, SELECT_TYPES } from "@table-library/react-table-library/select";
-
 import { useState, useEffect } from "react";
 
 function Semillas() {
 
   const [semillasDB, setSemillasDB] = useState([]);
 
-  //console.log(usuariosDB);
-
-  useEffect(() => {
+  let cargarDatos = () => {
     fetch("http://localhost:8000/api/semillas")
       .then((response) => response.json())
       .then((data) => {
-        //console.log(data);
+        console.log(data);
         setSemillasDB(data);
       });
-  }, []);
-
-  const [search, setSearch] = React.useState("");
-
-  const handleSearch = (event) => {
-    //console.log(event.target)
-    setSearch(event.target.value);
   };
 
-  const data = {
-    nodes: semillasDB.filter((item) => {
-      let todos;
-      let ids, descripcion, CostoAgua, CostoSemilla, CostoFertilizante;
-      ids = item.id;
-      descripcion = item.descripcion;
-      CostoAgua = item.CostoAgua;
-      CostoSemilla = item.CostoSemilla;
-      CostoFertilizante = item.CostoFertilizante;
-      todos = ids + descripcion + CostoAgua + CostoSemilla + CostoFertilizante;
-      return todos.includes(search);
-    }),
-  };
-
-  const select = useRowSelect(
-    data,
-    {
-      onChange: onSelectChange,
-    },
-    {
-      rowSelect: SELECT_TYPES.SingleSelect,
-      buttonSelect: SELECT_TYPES.MultiSelect,
+  let buscar = (e) => {
+    let text = e.target.value
+    if (text.length === 0) {
+      cargarDatos();
+    }else{
+      fetch("http://localhost:8000/api/buscarSemilla", {
+        method: 'POST', 
+        body: JSON.stringify({ buscar: text}),
+        headers:{
+          'Content-Type': 'application/json'
+        }
+      }).then(res => res.json())
+      .catch(error => {
+        console.error('Error:', error)
+      })
+      .then(response => {
+        console.log('Success:', response)
+        setSemillasDB(response);
+      });
     }
-  );
-
-  function onSelectChange(action, state) {
-    console.log(action, state);
   }
 
-  const pagination = usePagination(data, {
-    state: {
-      page: 0,
-      size: 10,
-    },
-    onChange: onPaginationChange,
-  });
+  useEffect(() => {
+    cargarDatos()
+  },[])
 
-  function onPaginationChange(action, state) {
-    console.log(action, state);
-  }
   return (
     <div id="wrapper">
       {" "}
@@ -108,76 +81,55 @@ function Semillas() {
                       <span className="text">Agregar semillas</span>
                     </button>
                   </div>
-                  <div className="">
-                    <button className="btn btn-warning btn-icon-split float-right" data-toggle="modal" data-target="#editarSemillaModal">
-                      <span className="icon text-white-50">
-                        <i className="fas fa-edit"></i>
-                      </span>
-                      <span className="text">Editar</span>
-                    </button>
-                  </div>
-                  <div className="">
-                    <button className="btn btn-danger btn-icon-split float-right" data-toggle="modal" data-target="#eliminarSemillaModal">
-                      <span className="icon text-white-50">
-                        <i className="fas fa-trash"></i>
-                      </span>
-                      <span className="text">Eliminar</span>
-                    </button>
-                  </div>
                 </div>
               </div>
               <div className="card-body">
-                <div className="table-responsive">
+              <div className="table-responsive">
                   <label htmlFor="search">
                     Buscar:&nbsp;
-                    <input id="search" type="text" onChange={handleSearch} />
+                    <input id="search" type="text" onChange={buscar} />
                   </label>
-                  <Table data={data} pagination={pagination} select={select}>
-                    {(tableList) => (
-                      <>
-                        <Header>
-                          <HeaderRow>
-                            <HeaderCellSelect />
-                            <HeaderCell>Id</HeaderCell>
-                            <HeaderCell>Descripcion</HeaderCell>
-                            <HeaderCell>Costo de Agua (m^3)</HeaderCell>
-                            <HeaderCell>Costo de Semilla</HeaderCell>
-                            <HeaderCell>Costo de Fertilizante (Kg)</HeaderCell>
-                          </HeaderRow>
-                        </Header>
-                        <Body>
-                          {tableList.map((item) => (
-                            <Row key={item.id} item={item}>
-                              <CellSelect item={item} />
-                              <Cell>{item.id}</Cell>
-                              <Cell>{item.descripcion}</Cell>
-                              <Cell>{item.CostoAgua}</Cell>
-                              <Cell>{item.CostoSemilla}</Cell>
-                              <Cell>{item.CostoFertilizante}</Cell>
-                            </Row>
-                          ))}
-                        </Body>
-                      </>
-                    )}
-                  </Table>
-                  <div style={{ display: "flex", justifyContent: "space-between" }}>
-                    <span>Total Pages: {pagination.state.getTotalPages(data.nodes)}</span>
-
-                    <span>
-                      Page:{" "}
-                      {pagination.state.getPages(data.nodes).map((_, index) => (
-                        <button
-                          key={index}
-                          type="button"
-                          style={{
-                            fontWeight: pagination.state.page === index ? "bold" : "normal",
-                          }}
-                          onClick={() => pagination.fns.onSetPage(index)}
-                        >
-                          {index + 1}
-                        </button>
-                      ))}
-                    </span>
+                  <div className="table-responsive">
+                    <table className="table table-striped">
+                      <thead>
+                        <tr>
+                          <th scope="col">Id</th>
+                          <th scope="col">Nombre</th>
+                          <th scope="col">Costo de agua</th>
+                          <th scope="col">Costo de semilla</th>
+                          <th scope="col">Costo de fertilizante</th>
+                          <th scope="col"></th>
+                          <th scope="col"></th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {semillasDB.map((semilla) => {
+                          return (
+                            <tr key={semilla._id}>
+                              <td>{semilla._id}</td>
+                              <td>{semilla.nombre}</td>
+                              <td>{semilla.costoAgua}</td>
+                              <td>{semilla.costoSemilla}</td>
+                              <td>{semilla.costoFertilizante}</td>
+                              <td>
+                                <button className="btn btn-warning" data-toggle="modal" data-target="#editarSemillaModal" value={semilla._id}>
+                                  <span className="icon text-white">
+                                    <i className="fas fa-edit"></i>
+                                  </span>
+                                </button>
+                              </td>
+                              <td>
+                                <button className="btn btn-danger" data-toggle="modal" data-target="#eliminarSemillaModal"  value={semilla._id}>
+                                  <span className="icon text-white">
+                                    <i className="fas fa-trash"></i>
+                                  </span>
+                                </button>
+                              </td>
+                            </tr>
+                          );
+                        })}
+                      </tbody>
+                    </table>
                   </div>
                 </div>
               </div>
@@ -187,10 +139,10 @@ function Semillas() {
         </div>
         <Footer /> {/*<!-- Footer -->*/}
       </div>
-      <ModalCerrarSesion /> {/*<!-- Modal Cerrar-->*/}
-      <ModalAgregarSemilla /> {/*<!-- Modal Agregar Semilla-->*/}
+      <ModalAgregarSemilla  actDatos={cargarDatos}/> {/*<!-- Modal Agregar Semilla-->*/}
       <ModalEditarSemilla /> {/*<!-- Modal Editar Semilla-->*/}
       <ModalEliminarSemilla /> {/*<!-- Modal Eliminar Semilla-->*/}
+      <ModalCerrarSesion /> {/*<!-- Modal Cerrar-->*/}
     </div>
   );
 }

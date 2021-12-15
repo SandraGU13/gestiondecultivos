@@ -7,79 +7,46 @@ import ModalAgregarUsuario from "../components/ModalAgregarUsuario";
 import ModalEditarUsuario from "../components/ModalEditarUsuario";
 import ModalEliminarUsuario from "../components/ModalEliminarUsuario";
 
-import { Table, Header, HeaderRow, HeaderCell, Body, Row, Cell } from "@table-library/react-table-library/table";
-import { usePagination } from "@table-library/react-table-library/pagination";
-import { useRowSelect, HeaderCellSelect, CellSelect, SELECT_TYPES } from "@table-library/react-table-library/select";
-
 import { useState, useEffect } from "react";
 
 function Usuarios() {
   const [usuariosDB, setUsariosDB] = useState([]);
 
-  //console.log(usuariosDB);
-
-  useEffect(() => {
+  let cargarDatos = () => {
     fetch("http://localhost:8000/api/usuarios")
       .then((response) => response.json())
       .then((data) => {
         console.log(data);
-        //let cadena = ['QWERTY','QWERTY']
-        //console.log(cadena.includes('QWERT', (a)=>{
-        //  console.log(a)}))
         setUsariosDB(data);
       });
-  }, []);
-
-  const [search, setSearch] = React.useState("");
-
-  const handleSearch = (event) => {
-    //console.log(event.target)
-    setSearch(event.target.value);
   };
 
-  const data = {
-    nodes: usuariosDB.filter((item) => {
-      let todos;
-      let ids, nombres, apellidos, emails, telefonos, tipoUsuarios;
-      ids = item.id;
-      nombres = item.nombre;
-      apellidos = item.apellido;
-      emails = item.email;
-      telefonos = item.telefono;
-      tipoUsuarios = item.tipoUsuario;
-      todos = ids + nombres + apellidos + emails + telefonos + tipoUsuarios;
-      //console.log(ids);
-      //console.log(todos);
-      return todos.includes(search);
-    }),
-  };
-
-  const select = useRowSelect(
-    data,
-    {
-      onChange: onSelectChange,
-    },
-    {
-      rowSelect: SELECT_TYPES.SingleSelect,
-      buttonSelect: SELECT_TYPES.MultiSelect,
+  let buscar = (e) => {
+    let text = e.target.value;
+    if (text.length === 0) {
+      cargarDatos();
+    } else {
+      fetch("http://localhost:8000/api/buscarUsuario", {
+        method: "POST",
+        body: JSON.stringify({ buscar: text }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+        .then((res) => res.json())
+        .catch((error) => {
+          console.error("Error:", error);
+        })
+        .then((response) => {
+          console.log("Success:", response);
+          setUsariosDB(response);
+        });
     }
-  );
+  };
 
-  function onSelectChange(action, state) {
-    //console.log(action, state);
-  }
-
-  const pagination = usePagination(data, {
-    state: {
-      page: 0,
-      size: 10,
-    },
-    onChange: onPaginationChange,
-  });
-
-  function onPaginationChange(action, state) {
-    console.log(action, state);
-  }
+  useEffect(() => {
+    cargarDatos();
+  }, []);
 
   return (
     <div id="wrapper">
@@ -113,78 +80,57 @@ function Usuarios() {
                       <span className="text">Agregar usuario</span>
                     </button>
                   </div>
-                  <div className="">
-                    <button className="btn btn-warning btn-icon-split float-right" data-toggle="modal" data-target="#editarUsuarioModal">
-                      <span className="icon text-white-50">
-                        <i className="fas fa-edit"></i>
-                      </span>
-                      <span className="text">Editar</span>
-                    </button>
-                  </div>
-                  <div className="">
-                    <button className="btn btn-danger btn-icon-split float-right" data-toggle="modal" data-target="#eliminarUsuarioModal">
-                      <span className="icon text-white-50">
-                        <i className="fas fa-trash"></i>
-                      </span>
-                      <span className="text">Eliminar</span>
-                    </button>
-                  </div>
                 </div>
               </div>
               <div className="card-body">
                 <div className="table-responsive">
                   <label htmlFor="search">
                     Buscar:&nbsp;
-                    <input id="search" type="text" onChange={handleSearch} />
+                    <input id="search" type="text" onChange={buscar} />
                   </label>
-                  <Table data={data} pagination={pagination} select={select}>
-                    {(tableList) => (
-                      <>
-                        <Header>
-                          <HeaderRow>
-                            <HeaderCellSelect />
-                            <HeaderCell>Id</HeaderCell>
-                            <HeaderCell>Nombre</HeaderCell>
-                            <HeaderCell>Apellido</HeaderCell>
-                            <HeaderCell>Email</HeaderCell>
-                            <HeaderCell>Telefono</HeaderCell>
-                            <HeaderCell>Tipo de usuario</HeaderCell>
-                          </HeaderRow>
-                        </Header>
-                        <Body>
-                          {tableList.map((item) => (
-                            <Row key={item._id} item={item}>
-                              <CellSelect item={item} />
-                              <Cell>{item._id}</Cell>
-                              <Cell>{item.nombre}</Cell>
-                              <Cell>{item.apellido}</Cell>
-                              <Cell>{item.email}</Cell>
-                              <Cell>{item.telefono}</Cell>
-                              <Cell>{item.tipoUsuario}</Cell>
-                            </Row>
-                          ))}
-                        </Body>
-                      </>
-                    )}
-                  </Table>
-                  <div style={{ display: "flex", justifyContent: "space-between" }}>
-                    <span>Total Pages: {pagination.state.getTotalPages(data.nodes)}</span>
-
-                    <span>
-                      Page:{" "}
-                      {pagination.state.getPages(data.nodes).map((_, index) => (
-                        <button
-                          key={index}
-                          type="button"
-                          style={{
-                            fontWeight: pagination.state.page === index ? "bold" : "normal",
-                          }}
-                          onClick={() => pagination.fns.onSetPage(index)}
-                        >
-                          {index + 1}
-                        </button>
-                      ))}
-                    </span>
+                  <div className="table-responsive">
+                    <table className="table table-striped">
+                      <thead>
+                        <tr>
+                          <th scope="col">Id</th>
+                          <th scope="col">Nombre</th>
+                          <th scope="col">Apellido</th>
+                          <th scope="col">Email</th>
+                          <th scope="col">Telefono</th>
+                          <th scope="col">Tipo de usuario</th>
+                          <th scope="col"></th>
+                          <th scope="col"></th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {usuariosDB.map((usuario) => {
+                          return (
+                            <tr key={usuario._id}>
+                              <td>{usuario._id}</td>
+                              <td>{usuario.nombre}</td>
+                              <td>{usuario.apellido}</td>
+                              <td>{usuario.email}</td>
+                              <td>{usuario.telefono}</td>
+                              <td>{usuario.tipoUsuario}</td>
+                              <td>
+                                <button className="btn btn-warning" data-toggle="modal" data-target="#editarUsuarioModal" value={usuario._id}>
+                                  <span className="icon text-white">
+                                    <i className="fas fa-edit"></i>
+                                  </span>
+                                </button>
+                              </td>
+                              <td>
+                                <button className="btn btn-danger" data-toggle="modal" data-target="#eliminarUsuarioModal"  value={usuario._id}>
+                                  <span className="icon text-white">
+                                    <i className="fas fa-trash"></i>
+                                  </span>
+                                </button>
+                              </td>
+                            </tr>
+                          );
+                        })}
+                      </tbody>
+                    </table>
                   </div>
                 </div>
               </div>
@@ -194,7 +140,7 @@ function Usuarios() {
         </div>
         <Footer /> {/*<!-- Footer -->*/}
       </div>
-      <ModalAgregarUsuario />
+      <ModalAgregarUsuario actDatos={cargarDatos} />
       <ModalEditarUsuario />
       <ModalEliminarUsuario />
       <ModalCerrarSesion /> {/*<!-- Modal Cerrar-->*/}

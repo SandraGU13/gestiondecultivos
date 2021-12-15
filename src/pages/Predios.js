@@ -7,73 +7,46 @@ import ModalAgregarPredio from "../components/ModalAgregarPredio";
 import ModalEditarPredio from "../components/ModalEditarPredio";
 import ModalEliminarPredio from "../components/ModalEliminarPredio";
 
-import { Table, Header, HeaderRow, HeaderCell, Body, Row, Cell } from "@table-library/react-table-library/table";
-import { usePagination } from "@table-library/react-table-library/pagination";
-import { useRowSelect, HeaderCellSelect, CellSelect, SELECT_TYPES } from "@table-library/react-table-library/select";
-
 import { useState, useEffect } from "react";
 
 function Predios() {
   const [prediosDB, setPrediosDB] = useState([]);
 
-  //console.log(usuariosDB);
-
-  useEffect(() => {
+  let cargarDatos = () => {
     fetch("http://localhost:8000/api/predios")
       .then((response) => response.json())
       .then((data) => {
-        //console.log(data);
+        console.log(data);
         setPrediosDB(data);
       });
-  }, []);
-
-  const [search, setSearch] = React.useState("");
-
-  const handleSearch = (event) => {
-    //console.log(event.target)
-    setSearch(event.target.value);
   };
 
-  const data = {
-    nodes: prediosDB.filter((item) => {
-      let todos;
-      let ids, nombres, Latitudes, Longitudes, Usuarios;
-      ids = item.id;
-      nombres = item.nombre;
-      Latitudes = item.Latitud;
-      Longitudes = item.Longitud;
-      Usuarios = item.Usuario;
-      todos = ids + nombres + Latitudes + Longitudes + Usuarios;
-      return todos.includes(search);
-    }),
-  };
-
-  const select = useRowSelect(
-    data,
-    {
-      onChange: onSelectChange,
-    },
-    {
-      rowSelect: SELECT_TYPES.SingleSelect,
-      buttonSelect: SELECT_TYPES.MultiSelect,
+  let buscar = (e) => {
+    let text = e.target.value
+    if (text.length === 0) {
+      cargarDatos();
+    }else{
+      fetch("http://localhost:8000/api/buscarPredio", {
+        method: 'POST', 
+        body: JSON.stringify({ buscar: text}),
+        headers:{
+          'Content-Type': 'application/json'
+        }
+      }).then(res => res.json())
+      .catch(error => {
+        console.error('Error:', error)
+      })
+      .then(response => {
+        console.log('Success:', response)
+        setPrediosDB(response);
+      });
     }
-  );
-
-  function onSelectChange(action, state) {
-    console.log(action, state);
   }
 
-  const pagination = usePagination(data, {
-    state: {
-      page: 0,
-      size: 10,
-    },
-    onChange: onPaginationChange,
-  });
+  useEffect(() => {
+    cargarDatos()
+  },[])
 
-  function onPaginationChange(action, state) {
-    console.log(action, state);
-  }
   return (
     <div id="wrapper">
       {" "}
@@ -107,76 +80,55 @@ function Predios() {
                       <span className="text">Agregar Predios</span>
                     </button>
                   </div>
-                  <div className="">
-                    <button className="btn btn-warning btn-icon-split float-right" data-toggle="modal" data-target="#editarPredioModal">
-                      <span className="icon text-white-50">
-                        <i className="fas fa-edit"></i>
-                      </span>
-                      <span className="text">Editar</span>
-                    </button>
-                  </div>
-                  <div className="">
-                    <button className="btn btn-danger btn-icon-split float-right" data-toggle="modal" data-target="#eliminarPredioModal">
-                      <span className="icon text-white-50">
-                        <i className="fas fa-trash"></i>
-                      </span>
-                      <span className="text">Eliminar</span>
-                    </button>
-                  </div>
                 </div>
               </div>
               <div className="card-body">
-                <div className="table-responsive">
+              <div className="table-responsive">
                   <label htmlFor="search">
                     Buscar:&nbsp;
-                    <input id="search" type="text" onChange={handleSearch} />
+                    <input id="search" type="text" onChange={buscar} />
                   </label>
-                  <Table data={data} pagination={pagination} select={select}>
-                    {(tableList) => (
-                      <>
-                        <Header>
-                          <HeaderRow>
-                            <HeaderCellSelect />
-                            <HeaderCell>Id</HeaderCell>
-                            <HeaderCell>Nombre</HeaderCell>
-                            <HeaderCell>Latitud</HeaderCell>
-                            <HeaderCell>Longitud</HeaderCell>
-                            <HeaderCell>Usuario</HeaderCell>
-                          </HeaderRow>
-                        </Header>
-                        <Body>
-                          {tableList.map((item) => (
-                            <Row key={item.id} item={item}>
-                              <CellSelect item={item} />
-                              <Cell>{item.id}</Cell>
-                              <Cell>{item.nombre}</Cell>
-                              <Cell>{item.Latitud}</Cell>
-                              <Cell>{item.Longitud}</Cell>
-                              <Cell>{item.Usuario}</Cell>
-                            </Row>
-                          ))}
-                        </Body>
-                      </>
-                    )}
-                  </Table>
-                  <div style={{ display: "flex", justifyContent: "space-between" }}>
-                    <span>Total Pages: {pagination.state.getTotalPages(data.nodes)}</span>
-
-                    <span>
-                      Page:{" "}
-                      {pagination.state.getPages(data.nodes).map((_, index) => (
-                        <button
-                          key={index}
-                          type="button"
-                          style={{
-                            fontWeight: pagination.state.page === index ? "bold" : "normal",
-                          }}
-                          onClick={() => pagination.fns.onSetPage(index)}
-                        >
-                          {index + 1}
-                        </button>
-                      ))}
-                    </span>
+                  <div className="table-responsive">
+                    <table className="table table-striped">
+                      <thead>
+                        <tr>
+                          <th scope="col">Id</th>
+                          <th scope="col">Nombre</th>
+                          <th scope="col">Latitud</th>
+                          <th scope="col">Longitud</th>
+                          <th scope="col">Usuario</th>
+                          <th scope="col"></th>
+                          <th scope="col"></th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {prediosDB.map((predio) => {
+                          return (
+                            <tr key={predio._id}>
+                              <td>{predio._id}</td>
+                              <td>{predio.nombre}</td>
+                              <td>{predio.latitud}</td>
+                              <td>{predio.longitud}</td>
+                              <td>{predio.usuario}</td>
+                              <td>
+                                <button className="btn btn-warning" data-toggle="modal" data-target="#editarPredioModal" value={predio._id}>
+                                  <span className="icon text-white">
+                                    <i className="fas fa-edit"></i>
+                                  </span>
+                                </button>
+                              </td>
+                              <td>
+                                <button className="btn btn-danger" data-toggle="modal" data-target="#eliminarPredioModal"  value={predio._id}>
+                                  <span className="icon text-white">
+                                    <i className="fas fa-trash"></i>
+                                  </span>
+                                </button>
+                              </td>
+                            </tr>
+                          );
+                        })}
+                      </tbody>
+                    </table>
                   </div>
                 </div>
               </div>
@@ -186,7 +138,7 @@ function Predios() {
         </div>
         <Footer /> {/*<!-- Footer -->*/}
       </div>
-      <ModalAgregarPredio />
+      <ModalAgregarPredio actDatos={cargarDatos}/>
       <ModalEditarPredio />
       <ModalEliminarPredio />
       <ModalCerrarSesion /> {/*<!-- Modal Cerrar-->*/}

@@ -1,15 +1,33 @@
 import React from "react";
+import ModalHeader from "./ModalHeader";
 
-function ModalAgregarSemilla() {
+function ModalAgregarSemilla(props) {
   var enviar = (e) => {
     e.preventDefault();
 
     const data = {
       nombre: e.target.nombre.value,
-      cost_agua: e.target.cost_agua.value,
-      cost_semilla: e.target.cost_semilla.value,
-      cost_fert: e.target.cost_fert.value,
+      costoAgua: e.target.costoAgua.value,
+      costoSemilla: e.target.costoSemilla.value,
+      costoFertilizante: e.target.costoFertilizante.value,
     };
+
+    fetch("http://localhost:8000/api/agregarSemilla", {
+      method: 'POST', 
+      body: JSON.stringify(data),
+      headers:{
+        'Content-Type': 'application/json'
+      }
+    }).then(res => res.json())
+    .catch(error => {
+      console.error('Error:', error)
+    })
+    .then(response => {
+      console.log('Success:', response)
+      document.getElementById('cancelModal').click()
+      props.actDatos();
+    });
+
     console.log(data);
   };
   return (
@@ -18,14 +36,7 @@ function ModalAgregarSemilla() {
       <div className="modal fade" id="agregarSemillaModal" tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div className="modal-dialog modal-dialog-centered modal-lg" role="document">
           <div className="modal-content">
-            <div className="modal-header">
-              <h5 className="text-gray-800" id="exampleModalLabel">
-                Agregar semilla
-              </h5>
-              <button className="close" type="button" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">×</span>
-              </button>
-            </div>
+          <ModalHeader titulo="Agregar semilla" />
             <div className="modal-body">
               <div className="row">
                 <div className="col-md-6">
@@ -39,7 +50,7 @@ function ModalAgregarSemilla() {
                 <div className="col-md-6">
                   <div className="form-group">
                     <label htmlFor="precio">Costo de Agua</label>
-                    <input type="text" className="form-control" name={"cost_agua"} placeholder=""></input>
+                    <input type="text" className="form-control" name={"costoAgua"} placeholder=""></input>
                   </div>
                 </div>
               </div>
@@ -47,13 +58,13 @@ function ModalAgregarSemilla() {
                 <div className="col-md-6">
                   <div className="form-group">
                     <label htmlFor="precio">Costo de Semilla</label>
-                    <input type="text" className="form-control" name={"cost_semilla"} placeholder=""></input>
+                    <input type="text" className="form-control" name={"costoSemilla"} placeholder=""></input>
                   </div>
                 </div>
                 <div className="col-md-6">
                   <div className="form-group">
                     <label htmlFor="precio">Costo de Fertilizante</label>
-                    <input type="text" className="form-control" name={"cost_fert"} placeholder=""></input>
+                    <input type="text" className="form-control" name={"costoFertilizante"} placeholder=""></input>
                   </div>
                 </div>
               </div>
@@ -62,7 +73,7 @@ function ModalAgregarSemilla() {
               <button type="submit" className="btn btn-primary">
                 Agregar
               </button>
-              <button className="btn btn-secondary" type="button" data-dismiss="modal">
+              <button className="btn btn-secondary" type="button" data-dismiss="modal" id="cancelModal">
                 Cancelar
               </button>
             </div>
