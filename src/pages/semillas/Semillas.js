@@ -10,9 +10,9 @@ import ModalEliminarSemilla from "../../components/ModalEliminarSemilla";
 import { useState, useEffect } from "react";
 
 function Semillas() {
-
   const [semillasDB, setSemillasDB] = useState([]);
   const [valueEdit, setValueEdit] = useState('');
+  const [valueElim, setValueElim] = useState('');
 
   let cargarDatos = () => {
     fetch("http://localhost:8000/api/semillas")
@@ -25,6 +25,10 @@ function Semillas() {
 
   let pasarEditar = (e) => {
     setValueEdit(e.target.value)
+  }
+
+  let pasarEliminar = (e) => {
+    setValueElim(e.target.value)
   }
 
   let buscar = (e) => {
@@ -83,6 +87,24 @@ function Semillas() {
     .then(response => {
       //console.log('Success:', response)
       document.getElementById('cancelModalEd').click()
+      cargarDatos();
+    });
+  };
+
+  var eliminarSemilla = (id) => {
+
+    fetch(`http://localhost:8000/api/eliminarSemilla/${id}`, {
+      method: 'DELETE',
+      headers:{
+        'Content-Type': 'application/json'
+      }
+    }).then(res => res.json())
+    .catch(error => {
+      console.error('Error:', error)
+    })
+    .then(response => {
+      console.log('Success:', response)
+      document.getElementById('cancelModalEl').click()
       cargarDatos();
     });
   };
@@ -160,7 +182,7 @@ function Semillas() {
                                 </button>
                               </td>
                               <td>
-                                <button className="btn btn-danger" data-toggle="modal" data-target="#eliminarSemillaModal"  value={semilla._id}>
+                                <button className="btn btn-danger" data-toggle="modal" data-target="#eliminarSemillaModal" value={semilla._id} onClick={pasarEliminar}>
                                   Eliminar
                                 </button>
                               </td>
@@ -180,7 +202,7 @@ function Semillas() {
       </div>
       <ModalAgregarSemilla semAgr={agregar}/> {/*<!-- Modal Agregar Semilla-->*/}
       <ModalEditarSemilla valEdit={valueEdit} semEdit={editarSemilla}/> {/*<!-- Modal Editar Semilla-->*/}
-      <ModalEliminarSemilla /> {/*<!-- Modal Eliminar Semilla-->*/}
+      <ModalEliminarSemilla valElim={valueElim} semElim={eliminarSemilla}/> {/*<!-- Modal Eliminar Semilla-->*/}
       <ModalCerrarSesion /> {/*<!-- Modal Cerrar-->*/}
     </div>
   );
