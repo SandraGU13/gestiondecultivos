@@ -19,6 +19,7 @@ function App() {
         <Route path={"/cultivos"} element={<Cultivos />} />
         <Route path={"/semillas"} element={<Semillas />} />
         <Route path={"/predios"} element={<Predios />} />
+
       </Routes>
     </BrowserRouter>
   );

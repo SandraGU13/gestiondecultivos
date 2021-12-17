@@ -46,7 +46,7 @@ function Usuarios() {
 
   useEffect(() => {
     cargarDatos();
-  }, []);
+  }, [])
 
   return (
     <div id="wrapper">

@@ -6,11 +6,13 @@ import ModalCerrarSesion from "../components/ModalCerrarSesion";
 import ModalAgregarPredio from "../components/ModalAgregarPredio";
 import ModalEditarPredio from "../components/ModalEditarPredio";
 import ModalEliminarPredio from "../components/ModalEliminarPredio";
-
 import { useState, useEffect } from "react";
+
+
 
 function Predios() {
   const [prediosDB, setPrediosDB] = useState([]);
+
 
   let cargarDatos = () => {
     fetch("http://localhost:8000/api/predios")
@@ -20,26 +22,27 @@ function Predios() {
         setPrediosDB(data);
       });
   };
-
+  
   let buscar = (e) => {
     let text = e.target.value
     if (text.length === 0) {
       cargarDatos();
-    }else{
+    } else {
       fetch("http://localhost:8000/api/buscarPredio", {
-        method: 'POST', 
-        body: JSON.stringify({ buscar: text}),
-        headers:{
-          'Content-Type': 'application/json'
+        method: "POST",
+        body: JSON.stringify({ buscar: text }),
+        headers: {
+          "Content-Type": "application/json",
         }
-      }).then(res => res.json())
-      .catch(error => {
-        console.error('Error:', error)
       })
-      .then(response => {
-        console.log('Success:', response)
-        setPrediosDB(response);
-      });
+        .then((res) => res.json())
+        .catch((error) => {
+          console.error("Error:", error);
+        })
+        .then((response) => {
+          console.log("Success:", response);
+          setPrediosDB(response);
+        });
     }
   }
 
@@ -47,6 +50,28 @@ function Predios() {
     cargarDatos()
   },[])
 
+  let click_eliminar = (e) => {
+    //console.log(e.target.value)
+    let sw = window.confirm("Seguro desea eliminar este predio ?", "Eliminar semilla");
+    console.log(sw)
+    if (sw){
+      console.log(e.target.value)
+      fetch(`http://localhost:8000/api/eliminarPredio/${e.target.value}`, {
+        method: 'DELETE', 
+        headers:{
+          'Content-Type': 'application/json'
+        }
+      }).then(res => res.json())
+        .catch(error => {console.error('Error:', error)})
+        .then(response => {
+          console.log('Success:', response)
+          cargarDatos();
+        });
+    }else{
+      console.log("Accion denegada")
+    }
+  };
+  
   return (
     <div id="wrapper">
       {" "}
@@ -111,17 +136,15 @@ function Predios() {
                               <td>{predio.longitud}</td>
                               <td>{predio.usuario}</td>
                               <td>
-                                <button className="btn btn-warning" data-toggle="modal" data-target="#editarPredioModal" value={predio._id}>
+                                <button className="btn btn-warning" data-toggle="modal" data-target="#editarPredioModal" data-id="predio._id" value={predio._id}>
                                   <span className="icon text-white">
                                     <i className="fas fa-edit"></i>
                                   </span>
                                 </button>
                               </td>
                               <td>
-                                <button className="btn btn-danger" data-toggle="modal" data-target="#eliminarPredioModal"  value={predio._id}>
-                                  <span className="icon text-white">
-                                    <i className="fas fa-trash"></i>
-                                  </span>
+                                <button className="btn btn-danger" onClick={click_eliminar} value={predio._id}>
+                                  Eliminar
                                 </button>
                               </td>
                             </tr>
