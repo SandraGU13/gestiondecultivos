@@ -6,6 +6,7 @@ import ModalCerrarSesion from "../components/ModalCerrarSesion";
 import ModalAgregarSemilla from "../components/ModalAgregarSemilla";
 import ModalEditarSemilla from "../components/ModalEditarSemilla";
 import ModalEliminarSemilla from "../components/ModalEliminarSemilla";
+import swal from 'sweetalert2';
 
 import { useState, useEffect } from "react";
 
@@ -26,27 +27,51 @@ function Semillas() {
     let text = e.target.value
     if (text.length === 0) {
       cargarDatos();
-    }else{
+    } else {
       fetch("http://localhost:8000/api/buscarSemilla", {
-        method: 'POST', 
-        body: JSON.stringify({ buscar: text}),
-        headers:{
+        method: 'POST',
+        body: JSON.stringify({ buscar: text }),
+        headers: {
           'Content-Type': 'application/json'
         }
       }).then(res => res.json())
-      .catch(error => {
-        console.error('Error:', error)
-      })
-      .then(response => {
-        console.log('Success:', response)
-        setSemillasDB(response);
-      });
+        .catch(error => {
+          console.error('Error:', error)
+        })
+        .then(response => {
+          console.log('Success:', response)
+          setSemillasDB(response);
+        });
     }
   }
 
   useEffect(() => {
     cargarDatos()
-  },[])
+  }, [])
+
+
+  let click_boton_eliminar = (e) => {
+    let sw = window.confirm("Seguro que desea eliminar semilla?", "Eliminar cultivo");
+    console.log(sw)
+
+    console.log(sw)
+    if (sw) {
+      console.log(e.target.value)
+      fetch(`http://localhost:8000/api/eliminar_semilla/${e.target.value}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      }).then(res => res.json())
+        .catch(error => console.error('Error:', error))
+        .then(response => {
+          console.log('Success:', response)
+          cargarDatos();
+        });
+    } else {
+      console.log("Accion denegada!")
+    }
+  };
 
   return (
     <div id="wrapper">
@@ -84,7 +109,7 @@ function Semillas() {
                 </div>
               </div>
               <div className="card-body">
-              <div className="table-responsive">
+                <div className="table-responsive">
                   <label htmlFor="search">
                     Buscar:&nbsp;
                     <input id="search" type="text" onChange={buscar} />
@@ -119,10 +144,8 @@ function Semillas() {
                                 </button>
                               </td>
                               <td>
-                                <button className="btn btn-danger" data-toggle="modal" data-target="#eliminarSemillaModal"  value={semilla._id}>
-                                  <span className="icon text-white">
-                                    <i className="fas fa-trash"></i>
-                                  </span>
+                                <button className="btn btn-danger" /*data-toggle="modal" data-target="#eliminarSemillaModal"*/ value={semilla._id} onClick={click_boton_eliminar}>
+                                  Eliminar
                                 </button>
                               </td>
                             </tr>
@@ -139,7 +162,7 @@ function Semillas() {
         </div>
         <Footer /> {/*<!-- Footer -->*/}
       </div>
-      <ModalAgregarSemilla  actDatos={cargarDatos}/> {/*<!-- Modal Agregar Semilla-->*/}
+      <ModalAgregarSemilla actDatos={cargarDatos} /> {/*<!-- Modal Agregar Semilla-->*/}
       <ModalEditarSemilla /> {/*<!-- Modal Editar Semilla-->*/}
       <ModalEliminarSemilla /> {/*<!-- Modal Eliminar Semilla-->*/}
       <ModalCerrarSesion /> {/*<!-- Modal Cerrar-->*/}
