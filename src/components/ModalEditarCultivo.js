@@ -1,52 +1,75 @@
 import React from "react";
+import ModalHeader from "./ModalHeader";
 
-function ModalEditarCultivo() {
+function ModalEditarCultivo({valEdit,culEdit}) {
+
+  const semilla = React.createRef();
+  const area = React.createRef();
+  const cantidadSemillas = React.createRef();
+  const tiempoCultivo = React.createRef();
+  const agua = React.createRef();
+  const cantidadFertilizante = React.createRef();
+  const tiempoRecoleccion = React.createRef();
+  const kgRecolectados = React.createRef();
+
+  const buscarCul = (val) => {
+    fetch(`http://localhost:8000/api/cultivo/${val}`)
+      .then((response) => response.json())
+      .then((data) => {
+        semilla.current.value = data.semilla;
+        area.current.value = data.area;
+        cantidadSemillas.current.value = data.cantidadSemillas;
+        tiempoCultivo.current.value = data.tiempoCultivo;
+        agua.current.value = data.agua;
+        cantidadFertilizante.current.value = data.cantidadFertilizante;
+        tiempoRecoleccion.current.value = data.tiempoRecoleccion;
+        kgRecolectados.current.value = data.kgRecolectados;
+      });
+  };
+
+  if (valEdit){
+    //console.log(valEdit);
+    buscarCul(valEdit)
+  }
+
   var enviar = (e) => {
     e.preventDefault();
 
-    const data = {
-      Semilla: e.target.Semilla.children[e.target.Semilla.value].text,
+    const datos = {
+      semilla: e.target.semilla.value,
       area: e.target.area.value,
       cantidadSemillas: e.target.cantidadSemillas.value,
       tiempoCultivo: e.target.tiempoCultivo.value,
       agua: e.target.agua.value,
-      fertilizante: e.target.fertilizante.value,
-      tiempoHectarea: e.target.tiempoHectarea.value,
-      kgHectarea: e.target.kgHectarea.value,
+      cantidadFertilizante: e.target.cantidadFertilizante.value,
+      tiempoRecoleccion: e.target.tiempoRecoleccion.value,
+      kgRecolectados: e.target.kgRecolectados.value,
     };
-
-    console.log(data);
+    culEdit(datos)
   };
   return (
     <form onSubmit={enviar}>
       <div className="modal fade" id="editarCultivoModal" tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div className="modal-dialog modal-dialog-centered modal-lg" role="document">
           <div className="modal-content">
-            <div className="modal-header">
-              <h5 className="text-gray-800" id="exampleModalLabel">
-                Editar cultivo
-              </h5>
-              <button className="close" type="button" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">×</span>
-              </button>
-            </div>
+          <ModalHeader titulo="Editar cultivo" />
             <div className="modal-body">
               <div className="row">
                 <div className="col-md-6">
                   <div className="form-group">
                     <label htmlFor="semilla">Semilla</label>
-                    <select className="form-control" name="Semilla">
-                      <option value="0">Selecione</option>
-                      <option value="1">Trigo</option>
-                      <option value="2">Maiz</option>
-                      <option value="3">Aguacate</option>
+                    <select className="form-control" ref={semilla} name="semilla">
+                      <option value="Selecione">Selecione</option>
+                      <option value="Trigo">Trigo</option>
+                      <option value="Maiz">Maiz</option>
+                      <option value="Aguacate">Aguacate</option>
                     </select>
                   </div>
                 </div>
                 <div className="col-md-6">
                   <div className="form-group">
                     <label htmlFor="area">Area (Hectáreas)</label>
-                    <input type="text" className="form-control" name="area" placeholder="" />
+                    <input type="text" className="form-control" ref={area} name="area" placeholder="" />
                   </div>
                 </div>
               </div>
@@ -54,13 +77,13 @@ function ModalEditarCultivo() {
                 <div className="col-md-6">
                   <div className="form-group">
                     <label htmlFor="cantidadSemillas">Cantidad de semillas por hectárea</label>
-                    <input type="text" className="form-control" name="cantidadSemillas" placeholder="" />
+                    <input type="text" className="form-control" ref={cantidadSemillas} name="cantidadSemillas" placeholder="" />
                   </div>
                 </div>
                 <div className="col-md-6">
                   <div className="form-group">
                     <label htmlFor="tiempoCultivo">Tiempo de cultivo (Semanas)</label>
-                    <input type="text" className="form-control" name="tiempoCultivo" placeholder="" />
+                    <input type="text" className="form-control" ref={tiempoCultivo} name="tiempoCultivo" placeholder="" />
                   </div>
                 </div>
               </div>
@@ -68,13 +91,13 @@ function ModalEditarCultivo() {
                 <div className="col-md-6">
                   <div className="form-group">
                     <label htmlFor="agua">Metros cubicos de agua por semana</label>
-                    <input type="text" className="form-control" name="agua" placeholder="" />
+                    <input type="text" className="form-control" ref={agua} name="agua" placeholder="" />
                   </div>
                 </div>
                 <div className="col-md-6">
                   <div className="form-group">
                     <label htmlFor="fertilizante">Cantidad de fertilizante por hectarea</label>
-                    <input type="text" className="form-control" name="fertilizante" placeholder="" />
+                    <input type="text" className="form-control" ref={cantidadFertilizante} name="cantidadFertilizante" placeholder="" />
                   </div>
                 </div>
               </div>
@@ -82,13 +105,13 @@ function ModalEditarCultivo() {
                 <div className="col-md-6">
                   <div className="form-group">
                     <label htmlFor="tiempoHectarea">Tiempo de recolección por hectarea</label>
-                    <input type="text" className="form-control" name="tiempoHectarea" placeholder="" />
+                    <input type="text" className="form-control" ref={tiempoRecoleccion} name="tiempoRecoleccion" placeholder="" />
                   </div>
                 </div>
                 <div className="col-md-6">
                   <div className="form-group">
                     <label htmlFor="kgHectarea">kilogramos recolectados por hectarea</label>
-                    <input type="text" className="form-control" name="kgHectarea" placeholder="" />
+                    <input type="text" className="form-control" ref={kgRecolectados} name="kgRecolectados" placeholder="" />
                   </div>
                 </div>
               </div>
@@ -97,7 +120,7 @@ function ModalEditarCultivo() {
               <button className="btn btn-warning" type="submit">
                 Editar
               </button>
-              <button className="btn btn-secondary" type="button" data-dismiss="modal">
+              <button className="btn btn-secondary" type="button" data-dismiss="modal" id="cancelModalEd">
                 Cancelar
               </button>
             </div>

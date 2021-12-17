@@ -1,26 +1,32 @@
 import React from "react";
-import Sidebar from "../components/Sidebar";
-import Topbar from "../components/Topbar";
-import Footer from "../components/Footer";
-import ModalCerrarSesion from "../components/ModalCerrarSesion";
-import ModalAgregarCultivo from "../components/ModalAgregarCultivo";
-import ModalEliminarCultivo from "../components/ModalEliminarCultivo";
-import ModalEditarCultivo from "../components/ModalEditarCultivo";
+import Sidebar from "../../components/Sidebar";
+import Topbar from "../../components/Topbar";
+import Footer from "../../components/Footer";
+import ModalCerrarSesion from "../../components/ModalCerrarSesion";
+import ModalAgregarCultivo from "../../components/ModalAgregarCultivo";
+import ModalEliminarCultivo from "../../components/ModalEliminarCultivo";
+import ModalEditarCultivo from "../../components/ModalEditarCultivo";
 
 import { useState, useEffect } from "react";
 
 function Cultivos() {
 
   const [cultivosDB, setCultivosDB] = useState([]);
+  const [valueEdit, setValueEdit] = useState('');
 
   let cargarDatos = () => {
     fetch("http://localhost:8000/api/cultivos")
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
+        //console.log(data);
         setCultivosDB(data);
       });
   };
+
+  let pasarEditar = (e) => {
+    //console.log(e.target.value)
+    setValueEdit(e.target.value)
+  }
 
   let buscar = (e) => {
     let text = e.target.value
@@ -43,6 +49,44 @@ function Cultivos() {
       });
     }
   }
+
+  var agregar = (datos) => {
+
+    fetch("http://localhost:8000/api/agregarCultivo", {
+      method: 'POST', 
+      body: JSON.stringify(datos),
+      headers:{
+        'Content-Type': 'application/json'
+      }
+    }).then(res => res.json())
+    .catch(error => {
+      console.error('Error:', error)
+    })
+    .then(response => {
+      console.log('Success:', response)
+      document.getElementById('cancelModalAg').click()
+      cargarDatos()
+    });
+  };
+
+  var editarCultivo = (datos) => {
+
+    fetch(`http://localhost:8000/api/editarCultivo/${valueEdit}`, {
+      method: 'PUT',
+      body: JSON.stringify(datos),
+      headers:{
+        'Content-Type': 'application/json'
+      }
+    }).then(res => res.json())
+    .catch(error => {
+      console.error('Error:', error)
+    })
+    .then(response => {
+      //console.log('Success:', response)
+      document.getElementById('cancelModalEd').click()
+      cargarDatos();
+    });
+  };
 
   useEffect(() => {
     cargarDatos()
@@ -120,17 +164,13 @@ function Cultivos() {
                               <td>{cultivo.tiempoRecoleccion}</td>
                               <td>{cultivo.kgRecolectados}</td>
                               <td>
-                                <button className="btn btn-warning" data-toggle="modal" data-target="#editarCultivoModal" value={cultivo._id}>
-                                  <span className="icon text-white">
-                                    <i className="fas fa-edit"></i>
-                                  </span>
+                                <button className="btn btn-warning" data-toggle="modal" data-target="#editarCultivoModal" value={cultivo._id} onClick={pasarEditar}>
+                                  Editar
                                 </button>
                               </td>
                               <td>
                                 <button className="btn btn-danger" data-toggle="modal" data-target="#eliminarCultivoModal"  value={cultivo._id}>
-                                  <span className="icon text-white">
-                                    <i className="fas fa-trash"></i>
-                                  </span>
+                                  Eliminar
                                 </button>
                               </td>
                             </tr>
@@ -147,9 +187,9 @@ function Cultivos() {
         </div>
         <Footer /> {/*<!-- Footer -->*/}
       </div>
-      <ModalAgregarCultivo actDatos={cargarDatos}/> {/*<!-- Modal Agregar-->*/}
+      <ModalAgregarCultivo culAgr={agregar}/> {/*<!-- Modal Agregar-->*/}
+      <ModalEditarCultivo valEdit={valueEdit} culEdit={editarCultivo}/> {/*<!-- Modal Editar-->*/}
       <ModalEliminarCultivo /> {/*<!-- Modal Eliminar-->*/}
-      <ModalEditarCultivo /> {/*<!-- Modal Editar-->*/}
       <ModalCerrarSesion /> {/*<!-- Modal Cerrar-->*/}
     </div>
   );

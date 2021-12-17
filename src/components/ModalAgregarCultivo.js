@@ -1,12 +1,12 @@
 import React from "react";
 import ModalHeader from "./ModalHeader";
 
-function ModalAgregarCultivo(props) {
+function ModalAgregarCultivo({culAgr}) {
   var enviar = (e) => {
     e.preventDefault();
 
-    const data = {
-      semilla: e.target.semilla.children[e.target.semilla.value].text,
+    const datos = {
+      semilla: e.target.semilla.value,
       area: e.target.area.value,
       cantidadSemillas: e.target.cantidadSemillas.value,
       tiempoCultivo: e.target.tiempoCultivo.value,
@@ -15,24 +15,7 @@ function ModalAgregarCultivo(props) {
       tiempoRecoleccion: e.target.tiempoRecoleccion.value,
       kgRecolectados: e.target.kgRecolectados.value
     };
-
-    fetch("http://localhost:8000/api/agregarCultivo", {
-      method: 'POST', 
-      body: JSON.stringify(data),
-      headers:{
-        'Content-Type': 'application/json'
-      }
-    }).then(res => res.json())
-    .catch(error => {
-      console.error('Error:', error)
-    })
-    .then(response => {
-      console.log('Success:', response)
-      document.getElementById('cancelModal').click()
-      props.actDatos();
-    });
-
-    console.log(data);
+    culAgr(datos)
   };
 
   return (
@@ -47,10 +30,10 @@ function ModalAgregarCultivo(props) {
                   <div className="form-group">
                     <label htmlFor="semilla">Semilla</label>
                     <select className="form-control" name="semilla">
-                      <option value="0">Selecione</option>
-                      <option value="1">Trigo</option>
-                      <option value="2">Maiz</option>
-                      <option value="3">Aguacate</option>
+                      <option value="Selecione">Selecione</option>
+                      <option value="Trigo">Trigo</option>
+                      <option value="Maiz">Maiz</option>
+                      <option value="Aguacate">Aguacate</option>
                     </select>
                   </div>
                 </div>
@@ -108,7 +91,7 @@ function ModalAgregarCultivo(props) {
               <button className="btn btn-primary" type="submit">
                 Agregar
               </button>
-              <button className="btn btn-secondary" type="button" data-dismiss="modal" id="cancelModal">
+              <button className="btn btn-secondary" type="button" data-dismiss="modal" id="cancelModalAg">
                 Cancelar
               </button>
             </div>

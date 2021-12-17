@@ -1,49 +1,62 @@
 import React from "react";
+import ModalHeader from "./ModalHeader";
 
-function ModalEditarPredio() {
-  var enviar = (e) => {
+function ModalEditarPredio({ valEdit, preEdit }) {
+  const nombre = React.createRef();
+  const usuario = React.createRef();
+  const latitud = React.createRef();
+  const longitud = React.createRef();
+
+  const buscarPre = (val) => {
+    fetch(`http://localhost:8000/api/predio/${val}`)
+      .then((response) => response.json())
+      .then((data) => {
+        nombre.current.value = data.nombre;
+        usuario.current.value = data.usuario;
+        latitud.current.value = data.latitud;
+        longitud.current.value = data.longitud;
+      });
+  };
+
+  if (valEdit) {
+    buscarPre(valEdit);
+  }
+
+  var editar = (e) => {
     e.preventDefault();
 
-    const data = {
+    const datos = {
       nombre: e.target.nombre.value,
-      Usuario: e.target.Usuario.children[e.target.Usuario.value].text,
+      usuario: e.target.usuario.value,
       latitud: e.target.latitud.value,
       longitud: e.target.longitud.value,
     };
-
-    console.log(data);
+    preEdit(datos);
   };
 
   return (
-    <form onSubmit={enviar}>
+    <form onSubmit={editar}>
       <div className="modal fade" id="editarPredioModal" tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div className="modal-dialog modal-dialog-centered modal-lg" role="document">
           <div className="modal-content">
-            <div className="modal-header">
-              <h5 className="text-gray-800" id="exampleModalLabel">
-                Editar predio
-              </h5>
-              <button className="close" type="button" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">×</span>
-              </button>
-            </div>
+            <ModalHeader titulo="Editar predio" />
             <div className="modal-body">
               <div className="row">
                 <div className="col-md-6">
                   <div className="form-group">
                     <label htmlFor="nombre">Nombre</label>
-                    <input type="text" className="form-control" id="nombre" placeholder="" />
+                    <input type="text" className="form-control" ref={nombre} name="nombre" placeholder="" />
                     {/*<!--<small id="emailHelp" className="form-text text-muted">We'll never share your email with anyone else.</small>-->*/}
                   </div>
                 </div>
                 <div className="col-md-6">
                   <div className="form-group">
                     <label htmlFor="tipoUsuario">Usuario</label>
-                    <select className="form-control" name="Usuario">
-                      <option value="0">Seleccione</option>
-                      <option value="1">Sandra</option>
-                      <option value="2">Keiny</option>
-                      <option value="3">Nestor</option>
+                    <select className="form-control" ref={usuario} name="usuario">
+                      <option value="Seleccione">Seleccione</option>
+                      <option value="Sandra">Sandra</option>
+                      <option value="Keiny">Keiny</option>
+                      <option value="Nestor">Nestor</option>
                     </select>
                   </div>
                 </div>
@@ -52,13 +65,13 @@ function ModalEditarPredio() {
                 <div className="col-md-6">
                   <div className="form-group">
                     <label htmlFor="latitud">Latitud</label>
-                    <input type="text" className="form-control" id="latitud" placeholder="" />
+                    <input type="text" className="form-control" ref={latitud} name="latitud" placeholder="" />
                   </div>
                 </div>
                 <div className="col-md-6">
                   <div className="form-group">
                     <label htmlFor="longitud">Longitud</label>
-                    <input type="text" className="form-control" id="longitud" placeholder="" />
+                    <input type="text" className="form-control" ref={longitud} name="longitud" placeholder="" />
                   </div>
                 </div>
               </div>
@@ -67,7 +80,7 @@ function ModalEditarPredio() {
               <button className="btn btn-warning" type="submit">
                 Editar
               </button>
-              <button className="btn btn-secondary" type="button" data-dismiss="modal">
+              <button className="btn btn-secondary" type="button" data-dismiss="modal" id="cancelModalEd">
                 Cancelar
               </button>
             </div>

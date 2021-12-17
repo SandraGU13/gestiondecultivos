@@ -1,33 +1,38 @@
 import React from "react";
-import Sidebar from "../components/Sidebar";
-import Topbar from "../components/Topbar";
-import Footer from "../components/Footer";
-import ModalCerrarSesion from "../components/ModalCerrarSesion";
-import ModalAgregarSemilla from "../components/ModalAgregarSemilla";
-import ModalEditarSemilla from "../components/ModalEditarSemilla";
-import ModalEliminarSemilla from "../components/ModalEliminarSemilla";
+import Sidebar from "../../components/Sidebar";
+import Topbar from "../../components/Topbar";
+import Footer from "../../components/Footer";
+import ModalCerrarSesion from "../../components/ModalCerrarSesion";
+import ModalAgregarPredio from "../../components/ModalAgregarPredio";
+import ModalEditarPredio from "../../components/ModalEditarPredio";
+import ModalEliminarPredio from "../../components/ModalEliminarPredio";
 
 import { useState, useEffect } from "react";
 
-function Semillas() {
-
-  const [semillasDB, setSemillasDB] = useState([]);
+function Predios() {
+  const [prediosDB, setPrediosDB] = useState([]);
+  const [valueEdit, setValueEdit] = useState('');
 
   let cargarDatos = () => {
-    fetch("http://localhost:8000/api/semillas")
+    fetch("http://localhost:8000/api/predios")
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
-        setSemillasDB(data);
+        //console.log(data);
+        setPrediosDB(data);
       });
   };
+
+  
+  let pasarEditar = (e) => {
+    setValueEdit(e.target.value)
+  }
 
   let buscar = (e) => {
     let text = e.target.value
     if (text.length === 0) {
       cargarDatos();
     }else{
-      fetch("http://localhost:8000/api/buscarSemilla", {
+      fetch("http://localhost:8000/api/buscarPredio", {
         method: 'POST', 
         body: JSON.stringify({ buscar: text}),
         headers:{
@@ -39,10 +44,48 @@ function Semillas() {
       })
       .then(response => {
         console.log('Success:', response)
-        setSemillasDB(response);
+        setPrediosDB(response);
       });
     }
   }
+
+  var agregar = (datos) => {
+
+    fetch("http://localhost:8000/api/agregarPredio", {
+      method: 'POST', 
+      body: JSON.stringify(datos),
+      headers:{
+        'Content-Type': 'application/json'
+      }
+    }).then(res => res.json())
+    .catch(error => {
+      console.error('Error:', error)
+    })
+    .then(response => {
+      console.log('Success:', response)
+      document.getElementById('cancelModalAg').click()
+      cargarDatos();
+    });
+  };
+
+  var editarPredio = (datos) => {
+
+    fetch(`http://localhost:8000/api/editarPredio/${valueEdit}`, {
+      method: 'PUT',
+      body: JSON.stringify(datos),
+      headers:{
+        'Content-Type': 'application/json'
+      }
+    }).then(res => res.json())
+    .catch(error => {
+      console.error('Error:', error)
+    })
+    .then(response => {
+      //console.log('Success:', response)
+      document.getElementById('cancelModalEd').click()
+      cargarDatos();
+    });
+  };
 
   useEffect(() => {
     cargarDatos()
@@ -63,22 +106,22 @@ function Semillas() {
           {/*<!-->>> CONTENIDO DE LA PAGINA DENTRO DEL DIV CONTAINER-FLUID <<<-->*/}
           <div className="container-fluid">
             {/*<!-- Page Heading -->*/}
-            <h1 className="h3 mb-2 text-gray-800">Semillas</h1>
+            <h1 className="h3 mb-2 text-gray-800">Predios</h1>
             <p className="mb-4"></p>
 
             {/*<!-- DataTales Example -->*/}
             <div className="card shadow mb-4">
               <div className="card-header py-3">
                 <div className="">
-                  <h6 className="m-0 font-weight-bold text-primary">Semillas</h6>
+                  <h6 className="m-0 font-weight-bold text-primary">Predios</h6>
                 </div>
                 <div className="row float-right">
                   <div className="">
-                    <button to="#" className="btn btn-primary btn-icon-split float-right" data-toggle="modal" data-target="#agregarSemillaModal">
+                    <button to="#" className="btn btn-primary btn-icon-split float-right" data-toggle="modal" data-target="#agregarPredioModal">
                       <span className="icon text-white-50">
                         <i className="fas fa-plus"></i>
                       </span>
-                      <span className="text">Agregar semillas</span>
+                      <span className="text">Agregar Predios</span>
                     </button>
                   </div>
                 </div>
@@ -95,34 +138,30 @@ function Semillas() {
                         <tr>
                           <th scope="col">Id</th>
                           <th scope="col">Nombre</th>
-                          <th scope="col">Costo de agua</th>
-                          <th scope="col">Costo de semilla</th>
-                          <th scope="col">Costo de fertilizante</th>
+                          <th scope="col">Latitud</th>
+                          <th scope="col">Longitud</th>
+                          <th scope="col">Usuario</th>
                           <th scope="col"></th>
                           <th scope="col"></th>
                         </tr>
                       </thead>
                       <tbody>
-                        {semillasDB.map((semilla) => {
+                        {prediosDB.map((predio) => {
                           return (
-                            <tr key={semilla._id}>
-                              <td>{semilla._id}</td>
-                              <td>{semilla.nombre}</td>
-                              <td>{semilla.costoAgua}</td>
-                              <td>{semilla.costoSemilla}</td>
-                              <td>{semilla.costoFertilizante}</td>
+                            <tr key={predio._id}>
+                              <td>{predio._id}</td>
+                              <td>{predio.nombre}</td>
+                              <td>{predio.latitud}</td>
+                              <td>{predio.longitud}</td>
+                              <td>{predio.usuario}</td>
                               <td>
-                                <button className="btn btn-warning" data-toggle="modal" data-target="#editarSemillaModal" value={semilla._id}>
-                                  <span className="icon text-white">
-                                    <i className="fas fa-edit"></i>
-                                  </span>
+                                <button className="btn btn-warning" data-toggle="modal" data-target="#editarPredioModal" value={predio._id} onClick={pasarEditar}>
+                                  Editar
                                 </button>
                               </td>
                               <td>
-                                <button className="btn btn-danger" data-toggle="modal" data-target="#eliminarSemillaModal"  value={semilla._id}>
-                                  <span className="icon text-white">
-                                    <i className="fas fa-trash"></i>
-                                  </span>
+                                <button className="btn btn-danger" data-toggle="modal" data-target="#eliminarPredioModal"  value={predio._id}>
+                                  Eliminar
                                 </button>
                               </td>
                             </tr>
@@ -139,12 +178,12 @@ function Semillas() {
         </div>
         <Footer /> {/*<!-- Footer -->*/}
       </div>
-      <ModalAgregarSemilla  actDatos={cargarDatos}/> {/*<!-- Modal Agregar Semilla-->*/}
-      <ModalEditarSemilla /> {/*<!-- Modal Editar Semilla-->*/}
-      <ModalEliminarSemilla /> {/*<!-- Modal Eliminar Semilla-->*/}
+      <ModalAgregarPredio preAgr={agregar}/>
+      <ModalEditarPredio valEdit={valueEdit} preEdit={editarPredio}/>
+      <ModalEliminarPredio />
       <ModalCerrarSesion /> {/*<!-- Modal Cerrar-->*/}
     </div>
   );
 }
 
-export default Semillas;
+export default Predios;

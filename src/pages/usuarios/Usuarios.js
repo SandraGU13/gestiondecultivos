@@ -1,25 +1,35 @@
 import React from "react";
-import Sidebar from "../components/Sidebar";
-import Topbar from "../components/Topbar";
-import Footer from "../components/Footer";
-import ModalCerrarSesion from "../components/ModalCerrarSesion";
-import ModalAgregarUsuario from "../components/ModalAgregarUsuario";
-import ModalEditarUsuario from "../components/ModalEditarUsuario";
-import ModalEliminarUsuario from "../components/ModalEliminarUsuario";
+import Sidebar from "../../components/Sidebar";
+import Topbar from "../../components/Topbar";
+import Footer from "../../components/Footer";
+import ModalCerrarSesion from "../../components/ModalCerrarSesion";
+import ModalAgregarUsuario from "../../components/ModalAgregarUsuario";
+import ModalEditarUsuario from "../../components/ModalEditarUsuario";
+import ModalEliminarUsuario from "../../components/ModalEliminarUsuario";
 
 import { useState, useEffect } from "react";
 
 function Usuarios() {
   const [usuariosDB, setUsariosDB] = useState([]);
+  const [valueEdit, setValueEdit] = useState('');
+  const [valueElim, setValueElim] = useState('');
 
   let cargarDatos = () => {
     fetch("http://localhost:8000/api/usuarios")
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
+        //console.log(data);
         setUsariosDB(data);
       });
   };
+
+  let pasarEditar = (e) => {
+    setValueEdit(e.target.value)
+  }
+
+  let pasarEliminar = (e) => {
+    setValueElim(e.target.value)
+  }
 
   let buscar = (e) => {
     let text = e.target.value;
@@ -38,11 +48,68 @@ function Usuarios() {
           console.error("Error:", error);
         })
         .then((response) => {
-          console.log("Success:", response);
+          //console.log("Success:", response);
           setUsariosDB(response);
         });
     }
   };
+
+  var agregar = (datos) => {
+
+    fetch("http://localhost:8000/api/agregarUsuario", {
+      method: 'POST', 
+      body: JSON.stringify(datos),
+      headers:{
+        'Content-Type': 'application/json'
+      }
+    }).then(res => res.json())
+    .catch(error => {
+      console.error('Error:', error)
+    })
+    .then(response => {
+      console.log('Success:', response)
+      document.getElementById('cancelModalAg').click()
+      cargarDatos();
+    });
+  };
+
+  var editarUsuario = (datos) => {
+
+    fetch(`http://localhost:8000/api/editarUsuario/${valueEdit}`, {
+      method: 'PUT',
+      body: JSON.stringify(datos),
+      headers:{
+        'Content-Type': 'application/json'
+      }
+    }).then(res => res.json())
+    .catch(error => {
+      console.error('Error:', error)
+    })
+    .then(response => {
+      console.log('Success:', response)
+      document.getElementById('cancelModalEd').click()
+      cargarDatos();
+    });
+  };
+
+  var eliminarUsuario = (id) => {
+
+    fetch(`http://localhost:8000/api/eliminarUsuario/${id}`, {
+      method: 'DELETE',
+      headers:{
+        'Content-Type': 'application/json'
+      }
+    }).then(res => res.json())
+    .catch(error => {
+      console.error('Error:', error)
+    })
+    .then(response => {
+      console.log('Success:', response)
+      document.getElementById('cancelModalEl').click()
+      cargarDatos();
+    });
+  };
+
 
   useEffect(() => {
     cargarDatos();
@@ -73,7 +140,7 @@ function Usuarios() {
                 </div>
                 <div className="row float-right">
                   <div className="">
-                    <button to="#" className="btn btn-primary btn-icon-split float-right" data-toggle="modal" data-target="#agregarUsuarioModal">
+                    <button className="btn btn-primary btn-icon-split float-right" data-toggle="modal" data-target="#agregarUsuarioModal">
                       <span className="icon text-white-50">
                         <i className="fas fa-plus"></i>
                       </span>
@@ -113,17 +180,13 @@ function Usuarios() {
                               <td>{usuario.telefono}</td>
                               <td>{usuario.tipoUsuario}</td>
                               <td>
-                                <button className="btn btn-warning" data-toggle="modal" data-target="#editarUsuarioModal" value={usuario._id}>
-                                  <span className="icon text-white">
-                                    <i className="fas fa-edit"></i>
-                                  </span>
+                                <button className="btn btn-warning" data-toggle="modal" data-target="#editarUsuarioModal" value={usuario._id} onClick={pasarEditar}>
+                                    Editar
                                 </button>
                               </td>
                               <td>
-                                <button className="btn btn-danger" data-toggle="modal" data-target="#eliminarUsuarioModal"  value={usuario._id}>
-                                  <span className="icon text-white">
-                                    <i className="fas fa-trash"></i>
-                                  </span>
+                                <button className="btn btn-danger" data-toggle="modal" data-target="#eliminarUsuarioModal" value={usuario._id} onClick={pasarEliminar}>
+                                  Eliminar
                                 </button>
                               </td>
                             </tr>
@@ -140,9 +203,9 @@ function Usuarios() {
         </div>
         <Footer /> {/*<!-- Footer -->*/}
       </div>
-      <ModalAgregarUsuario actDatos={cargarDatos} />
-      <ModalEditarUsuario />
-      <ModalEliminarUsuario />
+      <ModalAgregarUsuario usuAgr={agregar}/>
+      <ModalEditarUsuario valEdit={valueEdit} usuEdit={editarUsuario}/>
+      <ModalEliminarUsuario valElim={valueElim} usuElim={eliminarUsuario}/>
       <ModalCerrarSesion /> {/*<!-- Modal Cerrar-->*/}
     </div>
   );

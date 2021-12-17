@@ -1,12 +1,12 @@
 import React from "react";
-import Login from "./pages/Login";
-import Bienvenido from "./pages/Bienvenido";
-import Usuarios from "./pages/Usuarios";
-import Perfil from "./pages/Perfil";
-import Cultivos from "./pages/Cultivos";
-import Predios from "./pages/Predios";
+import Login from "./pages/login";
+import Bienvenido from "./pages/bienvenido";
+import Usuarios from "./pages/usuarios";
+import Perfil from "./pages/perfil";
+import Cultivos from "./pages/cultivos";
+import Predios from "./pages/predios";
+import Semillas from "./pages/semillas";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Semillas from "./pages/Semillas";
 
 function App() {
   return (

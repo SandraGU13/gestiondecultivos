@@ -1,10 +1,10 @@
 import React from "react";
-import Sidebar from "../components/Sidebar";
-import Topbar from "../components/Topbar";
-import Footer from "../components/Footer";
-import ModalCerrarSesion from "../components/ModalCerrarSesion";
+import Sidebar from "../../components/Sidebar";
+import Topbar from "../../components/Topbar";
+import Footer from "../../components/Footer";
+import ModalCerrarSesion from "../../components/ModalCerrarSesion";
+import ModalCambiarContrasena from "../../components/ModalCambiarContrasena";
 import { Link } from "react-router-dom";
-import ModalCambiarContrasena from "../components/ModalCambiarContrasena";
 
 import { useState, useEffect } from "react";
 

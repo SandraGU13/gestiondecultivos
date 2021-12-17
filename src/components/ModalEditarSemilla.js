@@ -1,43 +1,57 @@
 import React from "react";
+import ModalHeader from "./ModalHeader";
 
-function ModalEditarSemilla() {
-  var enviar = (e) => {
+function ModalEditarSemilla({ valEdit, semEdit }) {
+  const nombre = React.createRef();
+  const costoAgua = React.createRef();
+  const costoSemilla = React.createRef();
+  const costoFertilizante = React.createRef();
+
+  const buscarSem = (val) => {
+    fetch(`http://localhost:8000/api/semilla/${val}`)
+      .then((response) => response.json())
+      .then((data) => {
+        nombre.current.value = data.nombre;
+        costoAgua.current.value = data.costoAgua;
+        costoSemilla.current.value = data.costoSemilla;
+        costoFertilizante.current.value = data.costoFertilizante;
+      });
+  };
+
+  if (valEdit) {
+    buscarSem(valEdit);
+  }
+
+  var editar = (e) => {
     e.preventDefault();
 
-    const data = {
+    const datos = {
       nombre: e.target.nombre.value,
-      cost_agua: e.target.cost_agua.value,
-      cost_semilla: e.target.cost_semilla.value,
-      cost_fert: e.target.cost_fert.value,
+      costoAgua: e.target.costoAgua.value,
+      costoSemilla: e.target.costoSemilla.value,
+      costoFertilizante: e.target.costoFertilizante.value,
     };
-    console.log(data);
+    semEdit(datos);
   };
   return (
-    <form onSubmit={enviar}>
+    <form onSubmit={editar}>
       <div className="modal fade" id="editarSemillaModal" tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div className="modal-dialog modal-dialog-centered modal-lg" role="document">
           <div className="modal-content">
-            <div className="modal-header">
-              <h5 className="text-gray-800" id="exampleModalLabel">
-                Editar semilla
-              </h5>
-              <button className="close" type="button" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">×</span>
-              </button>
-            </div>
+            <ModalHeader titulo="Editar semilla" />
             <div className="modal-body">
               <div className="row">
                 <div className="col-md-6">
                   <div className="form-group">
                     <label htmlFor="nombre">Nombre</label>
-                    <input type="text" className="form-control" name={"nombre"} placeholder="" />
+                    <input type="text" className="form-control" ref={nombre} name={"nombre"} placeholder="" />
                     {/*<!--<small id="emailHelp" className="form-text text-muted">We'll never share your email with anyone else.</small>-->*/}
                   </div>
                 </div>
                 <div className="col-md-6">
                   <div className="form-group">
                     <label htmlFor="precio">Costo de Agua</label>
-                    <input type="text" className="form-control" name={"cost_agua"} placeholder="" />
+                    <input type="text" className="form-control" ref={costoAgua} name={"costoAgua"} placeholder="" />
                   </div>
                 </div>
               </div>
@@ -45,13 +59,13 @@ function ModalEditarSemilla() {
                 <div className="col-md-6">
                   <div className="form-group">
                     <label htmlFor="precio">Costo de Semilla</label>
-                    <input type="text" className="form-control" name={"cost_semilla"} placeholder="" />
+                    <input type="text" className="form-control" ref={costoSemilla} name={"costoSemilla"} placeholder="" />
                   </div>
                 </div>
                 <div className="col-md-6">
                   <div className="form-group">
                     <label htmlFor="precio">Costo de Fertilizante</label>
-                    <input type="text" className="form-control" name={"cost_fert"} placeholder="" />
+                    <input type="text" className="form-control" ref={costoFertilizante} name={"costoFertilizante"} placeholder="" />
                   </div>
                 </div>
               </div>
@@ -60,7 +74,7 @@ function ModalEditarSemilla() {
               <button className="btn btn-warning" type="submit">
                 Editar
               </button>
-              <button className="btn btn-secondary" type="button" data-dismiss="modal">
+              <button className="btn btn-secondary" type="button" data-dismiss="modal" id="cancelModalEd">
                 Cancelar
               </button>
             </div>

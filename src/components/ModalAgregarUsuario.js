@@ -1,39 +1,20 @@
 import React from "react";
 import ModalHeader from "./ModalHeader";
 
-function ModalAgregarUsuario(props) {
+function ModalAgregarUsuario({usuAgr}) {
 
   var enviar = (e) => {
     e.preventDefault();
-
     const datos = {
       nombre: e.target.nombre.value,
       apellido: e.target.apellido.value,
       email: e.target.email.value,
       telefono: e.target.telefono.value,
-      tipoUsuario: e.target.tipoUsuario.children[e.target.tipoUsuario.value].text,
+      tipoUsuario: e.target.tipoUsuario.value,
       //contrasena: e.target.contrasena.value,
       //confirmarContrasena: e.target.confirmarContrasena.value,
     };
-
-    fetch("http://localhost:8000/api/agregarUsuario", {
-      method: 'POST', 
-      body: JSON.stringify(datos),
-      headers:{
-        'Content-Type': 'application/json'
-      }
-    }).then(res => res.json())
-    .catch(error => {
-      console.error('Error:', error)
-    })
-    .then(response => {
-      console.log('Success:', response)
-      document.getElementById('cancelModal').click()
-      props.actDatos();
-    });
-
-    console.log(datos);
-
+    usuAgr(datos)
   };
 
   return (
@@ -77,9 +58,9 @@ function ModalAgregarUsuario(props) {
                   <div className="form-group">
                     <label htmlFor="tipoUsuario">Tipo de usuario</label>
                     <select className="form-control" name="tipoUsuario">
-                      <option value="0">Selecione</option>
-                      <option value="1">Configuracion</option>
-                      <option value="2">Gestion</option>
+                      <option value="Selecione">Selecione</option>
+                      <option value="Configuracion">Configuracion</option>
+                      <option value="Gestion">Gestion</option>
                     </select>
                   </div>
                 </div>
@@ -103,7 +84,7 @@ function ModalAgregarUsuario(props) {
               <button type="submit" className="btn btn-primary">
                 Agregar
               </button>
-              <button className="btn btn-secondary" type="button" data-dismiss="modal" id="cancelModal"> 
+              <button className="btn btn-secondary" type="button" data-dismiss="modal" id="cancelModalAg"> 
                 Cancelar
               </button>
             </div>

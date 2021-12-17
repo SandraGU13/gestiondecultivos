@@ -1,34 +1,16 @@
 import React from "react";
 import ModalHeader from "./ModalHeader";
 
-function ModalAgregarSemilla(props) {
+function ModalAgregarSemilla({semAgr}) {
   var enviar = (e) => {
     e.preventDefault();
-
-    const data = {
+    const datos = {
       nombre: e.target.nombre.value,
       costoAgua: e.target.costoAgua.value,
       costoSemilla: e.target.costoSemilla.value,
       costoFertilizante: e.target.costoFertilizante.value,
     };
-
-    fetch("http://localhost:8000/api/agregarSemilla", {
-      method: 'POST', 
-      body: JSON.stringify(data),
-      headers:{
-        'Content-Type': 'application/json'
-      }
-    }).then(res => res.json())
-    .catch(error => {
-      console.error('Error:', error)
-    })
-    .then(response => {
-      console.log('Success:', response)
-      document.getElementById('cancelModal').click()
-      props.actDatos();
-    });
-
-    console.log(data);
+    semAgr(datos)
   };
   return (
     /*<!-- Agregar Modal-->*/
@@ -73,7 +55,7 @@ function ModalAgregarSemilla(props) {
               <button type="submit" className="btn btn-primary">
                 Agregar
               </button>
-              <button className="btn btn-secondary" type="button" data-dismiss="modal" id="cancelModal">
+              <button className="btn btn-secondary" type="button" data-dismiss="modal" id="cancelModalAg">
                 Cancelar
               </button>
             </div>

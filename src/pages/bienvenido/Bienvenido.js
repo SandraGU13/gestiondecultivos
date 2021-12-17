@@ -1,8 +1,8 @@
 import React from "react";
-import Sidebar from "../components/Sidebar";
-import Topbar from "../components/Topbar";
-import Footer from "../components/Footer";
-import ModalCerrarSesion from "../components/ModalCerrarSesion";
+import Sidebar from "../../components/Sidebar";
+import Topbar from "../../components/Topbar";
+import Footer from "../../components/Footer";
+import ModalCerrarSesion from "../../components/ModalCerrarSesion";
 
 function Bienvenido() {
   return (
