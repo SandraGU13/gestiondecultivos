@@ -12,6 +12,7 @@ import { useState, useEffect } from "react";
 function Predios() {
   const [prediosDB, setPrediosDB] = useState([]);
   const [valueEdit, setValueEdit] = useState('');
+  const [valueElim, setValueElim] = useState('');
 
   let cargarDatos = () => {
     fetch("http://localhost:8000/api/predios")
@@ -25,6 +26,10 @@ function Predios() {
   
   let pasarEditar = (e) => {
     setValueEdit(e.target.value)
+  }
+
+  let pasarEliminar = (e) => {
+    setValueElim(e.target.value)
   }
 
   let buscar = (e) => {
@@ -83,6 +88,24 @@ function Predios() {
     .then(response => {
       //console.log('Success:', response)
       document.getElementById('cancelModalEd').click()
+      cargarDatos();
+    });
+  };
+
+  var eliminarPredio = (id) => {
+
+    fetch(`http://localhost:8000/api/eliminarPredio/${id}`, {
+      method: 'DELETE',
+      headers:{
+        'Content-Type': 'application/json'
+      }
+    }).then(res => res.json())
+    .catch(error => {
+      console.error('Error:', error)
+    })
+    .then(response => {
+      console.log('Success:', response)
+      document.getElementById('cancelModalEl').click()
       cargarDatos();
     });
   };
@@ -160,7 +183,7 @@ function Predios() {
                                 </button>
                               </td>
                               <td>
-                                <button className="btn btn-danger" data-toggle="modal" data-target="#eliminarPredioModal"  value={predio._id}>
+                                <button className="btn btn-danger" data-toggle="modal" data-target="#eliminarPredioModal"  value={predio._id} onClick={pasarEliminar}>
                                   Eliminar
                                 </button>
                               </td>
@@ -180,7 +203,7 @@ function Predios() {
       </div>
       <ModalAgregarPredio preAgr={agregar}/>
       <ModalEditarPredio valEdit={valueEdit} preEdit={editarPredio}/>
-      <ModalEliminarPredio />
+      <ModalEliminarPredio valElim={valueElim} preElim={eliminarPredio}/>
       <ModalCerrarSesion /> {/*<!-- Modal Cerrar-->*/}
     </div>
   );

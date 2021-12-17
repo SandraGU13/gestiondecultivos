@@ -13,6 +13,7 @@ function Cultivos() {
 
   const [cultivosDB, setCultivosDB] = useState([]);
   const [valueEdit, setValueEdit] = useState('');
+  const [valueElim, setValueElim] = useState('');
 
   let cargarDatos = () => {
     fetch("http://localhost:8000/api/cultivos")
@@ -26,6 +27,10 @@ function Cultivos() {
   let pasarEditar = (e) => {
     //console.log(e.target.value)
     setValueEdit(e.target.value)
+  }
+
+  let pasarEliminar = (e) => {
+    setValueElim(e.target.value)
   }
 
   let buscar = (e) => {
@@ -84,6 +89,24 @@ function Cultivos() {
     .then(response => {
       //console.log('Success:', response)
       document.getElementById('cancelModalEd').click()
+      cargarDatos();
+    });
+  };
+
+  var eliminarCultivo = (id) => {
+
+    fetch(`http://localhost:8000/api/eliminarCultivo/${id}`, {
+      method: 'DELETE',
+      headers:{
+        'Content-Type': 'application/json'
+      }
+    }).then(res => res.json())
+    .catch(error => {
+      console.error('Error:', error)
+    })
+    .then(response => {
+      console.log('Success:', response)
+      document.getElementById('cancelModalEl').click()
       cargarDatos();
     });
   };
@@ -169,7 +192,7 @@ function Cultivos() {
                                 </button>
                               </td>
                               <td>
-                                <button className="btn btn-danger" data-toggle="modal" data-target="#eliminarCultivoModal"  value={cultivo._id}>
+                                <button className="btn btn-danger" data-toggle="modal" data-target="#eliminarCultivoModal"  value={cultivo._id} onClick={pasarEliminar}>
                                   Eliminar
                                 </button>
                               </td>
@@ -189,7 +212,7 @@ function Cultivos() {
       </div>
       <ModalAgregarCultivo culAgr={agregar}/> {/*<!-- Modal Agregar-->*/}
       <ModalEditarCultivo valEdit={valueEdit} culEdit={editarCultivo}/> {/*<!-- Modal Editar-->*/}
-      <ModalEliminarCultivo /> {/*<!-- Modal Eliminar-->*/}
+      <ModalEliminarCultivo valElim={valueElim} culElim={eliminarCultivo}/> {/*<!-- Modal Eliminar-->*/}
       <ModalCerrarSesion /> {/*<!-- Modal Cerrar-->*/}
     </div>
   );
