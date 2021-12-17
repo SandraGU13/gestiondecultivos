@@ -1,6 +1,7 @@
 import React from "react";
 
 function ModalEliminarCultivo() {
+
   return (
     <div className="modal fade" id="eliminarCultivoModal" tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
       <div className="modal-dialog modal-dialog-centered" role="document">

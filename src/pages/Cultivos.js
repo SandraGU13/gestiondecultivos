@@ -48,6 +48,27 @@ function Cultivos() {
     cargarDatos()
   },[])
 
+let click_boton_eliminar = (e) => {
+  let sw = window.confirm("Seguro que desea eliminar este cultivo?", "Eliminar cultivo");
+  console.log(sw)
+  if (sw == true) {
+    console.log(e.target.value)
+  fetch(`http://localhost:8000/api/eliminarcultivos/${e.target.value}`, {
+    method: 'DELETE', 
+    headers:{
+      'Content-Type': 'application/json'
+    }
+  }).then(res => res.json())
+  .catch(error => console.error('Error:', error))
+  .then(response => {
+    console.log('Success:', response)
+    cargarDatos();
+  });
+}else{
+  console.log("Accion denegada!")
+}
+};
+
   return (
     <div id="wrapper">
       {" "}
@@ -108,6 +129,7 @@ function Cultivos() {
                       </thead>
                       <tbody>
                         {cultivosDB.map((cultivo) => {
+                        
                           return (
                             <tr key={cultivo._id}>
                               <td>{cultivo._id}</td>
@@ -127,10 +149,8 @@ function Cultivos() {
                                 </button>
                               </td>
                               <td>
-                                <button className="btn btn-danger" data-toggle="modal" data-target="#eliminarCultivoModal"  value={cultivo._id}>
-                                  <span className="icon text-white">
-                                    <i className="fas fa-trash"></i>
-                                  </span>
+                                <button className="btn btn-danger" /*data-toggle="modal" data-target="#eliminarCultivoModal" */ value={cultivo._id} id={cultivo._id} onClick={click_boton_eliminar}>
+                                 Eliminar
                                 </button>
                               </td>
                             </tr>
@@ -148,7 +168,7 @@ function Cultivos() {
         <Footer /> {/*<!-- Footer -->*/}
       </div>
       <ModalAgregarCultivo actDatos={cargarDatos}/> {/*<!-- Modal Agregar-->*/}
-      <ModalEliminarCultivo /> {/*<!-- Modal Eliminar-->*/}
+      <ModalEliminarCultivo/> {/*<!-- Modal Eliminar-->*/} 
       <ModalEditarCultivo /> {/*<!-- Modal Editar-->*/}
       <ModalCerrarSesion /> {/*<!-- Modal Cerrar-->*/}
     </div>
