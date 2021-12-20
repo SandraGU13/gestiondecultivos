@@ -11,7 +11,7 @@ import { useNavigate } from "react-router-dom";
 
 import { useState, useEffect } from "react";
 
-function Cultivos({token}) {
+function Cultivos({token,usuEmail}) {
 
   let navegacion = useNavigate()
 
@@ -146,7 +146,7 @@ function Cultivos({token}) {
         <div id="content">
           {" "}
           {/*<!-- Main Content -->*/}
-          <Topbar /> {/*<!-- Topbar -->*/}
+          <Topbar usuEmail={usuEmail}/> {/*<!-- Topbar -->*/}
           {/*<!-->>> CONTENIDO DE LA PAGINA DENTRO DEL DIV CONTAINER-FLUID <<<-->*/}
           <div className="container-fluid">
             {/*<!-- Page Heading -->*/}

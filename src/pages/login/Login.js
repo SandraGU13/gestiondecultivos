@@ -1,9 +1,16 @@
-import React from "react";
+import React, { } from "react";
 import { useNavigate } from "react-router-dom";
 
-function Login({sesion}) {
+function Login({sesion, token}) {
 
   let navegacion = useNavigate()
+  /*
+  useEffect(() => {
+    if (token){
+      navegacion('/')
+    }
+  })
+  */
   var enviar = (e) => {
     e.preventDefault();
 

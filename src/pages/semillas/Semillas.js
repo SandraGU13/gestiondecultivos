@@ -11,7 +11,7 @@ import { useNavigate } from "react-router-dom";
 
 import { useState, useEffect } from "react";
 
-function Semillas({token}) {
+function Semillas({token,usuEmail}) {
 
   let navegacion = useNavigate()
 
@@ -145,7 +145,7 @@ function Semillas({token}) {
         <div id="content">
           {" "}
           {/*<!-- Main Content -->*/}
-          <Topbar /> {/*<!-- Topbar -->*/}
+          <Topbar  usuEmail={usuEmail}/> {/*<!-- Topbar -->*/}
           {/*<!-->>> CONTENIDO DE LA PAGINA DENTRO DEL DIV CONTAINER-FLUID <<<-->*/}
           <div className="container-fluid">
             {/*<!-- Page Heading -->*/}

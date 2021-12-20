@@ -5,7 +5,7 @@ import Footer from "../../components/footer";
 import ModalCerrarSesion from "../../components/modalCerrarSesion";
 import { useNavigate } from "react-router-dom";
 
-function Bienvenido({token}) {
+function Bienvenido({token,usuEmail}) {
 
   let navegacion = useNavigate()
 
@@ -26,7 +26,7 @@ function Bienvenido({token}) {
         <div id="content">
           {" "}
           {/*<!-- Main Content -->*/}
-          <Topbar /> {/*<!-- Topbar -->*/}
+          <Topbar usuEmail={usuEmail}/> {/*<!-- Topbar -->*/}
           {/*<!-->>> CONTENIDO DE LA PAGINA DENTRO DEL DIV CONTAINER-FLUID <<<-->*/}
           <div className="container-fluid">
             <h1 className="h3 mb-2 text-gray-800">Bienvenido</h1> {/*<!-- Page Heading -->*/}

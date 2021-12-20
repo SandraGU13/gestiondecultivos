@@ -9,30 +9,14 @@ import { useNavigate } from "react-router-dom";
 
 import { useState, useEffect } from "react";
 
-function Perfil({token}) {
-
+function Perfil({token,datosUsu}) {
   let navegacion = useNavigate()
 
-  const [perfilDB, setPerfilDB] = useState({});
+  //const [perfilDB, setPerfilDB] = useState({});
 
   useEffect(() => {
     if (!token){
       navegacion('/login')
-    }else{
-      fetch("http://localhost:8000/api/perfil",{
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        "auth-token-jwt": token
-      },
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        //console.log(data);
-        for (const row of data) {
-          setPerfilDB(row);
-        }
-      });
     }
     // eslint-disable-next-line
   }, []);
@@ -48,7 +32,7 @@ function Perfil({token}) {
         <div id="content">
           {" "}
           {/*<!-- Main Content -->*/}
-          <Topbar /> {/*<!-- Topbar -->*/}
+          <Topbar usuEmail={datosUsu.usuario}/> {/*<!-- Topbar -->*/}
           {/*<!-->>> CONTENIDO DE LA PAGINA DENTRO DEL DIV CONTAINER-FLUID <<<-->*/}
           <div className="container-fluid">
             <div className="row bg-title">
@@ -66,7 +50,7 @@ function Perfil({token}) {
                       <img src="img/perfil.png" alt="" />
                     </Link>
                     <h4 className="text">Usuario</h4>
-                    <h5 className="text">sgutierrez</h5>
+                    <h5 className="text">{datosUsu.usuario}</h5>
                   </div>
                 </div>
               </div>
@@ -81,7 +65,7 @@ function Perfil({token}) {
                         </label>
                       </div>
                       <div className="col-sm-6">
-                        <label className="col-md-12">{perfilDB.nombre}</label>
+                        <label className="col-md-12">{datosUsu.nombre}</label>
                       </div>
                     </div>
                     <br />
@@ -92,7 +76,7 @@ function Perfil({token}) {
                         </label>
                       </div>
                       <div className="col-sm-6">
-                        <label className="col-md-12">{perfilDB.apellido}</label>
+                        <label className="col-md-12">{datosUsu.apellido}</label>
                       </div>
                     </div>
                     <br />
@@ -103,7 +87,7 @@ function Perfil({token}) {
                         </label>
                       </div>
                       <div className="col-sm-6">
-                        <label className="col-md-12">{perfilDB.email}</label>
+                        <label className="col-md-12">{datosUsu.usuario}</label>
                       </div>
                     </div>
                     <br />
@@ -114,7 +98,7 @@ function Perfil({token}) {
                         </label>
                       </div>
                       <div className="col-sm-6">
-                        <label className="col-md-12">{perfilDB.telefono}</label>
+                        <label className="col-md-12">{datosUsu.telefono}</label>
                       </div>
                     </div>
                     <br />
@@ -125,7 +109,7 @@ function Perfil({token}) {
                         </label>
                       </div>
                       <div className="col-sm-6">
-                        <label className="col-md-12">{perfilDB.tipoUsuario}</label>
+                        <label className="col-md-12">{datosUsu.tipoUsuario}</label>
                       </div>
                     </div>
                     <br />

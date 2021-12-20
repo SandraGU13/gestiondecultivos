@@ -17,6 +17,9 @@ import { useState } from "react/cjs/react.development";
 function App() {
 
   const [token, setToken] = useState('');
+  const [usuEmail, setusuEmail] = useState('usuario');
+  const [datosUsu, setDatosUsu] = useState({});
+
 
   const iniciarSesion = (datos,navegacion) => {
 
@@ -32,24 +35,27 @@ function App() {
     })
     .then(response => {
       console.log(response)
-      NotificationManager.info(response.mensaje)
+      NotificationManager.info(`${response.mensaje} ${response.usuario}`)
+      setDatosUsu(response)
       setToken(response.token)
+      setusuEmail(response.usuario)
       navegacion('/')
     });
 
   }
 
+
   return (
     <div>
     <BrowserRouter>
       <Routes>
-        <Route path={"/login"} element={<Login sesion={iniciarSesion}/>} />
-        <Route path={"/"} element={<Bienvenido token={token}/>} />
-        <Route path={"/usuarios"} element={<Usuarios token={token} />} />
-        <Route path={"/perfil"} element={<Perfil token={token} />} />
-        <Route path={"/cultivos"} element={<Cultivos token={token} />} />
-        <Route path={"/semillas"} element={<Semillas token={token} />} />
-        <Route path={"/predios"} element={<Predios token={token} />} />
+        <Route path={"/login"} element={<Login sesion={iniciarSesion} token={token} />} />
+        <Route path={"/"} element={<Bienvenido token={token} usuEmail={usuEmail}/>}  />
+        <Route path={"/usuarios"} element={<Usuarios token={token} usuEmail={usuEmail}/>} />
+        <Route path={"/perfil"} element={<Perfil token={token} datosUsu={datosUsu}/>} />
+        <Route path={"/cultivos"} element={<Cultivos token={token} usuEmail={usuEmail}/>} />
+        <Route path={"/semillas"} element={<Semillas token={token} usuEmail={usuEmail}/>} />
+        <Route path={"/predios"} element={<Predios token={token} usuEmail={usuEmail}/>} />
       </Routes>
     </BrowserRouter>
     <NotificationContainer/>

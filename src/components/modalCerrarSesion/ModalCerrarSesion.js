@@ -1,8 +1,16 @@
 import React from "react";
 import ModalHeader from "../modalHeader";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 function ModalCerrarSesion() {
+
+  let navegacion = useNavigate()
+
+  let cerrar = () => {
+    document.getElementById('logoutModal').click()
+    navegacion('/login')
+  }
+
   return (
     <div className="modal fade" id="logoutModal" tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
       <div className="modal-dialog" role="document">
@@ -10,10 +18,10 @@ function ModalCerrarSesion() {
           <ModalHeader titulo="Cerrar sesion" />
           <div className="modal-body">Seguro que desea finalizar la sesion ?</div>
           <div className="modal-footer">
-            <Link to="/login" className="btn btn-primary">
+            <button className="btn btn-primary" onClick={cerrar}>
               Cerrar sesion
-            </Link>
-            <button className="btn btn-secondary" type="button" data-dismiss="modal">
+            </button>
+            <button className="btn btn-secondary" type="button" data-dismiss="modal" id="logoutModal">
               Cancelar
             </button>
           </div>
