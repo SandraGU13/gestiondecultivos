@@ -1,5 +1,5 @@
 import React from "react";
-import ModalHeader from "./ModalHeader";
+import ModalHeader from "../modalHeader";
 
 function ModalAgregarCultivo({culAgr}) {
   var enviar = (e) => {
@@ -40,7 +40,7 @@ function ModalAgregarCultivo({culAgr}) {
                 <div className="col-md-6">
                   <div className="form-group">
                     <label htmlFor="area">Area (Hectáreas)</label>
-                    <input type="text" className="form-control" name="area" placeholder="" />
+                    <input type="text" className="form-control" name="area" placeholder="" required/>
                   </div>
                 </div>
               </div>
@@ -48,13 +48,13 @@ function ModalAgregarCultivo({culAgr}) {
                 <div className="col-md-6">
                   <div className="form-group">
                     <label htmlFor="cantidadSemillas">Cantidad de semillas por hectárea</label>
-                    <input type="text" className="form-control" name="cantidadSemillas" placeholder="" />
+                    <input type="text" className="form-control" name="cantidadSemillas" placeholder="" required/>
                   </div>
                 </div>
                 <div className="col-md-6">
                   <div className="form-group">
                     <label htmlFor="tiempoCultivo">Tiempo de cultivo (Semanas)</label>
-                    <input type="text" className="form-control" name="tiempoCultivo" placeholder="" />
+                    <input type="text" className="form-control" name="tiempoCultivo" placeholder="" required/>
                   </div>
                 </div>
               </div>
@@ -62,13 +62,13 @@ function ModalAgregarCultivo({culAgr}) {
                 <div className="col-md-6">
                   <div className="form-group">
                     <label htmlFor="agua">Metros cubicos de agua por semana</label>
-                    <input type="text" className="form-control" name="agua" placeholder="" />
+                    <input type="text" className="form-control" name="agua" placeholder="" required/>
                   </div>
                 </div>
                 <div className="col-md-6">
                   <div className="form-group">
                     <label htmlFor="cantidadFertilizante">Cantidad de fertilizante por hectarea</label>
-                    <input type="text" className="form-control" name="cantidadFertilizante" placeholder="" />
+                    <input type="text" className="form-control" name="cantidadFertilizante" placeholder="" required/>
                   </div>
                 </div>
               </div>
@@ -76,13 +76,13 @@ function ModalAgregarCultivo({culAgr}) {
                 <div className="col-md-6">
                   <div className="form-group">
                     <label htmlFor="tiempoRecoleccion">Tiempo de recolección por hectarea</label>
-                    <input type="text" className="form-control" name="tiempoRecoleccion" placeholder="" />
+                    <input type="text" className="form-control" name="tiempoRecoleccion" placeholder="" required/>
                   </div>
                 </div>
                 <div className="col-md-6">
                   <div className="form-group">
                     <label htmlFor="kgRecolectados">kilogramos recolectados por hectarea</label>
-                    <input type="text" className="form-control" name="kgRecolectados" placeholder="" />
+                    <input type="text" className="form-control" name="kgRecolectados" placeholder="" required/>
                   </div>
                 </div>
               </div>

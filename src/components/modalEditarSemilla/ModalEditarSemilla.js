@@ -1,20 +1,28 @@
 import React from "react";
-import ModalHeader from "./ModalHeader";
+import ModalHeader from "../modalHeader";
 
-function ModalEditarSemilla({ valEdit, semEdit }) {
+function ModalEditarSemilla({ valEdit, semEdit, token }) {
   const nombre = React.createRef();
   const costoAgua = React.createRef();
   const costoSemilla = React.createRef();
   const costoFertilizante = React.createRef();
 
   const buscarSem = (val) => {
-    fetch(`http://localhost:8000/api/semilla/${val}`)
+    fetch(`http://localhost:8000/api/semilla/${val}`,{
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "auth-token-jwt": token
+      },
+    })
       .then((response) => response.json())
       .then((data) => {
-        nombre.current.value = data.nombre;
-        costoAgua.current.value = data.costoAgua;
-        costoSemilla.current.value = data.costoSemilla;
-        costoFertilizante.current.value = data.costoFertilizante;
+        if (data) {
+          nombre.current.value = data.nombre;
+          costoAgua.current.value = data.costoAgua;
+          costoSemilla.current.value = data.costoSemilla;
+          costoFertilizante.current.value = data.costoFertilizante;
+        }
       });
   };
 
@@ -44,14 +52,14 @@ function ModalEditarSemilla({ valEdit, semEdit }) {
                 <div className="col-md-6">
                   <div className="form-group">
                     <label htmlFor="nombre">Nombre</label>
-                    <input type="text" className="form-control" ref={nombre} name={"nombre"} placeholder="" />
+                    <input type="text" className="form-control" ref={nombre} name={"nombre"} placeholder="" required />
                     {/*<!--<small id="emailHelp" className="form-text text-muted">We'll never share your email with anyone else.</small>-->*/}
                   </div>
                 </div>
                 <div className="col-md-6">
                   <div className="form-group">
                     <label htmlFor="precio">Costo de Agua</label>
-                    <input type="text" className="form-control" ref={costoAgua} name={"costoAgua"} placeholder="" />
+                    <input type="text" className="form-control" ref={costoAgua} name={"costoAgua"} placeholder="" required />
                   </div>
                 </div>
               </div>
@@ -59,13 +67,13 @@ function ModalEditarSemilla({ valEdit, semEdit }) {
                 <div className="col-md-6">
                   <div className="form-group">
                     <label htmlFor="precio">Costo de Semilla</label>
-                    <input type="text" className="form-control" ref={costoSemilla} name={"costoSemilla"} placeholder="" />
+                    <input type="text" className="form-control" ref={costoSemilla} name={"costoSemilla"} placeholder="" required />
                   </div>
                 </div>
                 <div className="col-md-6">
                   <div className="form-group">
                     <label htmlFor="precio">Costo de Fertilizante</label>
-                    <input type="text" className="form-control" ref={costoFertilizante} name={"costoFertilizante"} placeholder="" />
+                    <input type="text" className="form-control" ref={costoFertilizante} name={"costoFertilizante"} placeholder="" required />
                   </div>
                 </div>
               </div>

@@ -1,5 +1,5 @@
 import React from "react";
-import ModalHeader from "./ModalHeader";
+import ModalHeader from "../modalHeader";
 
 function ModalEliminarSemilla({valElim,semElim}) {
 

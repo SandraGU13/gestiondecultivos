@@ -1,10 +1,20 @@
-import React from "react";
-import Sidebar from "../../components/Sidebar";
-import Topbar from "../../components/Topbar";
-import Footer from "../../components/Footer";
-import ModalCerrarSesion from "../../components/ModalCerrarSesion";
+import React, { useEffect,} from "react";
+import Sidebar from "../../components/sidebar";
+import Topbar from "../../components/topbar";
+import Footer from "../../components/footer";
+import ModalCerrarSesion from "../../components/modalCerrarSesion";
+import { useNavigate } from "react-router-dom";
 
-function Bienvenido() {
+function Bienvenido({token}) {
+
+  let navegacion = useNavigate()
+
+  useEffect(() => {
+    if (!token){
+      navegacion('/login')
+    }
+  })
+
   return (
     <div id="wrapper">
       {" "}

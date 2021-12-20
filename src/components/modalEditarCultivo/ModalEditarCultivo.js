@@ -1,8 +1,7 @@
 import React from "react";
-import ModalHeader from "./ModalHeader";
+import ModalHeader from "../modalHeader";
 
-function ModalEditarCultivo({valEdit,culEdit}) {
-
+function ModalEditarCultivo({ valEdit, culEdit, token }) {
   const semilla = React.createRef();
   const area = React.createRef();
   const cantidadSemillas = React.createRef();
@@ -13,23 +12,31 @@ function ModalEditarCultivo({valEdit,culEdit}) {
   const kgRecolectados = React.createRef();
 
   const buscarCul = (val) => {
-    fetch(`http://localhost:8000/api/cultivo/${val}`)
+    fetch(`http://localhost:8000/api/cultivo/${val}`,{
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "auth-token-jwt": token
+      },
+    })
       .then((response) => response.json())
       .then((data) => {
-        semilla.current.value = data.semilla;
-        area.current.value = data.area;
-        cantidadSemillas.current.value = data.cantidadSemillas;
-        tiempoCultivo.current.value = data.tiempoCultivo;
-        agua.current.value = data.agua;
-        cantidadFertilizante.current.value = data.cantidadFertilizante;
-        tiempoRecoleccion.current.value = data.tiempoRecoleccion;
-        kgRecolectados.current.value = data.kgRecolectados;
+        if (data) {
+          semilla.current.value = data.semilla;
+          area.current.value = data.area;
+          cantidadSemillas.current.value = data.cantidadSemillas;
+          tiempoCultivo.current.value = data.tiempoCultivo;
+          agua.current.value = data.agua;
+          cantidadFertilizante.current.value = data.cantidadFertilizante;
+          tiempoRecoleccion.current.value = data.tiempoRecoleccion;
+          kgRecolectados.current.value = data.kgRecolectados;
+        }
       });
   };
 
-  if (valEdit){
+  if (valEdit) {
     //console.log(valEdit);
-    buscarCul(valEdit)
+    buscarCul(valEdit);
   }
 
   var enviar = (e) => {
@@ -45,14 +52,14 @@ function ModalEditarCultivo({valEdit,culEdit}) {
       tiempoRecoleccion: e.target.tiempoRecoleccion.value,
       kgRecolectados: e.target.kgRecolectados.value,
     };
-    culEdit(datos)
+    culEdit(datos);
   };
   return (
     <form onSubmit={enviar}>
       <div className="modal fade" id="editarCultivoModal" tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div className="modal-dialog modal-dialog-centered modal-lg" role="document">
           <div className="modal-content">
-          <ModalHeader titulo="Editar cultivo" />
+            <ModalHeader titulo="Editar cultivo" />
             <div className="modal-body">
               <div className="row">
                 <div className="col-md-6">
@@ -69,7 +76,7 @@ function ModalEditarCultivo({valEdit,culEdit}) {
                 <div className="col-md-6">
                   <div className="form-group">
                     <label htmlFor="area">Area (Hectáreas)</label>
-                    <input type="text" className="form-control" ref={area} name="area" placeholder="" />
+                    <input type="text" className="form-control" ref={area} name="area" placeholder="" required />
                   </div>
                 </div>
               </div>
@@ -77,13 +84,13 @@ function ModalEditarCultivo({valEdit,culEdit}) {
                 <div className="col-md-6">
                   <div className="form-group">
                     <label htmlFor="cantidadSemillas">Cantidad de semillas por hectárea</label>
-                    <input type="text" className="form-control" ref={cantidadSemillas} name="cantidadSemillas" placeholder="" />
+                    <input type="text" className="form-control" ref={cantidadSemillas} name="cantidadSemillas" placeholder="" required />
                   </div>
                 </div>
                 <div className="col-md-6">
                   <div className="form-group">
                     <label htmlFor="tiempoCultivo">Tiempo de cultivo (Semanas)</label>
-                    <input type="text" className="form-control" ref={tiempoCultivo} name="tiempoCultivo" placeholder="" />
+                    <input type="text" className="form-control" ref={tiempoCultivo} name="tiempoCultivo" placeholder="" required />
                   </div>
                 </div>
               </div>
@@ -91,13 +98,13 @@ function ModalEditarCultivo({valEdit,culEdit}) {
                 <div className="col-md-6">
                   <div className="form-group">
                     <label htmlFor="agua">Metros cubicos de agua por semana</label>
-                    <input type="text" className="form-control" ref={agua} name="agua" placeholder="" />
+                    <input type="text" className="form-control" ref={agua} name="agua" placeholder="" required />
                   </div>
                 </div>
                 <div className="col-md-6">
                   <div className="form-group">
                     <label htmlFor="fertilizante">Cantidad de fertilizante por hectarea</label>
-                    <input type="text" className="form-control" ref={cantidadFertilizante} name="cantidadFertilizante" placeholder="" />
+                    <input type="text" className="form-control" ref={cantidadFertilizante} name="cantidadFertilizante" placeholder="" required />
                   </div>
                 </div>
               </div>
@@ -105,13 +112,13 @@ function ModalEditarCultivo({valEdit,culEdit}) {
                 <div className="col-md-6">
                   <div className="form-group">
                     <label htmlFor="tiempoHectarea">Tiempo de recolección por hectarea</label>
-                    <input type="text" className="form-control" ref={tiempoRecoleccion} name="tiempoRecoleccion" placeholder="" />
+                    <input type="text" className="form-control" ref={tiempoRecoleccion} name="tiempoRecoleccion" placeholder="" required />
                   </div>
                 </div>
                 <div className="col-md-6">
                   <div className="form-group">
                     <label htmlFor="kgHectarea">kilogramos recolectados por hectarea</label>
-                    <input type="text" className="form-control" ref={kgRecolectados} name="kgRecolectados" placeholder="" />
+                    <input type="text" className="form-control" ref={kgRecolectados} name="kgRecolectados" placeholder="" required />
                   </div>
                 </div>
               </div>

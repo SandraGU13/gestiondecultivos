@@ -1,21 +1,32 @@
 import React from "react";
-import Sidebar from "../../components/Sidebar";
-import Topbar from "../../components/Topbar";
-import Footer from "../../components/Footer";
-import ModalCerrarSesion from "../../components/ModalCerrarSesion";
-import ModalAgregarPredio from "../../components/ModalAgregarPredio";
-import ModalEditarPredio from "../../components/ModalEditarPredio";
-import ModalEliminarPredio from "../../components/ModalEliminarPredio";
+import Sidebar from "../../components/sidebar";
+import Topbar from "../../components/topbar";
+import Footer from "../../components/footer";
+import ModalCerrarSesion from "../../components/modalCerrarSesion";
+import ModalAgregarPredio from "../../components/modalAgregarPredio";
+import ModalEditarPredio from "../../components/modalEditarPredio";
+import ModalEliminarPredio from "../../components/modalEliminarPredio";
+import {NotificationManager} from 'react-notifications';
+import { useNavigate } from "react-router-dom";
 
 import { useState, useEffect } from "react";
 
-function Predios() {
+function Predios({token}) {
+
+  let navegacion = useNavigate()
+
   const [prediosDB, setPrediosDB] = useState([]);
   const [valueEdit, setValueEdit] = useState('');
   const [valueElim, setValueElim] = useState('');
 
   let cargarDatos = () => {
-    fetch("http://localhost:8000/api/predios")
+    fetch("http://localhost:8000/api/predios",{
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "auth-token-jwt": token
+      },
+    })
       .then((response) => response.json())
       .then((data) => {
         //console.log(data);
@@ -41,7 +52,8 @@ function Predios() {
         method: 'POST', 
         body: JSON.stringify({ buscar: text}),
         headers:{
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          "auth-token-jwt": token
         }
       }).then(res => res.json())
       .catch(error => {
@@ -60,14 +72,15 @@ function Predios() {
       method: 'POST', 
       body: JSON.stringify(datos),
       headers:{
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        "auth-token-jwt": token
       }
     }).then(res => res.json())
     .catch(error => {
       console.error('Error:', error)
     })
     .then(response => {
-      console.log('Success:', response)
+      NotificationManager.success(response.mensaje)
       document.getElementById('cancelModalAg').click()
       cargarDatos();
     });
@@ -79,14 +92,15 @@ function Predios() {
       method: 'PUT',
       body: JSON.stringify(datos),
       headers:{
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        "auth-token-jwt": token
       }
     }).then(res => res.json())
     .catch(error => {
       console.error('Error:', error)
     })
     .then(response => {
-      //console.log('Success:', response)
+      NotificationManager.success(response.mensaje)
       document.getElementById('cancelModalEd').click()
       cargarDatos();
     });
@@ -97,22 +111,29 @@ function Predios() {
     fetch(`http://localhost:8000/api/eliminarPredio/${id}`, {
       method: 'DELETE',
       headers:{
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        "auth-token-jwt": token
       }
     }).then(res => res.json())
     .catch(error => {
       console.error('Error:', error)
     })
     .then(response => {
-      console.log('Success:', response)
+      NotificationManager.success(response.mensaje)
       document.getElementById('cancelModalEl').click()
       cargarDatos();
     });
   };
 
   useEffect(() => {
-    cargarDatos()
-  },[])
+    console.log('0')
+    if (!token){
+      navegacion('/login')
+    }else{
+      cargarDatos();
+    }
+    // eslint-disable-next-line
+  },[]);
 
   return (
     <div id="wrapper">
@@ -202,7 +223,7 @@ function Predios() {
         <Footer /> {/*<!-- Footer -->*/}
       </div>
       <ModalAgregarPredio preAgr={agregar}/>
-      <ModalEditarPredio valEdit={valueEdit} preEdit={editarPredio}/>
+      <ModalEditarPredio valEdit={valueEdit} preEdit={editarPredio} token={token}/>
       <ModalEliminarPredio valElim={valueElim} preElim={eliminarPredio}/>
       <ModalCerrarSesion /> {/*<!-- Modal Cerrar-->*/}
     </div>

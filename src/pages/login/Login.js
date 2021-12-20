@@ -1,15 +1,17 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
-function Login() {
+function Login({sesion}) {
+
+  let navegacion = useNavigate()
   var enviar = (e) => {
     e.preventDefault();
 
-    const data = {
+    const datos = {
       email: e.target.email.value,
-      password: e.target.password.value,
+      contrasena: e.target.contrasena.value,
     };
-    console.log(data);
+    sesion(datos,navegacion)
   };
   return (
     <form onSubmit={enviar}>
@@ -29,30 +31,19 @@ function Login() {
                         <h1 className="h4 text-gray-900 mb-4">¡Bienvenido!</h1>
                       </div>
                       <div className="form-group">
-                        <input type="email" className="form-control form-control-user" id="exampleInputEmail" aria-describedby="emailHelp" name="email" placeholder="Usuario..." />
+                        <input type="email" className="form-control form-control-user" aria-describedby="emailHelp" name="email" placeholder="Usuario..." required/>
                       </div>
                       <div className="form-group">
-                        <input type="password" className="form-control form-control-user" name="password" id="exampleInputPassword" placeholder="Contraseña" />
+                        <input type="password" className="form-control form-control-user" name="contrasena" placeholder="Contraseña" required/>
                       </div>
                       <div className="form-group">
                         <div className="custom-control custom-checkbox small">
                           <input type="checkbox" className="custom-control-input" id="customCheck" />
-                          <label className="custom-control-label" htmlFor="customCheck">
-                            Remember Me
-                          </label>
                         </div>
                       </div>
-                      <Link to="/bienvenido" className="btn btn-primary btn-user btn-block" type="submit">
+                      <button className="btn btn-primary btn-user btn-block" type="submit">
                         Entrar
-                      </Link>
-                      <div className="text-center">
-                        <Link className="small" to="forgot-password.html">
-                          Olvidaste la contraseña?
-                        </Link>
-                      </div>
-                      <div className="text-center">
-                        <Link className="small" to="register.html"></Link>
-                      </div>
+                      </button>
                     </div>
                   </div>
                 </div>

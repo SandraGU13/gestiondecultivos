@@ -1,5 +1,5 @@
 import React from "react";
-import ModalHeader from "./ModalHeader";
+import ModalHeader from "../modalHeader";
 
 function ModalAgregarSemilla({semAgr}) {
   var enviar = (e) => {
@@ -24,7 +24,7 @@ function ModalAgregarSemilla({semAgr}) {
                 <div className="col-md-6">
                   <div className="form-group">
                     <label htmlFor="nombre">Nombre</label>
-                    <input type="text" className="form-control" name={"nombre"} placeholder="">
+                    <input type="text" className="form-control" name={"nombre"} placeholder="" required>
                       {/*<!--<small id="emailHelp" className="form-text text-muted">We'll never share your email with anyone else.</small>-->*/}
                     </input>
                   </div>
@@ -32,7 +32,7 @@ function ModalAgregarSemilla({semAgr}) {
                 <div className="col-md-6">
                   <div className="form-group">
                     <label htmlFor="precio">Costo de Agua</label>
-                    <input type="text" className="form-control" name={"costoAgua"} placeholder=""></input>
+                    <input type="text" className="form-control" name={"costoAgua"} placeholder="" required></input>
                   </div>
                 </div>
               </div>
@@ -40,13 +40,13 @@ function ModalAgregarSemilla({semAgr}) {
                 <div className="col-md-6">
                   <div className="form-group">
                     <label htmlFor="precio">Costo de Semilla</label>
-                    <input type="text" className="form-control" name={"costoSemilla"} placeholder=""></input>
+                    <input type="text" className="form-control" name={"costoSemilla"} placeholder="" required></input>
                   </div>
                 </div>
                 <div className="col-md-6">
                   <div className="form-group">
                     <label htmlFor="precio">Costo de Fertilizante</label>
-                    <input type="text" className="form-control" name={"costoFertilizante"} placeholder=""></input>
+                    <input type="text" className="form-control" name={"costoFertilizante"} placeholder="" required></input>
                   </div>
                 </div>
               </div>

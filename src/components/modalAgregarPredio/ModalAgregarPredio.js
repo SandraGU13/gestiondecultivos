@@ -1,5 +1,5 @@
 import React from "react";
-import ModalHeader from "./ModalHeader";
+import ModalHeader from "../modalHeader";
 
 function ModalAgregarPredio({preAgr}) {
   
@@ -25,7 +25,7 @@ function ModalAgregarPredio({preAgr}) {
                 <div className="col-md-6">
                   <div className="form-group">
                     <label htmlFor="nombre">Nombre</label>
-                    <input type="text" className="form-control" id="nombre" name="nombre" placeholder="" />
+                    <input type="text" className="form-control" id="nombre" name="nombre" placeholder="" required/>
                     {/*<!--<small id="emailHelp" className="form-text text-muted">We'll never share your email with anyone else.</small>-->*/}
                   </div>
                 </div>
@@ -45,13 +45,13 @@ function ModalAgregarPredio({preAgr}) {
                 <div className="col-md-6">
                   <div className="form-group">
                     <label htmlFor="latitud">Latitud</label>
-                    <input type="text" className="form-control" id="latitud" name="latitud" placeholder="" />
+                    <input type="text" className="form-control" id="latitud" name="latitud" placeholder="" required/>
                   </div>
                 </div>
                 <div className="col-md-6">
                   <div className="form-group">
                     <label htmlFor="longitud">Longitud</label>
-                    <input type="text" className="form-control" id="longitud" name="longitud" placeholder="" />
+                    <input type="text" className="form-control" id="longitud" name="longitud" placeholder="" required/>
                   </div>
                 </div>
               </div>

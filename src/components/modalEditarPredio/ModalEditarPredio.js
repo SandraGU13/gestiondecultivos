@@ -1,20 +1,28 @@
 import React from "react";
-import ModalHeader from "./ModalHeader";
+import ModalHeader from "../modalHeader";
 
-function ModalEditarPredio({ valEdit, preEdit }) {
-  const nombre = React.createRef();
-  const usuario = React.createRef();
-  const latitud = React.createRef();
-  const longitud = React.createRef();
+function ModalEditarPredio({ valEdit, preEdit, token}) {
+  const nombre = React.createRef("");
+  const usuario = React.createRef("");
+  const latitud = React.createRef("");
+  const longitud = React.createRef("");
 
   const buscarPre = (val) => {
-    fetch(`http://localhost:8000/api/predio/${val}`)
+    fetch(`http://localhost:8000/api/predio/${val}`,{
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "auth-token-jwt": token
+      },
+    })
       .then((response) => response.json())
       .then((data) => {
-        nombre.current.value = data.nombre;
-        usuario.current.value = data.usuario;
-        latitud.current.value = data.latitud;
-        longitud.current.value = data.longitud;
+        if (data) {
+          nombre.current.value = data.nombre;
+          usuario.current.value = data.usuario;
+          latitud.current.value = data.latitud;
+          longitud.current.value = data.longitud;
+        }
       });
   };
 
@@ -45,7 +53,7 @@ function ModalEditarPredio({ valEdit, preEdit }) {
                 <div className="col-md-6">
                   <div className="form-group">
                     <label htmlFor="nombre">Nombre</label>
-                    <input type="text" className="form-control" ref={nombre} name="nombre" placeholder="" />
+                    <input type="text" className="form-control" ref={nombre} name="nombre" placeholder="" required />
                     {/*<!--<small id="emailHelp" className="form-text text-muted">We'll never share your email with anyone else.</small>-->*/}
                   </div>
                 </div>
@@ -65,13 +73,13 @@ function ModalEditarPredio({ valEdit, preEdit }) {
                 <div className="col-md-6">
                   <div className="form-group">
                     <label htmlFor="latitud">Latitud</label>
-                    <input type="text" className="form-control" ref={latitud} name="latitud" placeholder="" />
+                    <input type="text" className="form-control" ref={latitud} name="latitud" placeholder="" required />
                   </div>
                 </div>
                 <div className="col-md-6">
                   <div className="form-group">
                     <label htmlFor="longitud">Longitud</label>
-                    <input type="text" className="form-control" ref={longitud} name="longitud" placeholder="" />
+                    <input type="text" className="form-control" ref={longitud} name="longitud" placeholder="" required />
                   </div>
                 </div>
               </div>

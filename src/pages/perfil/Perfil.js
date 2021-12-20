@@ -1,21 +1,31 @@
 import React from "react";
-import Sidebar from "../../components/Sidebar";
-import Topbar from "../../components/Topbar";
-import Footer from "../../components/Footer";
-import ModalCerrarSesion from "../../components/ModalCerrarSesion";
-import ModalCambiarContrasena from "../../components/ModalCambiarContrasena";
+import Sidebar from "../../components/sidebar";
+import Topbar from "../../components/topbar";
+import Footer from "../../components/footer";
+import ModalCerrarSesion from "../../components/modalCerrarSesion";
+import ModalCambiarContrasena from "../../components/modalCambiarContrasena";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import { useState, useEffect } from "react";
 
-function Perfil() {
+function Perfil({token}) {
+
+  let navegacion = useNavigate()
 
   const [perfilDB, setPerfilDB] = useState({});
 
-  //console.log(usuariosDB);
-
   useEffect(() => {
-    fetch("http://localhost:8000/api/perfil")
+    if (!token){
+      navegacion('/login')
+    }else{
+      fetch("http://localhost:8000/api/perfil",{
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "auth-token-jwt": token
+      },
+    })
       .then((response) => response.json())
       .then((data) => {
         //console.log(data);
@@ -23,6 +33,8 @@ function Perfil() {
           setPerfilDB(row);
         }
       });
+    }
+    // eslint-disable-next-line
   }, []);
 
   return (

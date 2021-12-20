@@ -1,22 +1,32 @@
 import React from "react";
-import Sidebar from "../../components/Sidebar";
-import Topbar from "../../components/Topbar";
-import Footer from "../../components/Footer";
-import ModalCerrarSesion from "../../components/ModalCerrarSesion";
-import ModalAgregarCultivo from "../../components/ModalAgregarCultivo";
-import ModalEliminarCultivo from "../../components/ModalEliminarCultivo";
-import ModalEditarCultivo from "../../components/ModalEditarCultivo";
+import Sidebar from "../../components/sidebar";
+import Topbar from "../../components/topbar";
+import Footer from "../../components/footer";
+import ModalCerrarSesion from "../../components/modalCerrarSesion";
+import ModalAgregarCultivo from "../../components/modalAgregarCultivo";
+import ModalEliminarCultivo from "../../components/modalEliminarCultivo";
+import ModalEditarCultivo from "../../components/modalEditarCultivo";
+import {NotificationManager} from 'react-notifications';
+import { useNavigate } from "react-router-dom";
 
 import { useState, useEffect } from "react";
 
-function Cultivos() {
+function Cultivos({token}) {
+
+  let navegacion = useNavigate()
 
   const [cultivosDB, setCultivosDB] = useState([]);
   const [valueEdit, setValueEdit] = useState('');
   const [valueElim, setValueElim] = useState('');
 
   let cargarDatos = () => {
-    fetch("http://localhost:8000/api/cultivos")
+    fetch("http://localhost:8000/api/cultivos",{
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "auth-token-jwt": token
+      },
+    })
       .then((response) => response.json())
       .then((data) => {
         //console.log(data);
@@ -42,7 +52,8 @@ function Cultivos() {
         method: 'POST', 
         body: JSON.stringify({ buscar: text}),
         headers:{
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          "auth-token-jwt": token
         }
       }).then(res => res.json())
       .catch(error => {
@@ -61,14 +72,15 @@ function Cultivos() {
       method: 'POST', 
       body: JSON.stringify(datos),
       headers:{
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        "auth-token-jwt": token
       }
     }).then(res => res.json())
     .catch(error => {
       console.error('Error:', error)
     })
     .then(response => {
-      console.log('Success:', response)
+      NotificationManager.success(response.mensaje)
       document.getElementById('cancelModalAg').click()
       cargarDatos()
     });
@@ -80,14 +92,15 @@ function Cultivos() {
       method: 'PUT',
       body: JSON.stringify(datos),
       headers:{
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        "auth-token-jwt": token
       }
     }).then(res => res.json())
     .catch(error => {
       console.error('Error:', error)
     })
     .then(response => {
-      //console.log('Success:', response)
+      NotificationManager.success(response.mensaje)
       document.getElementById('cancelModalEd').click()
       cargarDatos();
     });
@@ -98,22 +111,29 @@ function Cultivos() {
     fetch(`http://localhost:8000/api/eliminarCultivo/${id}`, {
       method: 'DELETE',
       headers:{
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        "auth-token-jwt": token
       }
     }).then(res => res.json())
     .catch(error => {
       console.error('Error:', error)
     })
     .then(response => {
-      console.log('Success:', response)
+      NotificationManager.success(response.mensaje)
       document.getElementById('cancelModalEl').click()
       cargarDatos();
     });
   };
 
   useEffect(() => {
-    cargarDatos()
-  },[])
+    console.log('0')
+    if (!token){
+      navegacion('/login')
+    }else{
+      cargarDatos();
+    }
+    // eslint-disable-next-line
+  },[]);
 
   return (
     <div id="wrapper">
@@ -211,7 +231,7 @@ function Cultivos() {
         <Footer /> {/*<!-- Footer -->*/}
       </div>
       <ModalAgregarCultivo culAgr={agregar}/> {/*<!-- Modal Agregar-->*/}
-      <ModalEditarCultivo valEdit={valueEdit} culEdit={editarCultivo}/> {/*<!-- Modal Editar-->*/}
+      <ModalEditarCultivo valEdit={valueEdit} culEdit={editarCultivo} token={token}/> {/*<!-- Modal Editar-->*/}
       <ModalEliminarCultivo valElim={valueElim} culElim={eliminarCultivo}/> {/*<!-- Modal Eliminar-->*/}
       <ModalCerrarSesion /> {/*<!-- Modal Cerrar-->*/}
     </div>

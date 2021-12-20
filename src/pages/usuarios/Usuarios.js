@@ -1,21 +1,32 @@
 import React from "react";
-import Sidebar from "../../components/Sidebar";
-import Topbar from "../../components/Topbar";
-import Footer from "../../components/Footer";
-import ModalCerrarSesion from "../../components/ModalCerrarSesion";
-import ModalAgregarUsuario from "../../components/ModalAgregarUsuario";
-import ModalEditarUsuario from "../../components/ModalEditarUsuario";
-import ModalEliminarUsuario from "../../components/ModalEliminarUsuario";
+import Sidebar from "../../components/sidebar";
+import Topbar from "../../components/topbar";
+import Footer from "../../components/footer";
+import ModalCerrarSesion from "../../components/modalCerrarSesion";
+import ModalAgregarUsuario from "../../components/modalAgregarUsuario";
+import ModalEditarUsuario from "../../components/modalEditarUsuario";
+import ModalEliminarUsuario from "../../components/modalEliminarUsuario";
+import {NotificationManager} from 'react-notifications';
+import { useNavigate } from "react-router-dom";
 
 import { useState, useEffect } from "react";
 
-function Usuarios() {
+function Usuarios({token}) {
+
+  let navegacion = useNavigate()
+
   const [usuariosDB, setUsariosDB] = useState([]);
   const [valueEdit, setValueEdit] = useState('');
   const [valueElim, setValueElim] = useState('');
 
   let cargarDatos = () => {
-    fetch("http://localhost:8000/api/usuarios")
+    fetch("http://localhost:8000/api/usuarios",{
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "auth-token-jwt": token
+      },
+    })
       .then((response) => response.json())
       .then((data) => {
         //console.log(data);
@@ -41,6 +52,7 @@ function Usuarios() {
         body: JSON.stringify({ buscar: text }),
         headers: {
           "Content-Type": "application/json",
+          "auth-token-jwt": token
         },
       })
         .then((res) => res.json())
@@ -60,14 +72,15 @@ function Usuarios() {
       method: 'POST', 
       body: JSON.stringify(datos),
       headers:{
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        "auth-token-jwt": token
       }
     }).then(res => res.json())
     .catch(error => {
       console.error('Error:', error)
     })
     .then(response => {
-      console.log('Success:', response)
+      NotificationManager.success(response.mensaje)
       document.getElementById('cancelModalAg').click()
       cargarDatos();
     });
@@ -79,14 +92,15 @@ function Usuarios() {
       method: 'PUT',
       body: JSON.stringify(datos),
       headers:{
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        "auth-token-jwt": token
       }
     }).then(res => res.json())
     .catch(error => {
       console.error('Error:', error)
     })
     .then(response => {
-      console.log('Success:', response)
+      NotificationManager.success(response.mensaje)
       document.getElementById('cancelModalEd').click()
       cargarDatos();
     });
@@ -97,14 +111,15 @@ function Usuarios() {
     fetch(`http://localhost:8000/api/eliminarUsuario/${id}`, {
       method: 'DELETE',
       headers:{
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        "auth-token-jwt": token
       }
     }).then(res => res.json())
     .catch(error => {
       console.error('Error:', error)
     })
     .then(response => {
-      console.log('Success:', response)
+      NotificationManager.success(response.mensaje)
       document.getElementById('cancelModalEl').click()
       cargarDatos();
     });
@@ -112,8 +127,14 @@ function Usuarios() {
 
 
   useEffect(() => {
-    cargarDatos();
-  }, []);
+    console.log('0')
+    if (!token){
+      navegacion('/login')
+    }else{
+      cargarDatos();
+    }
+    // eslint-disable-next-line
+  },[]);
 
   return (
     <div id="wrapper">
@@ -203,8 +224,8 @@ function Usuarios() {
         </div>
         <Footer /> {/*<!-- Footer -->*/}
       </div>
-      <ModalAgregarUsuario usuAgr={agregar}/>
-      <ModalEditarUsuario valEdit={valueEdit} usuEdit={editarUsuario}/>
+      <ModalAgregarUsuario usuAgr={agregar} token={token}/>
+      <ModalEditarUsuario valEdit={valueEdit} usuEdit={editarUsuario} token={token}/>
       <ModalEliminarUsuario valElim={valueElim} usuElim={eliminarUsuario}/>
       <ModalCerrarSesion /> {/*<!-- Modal Cerrar-->*/}
     </div>

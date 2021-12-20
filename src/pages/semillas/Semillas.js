@@ -1,21 +1,32 @@
 import React from "react";
-import Sidebar from "../../components/Sidebar";
-import Topbar from "../../components/Topbar";
-import Footer from "../../components/Footer";
-import ModalCerrarSesion from "../../components/ModalCerrarSesion";
-import ModalAgregarSemilla from "../../components/ModalAgregarSemilla";
-import ModalEditarSemilla from "../../components/ModalEditarSemilla";
-import ModalEliminarSemilla from "../../components/ModalEliminarSemilla";
+import Sidebar from "../../components/sidebar";
+import Topbar from "../../components/topbar";
+import Footer from "../../components/footer";
+import ModalCerrarSesion from "../../components/modalCerrarSesion";
+import ModalAgregarSemilla from "../../components/modalAgregarSemilla";
+import ModalEditarSemilla from "../../components/modalEditarSemilla";
+import ModalEliminarSemilla from "../../components/modalEliminarSemilla";
+import {NotificationManager} from 'react-notifications';
+import { useNavigate } from "react-router-dom";
 
 import { useState, useEffect } from "react";
 
-function Semillas() {
+function Semillas({token}) {
+
+  let navegacion = useNavigate()
+
   const [semillasDB, setSemillasDB] = useState([]);
   const [valueEdit, setValueEdit] = useState('');
   const [valueElim, setValueElim] = useState('');
 
   let cargarDatos = () => {
-    fetch("http://localhost:8000/api/semillas")
+    fetch("http://localhost:8000/api/semillas",{
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "auth-token-jwt": token
+      },
+    })
       .then((response) => response.json())
       .then((data) => {
         //console.log(data);
@@ -40,7 +51,8 @@ function Semillas() {
         method: 'POST', 
         body: JSON.stringify({ buscar: text}),
         headers:{
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          "auth-token-jwt": token
         }
       }).then(res => res.json())
       .catch(error => {
@@ -59,14 +71,15 @@ function Semillas() {
       method: 'POST', 
       body: JSON.stringify(datos),
       headers:{
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        "auth-token-jwt": token
       }
     }).then(res => res.json())
     .catch(error => {
       console.error('Error:', error)
     })
     .then(response => {
-      //console.log('Success:', response)
+      NotificationManager.success(response.mensaje)
       document.getElementById('cancelModalAg').click()
       cargarDatos();
     });
@@ -78,14 +91,15 @@ function Semillas() {
       method: 'PUT',
       body: JSON.stringify(datos),
       headers:{
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        "auth-token-jwt": token
       }
     }).then(res => res.json())
     .catch(error => {
       console.error('Error:', error)
     })
     .then(response => {
-      //console.log('Success:', response)
+      NotificationManager.success(response.mensaje)
       document.getElementById('cancelModalEd').click()
       cargarDatos();
     });
@@ -96,22 +110,29 @@ function Semillas() {
     fetch(`http://localhost:8000/api/eliminarSemilla/${id}`, {
       method: 'DELETE',
       headers:{
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        "auth-token-jwt": token
       }
     }).then(res => res.json())
     .catch(error => {
       console.error('Error:', error)
     })
     .then(response => {
-      console.log('Success:', response)
+      NotificationManager.success(response.mensaje)
       document.getElementById('cancelModalEl').click()
       cargarDatos();
     });
   };
 
   useEffect(() => {
-    cargarDatos()
-  },[])
+    console.log('0')
+    if (!token){
+      navegacion('/login')
+    }else{
+      cargarDatos();
+    }
+    // eslint-disable-next-line
+  },[]);
 
   return (
     <div id="wrapper">
@@ -201,7 +222,7 @@ function Semillas() {
         <Footer /> {/*<!-- Footer -->*/}
       </div>
       <ModalAgregarSemilla semAgr={agregar}/> {/*<!-- Modal Agregar Semilla-->*/}
-      <ModalEditarSemilla valEdit={valueEdit} semEdit={editarSemilla}/> {/*<!-- Modal Editar Semilla-->*/}
+      <ModalEditarSemilla valEdit={valueEdit} semEdit={editarSemilla} token={token}/> {/*<!-- Modal Editar Semilla-->*/}
       <ModalEliminarSemilla valElim={valueElim} semElim={eliminarSemilla}/> {/*<!-- Modal Eliminar Semilla-->*/}
       <ModalCerrarSesion /> {/*<!-- Modal Cerrar-->*/}
     </div>
