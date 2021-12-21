@@ -8,7 +8,7 @@ function ModalEditarSemilla({ valEdit, semEdit, token }) {
   const costoFertilizante = React.createRef();
 
   const buscarSem = (val) => {
-    fetch(`http://localhost:8000/api/semilla/${val}`,{
+    fetch(`https://gestiondecultivosnode.herokuapp.com/api/semilla/${val}`,{
       method: "GET",
       headers: {
         "Content-Type": "application/json",

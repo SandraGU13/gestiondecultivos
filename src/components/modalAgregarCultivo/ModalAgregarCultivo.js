@@ -9,7 +9,7 @@ function ModalAgregarCultivo({ culAgr, token }) {
   var enviar = (e) => {
     e.preventDefault();
 
-    fetch(`http://localhost:8000/api/semillaNombre/${e.target.semilla.value}`, {
+    fetch(`https://gestiondecultivosnode.herokuapp.com/api/semillaNombre/${e.target.semilla.value}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -46,7 +46,7 @@ function ModalAgregarCultivo({ culAgr, token }) {
 
   useEffect(() => {
 
-    fetch("http://localhost:8000/api/semillas",{
+    fetch("https://gestiondecultivosnode.herokuapp.com/api/semillas",{
       method: "GET",
       headers: {
         "Content-Type": "application/json",
