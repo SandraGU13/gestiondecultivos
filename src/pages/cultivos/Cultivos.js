@@ -6,18 +6,20 @@ import ModalCerrarSesion from "../../components/modalCerrarSesion";
 import ModalAgregarCultivo from "../../components/modalAgregarCultivo";
 import ModalEliminarCultivo from "../../components/modalEliminarCultivo";
 import ModalEditarCultivo from "../../components/modalEditarCultivo";
+import ModalVerCostos from "../../components/modalVerCostos";
 import {NotificationManager} from 'react-notifications';
 import { useNavigate } from "react-router-dom";
 
 import { useState, useEffect } from "react";
 
-function Cultivos({token,usuEmail}) {
+function Cultivos({token,usuEmail,rol}) {
 
   let navegacion = useNavigate()
 
   const [cultivosDB, setCultivosDB] = useState([]);
   const [valueEdit, setValueEdit] = useState('');
   const [valueElim, setValueElim] = useState('');
+  const [valueCosto, setValueCostos] = useState('');
 
   let cargarDatos = () => {
     fetch("http://localhost:8000/api/cultivos",{
@@ -33,6 +35,11 @@ function Cultivos({token,usuEmail}) {
         setCultivosDB(data);
       });
   };
+
+  let pasarCostos = (e) => {
+    //console.log(e.target.value)
+    setValueCostos(e.target.value)
+  }
 
   let pasarEditar = (e) => {
     //console.log(e.target.value)
@@ -126,9 +133,13 @@ function Cultivos({token,usuEmail}) {
   };
 
   useEffect(() => {
-    console.log('0')
+    //console.log('0')
     if (!token){
       navegacion('/login')
+    }else if(rol !== 'Administrador' && rol !== 'Gestion'){
+      NotificationManager.warning('No tienes permiso para acceder a esta pagina')
+      NotificationManager.warning('Redirigido a la pagina Bienvenido')
+      navegacion('/')
     }else{
       cargarDatos();
     }
@@ -182,13 +193,14 @@ function Cultivos({token,usuEmail}) {
                         <tr>
                           <th scope="col">Id</th>
                           <th scope="col">Semilla</th>
-                          <th scope="col">Area</th>
-                          <th scope="col">Cantidad de semillas</th>
-                          <th scope="col">Tiempo de cultivo</th>
-                          <th scope="col">Metros cubicos de agua</th>
-                          <th scope="col">Cantidad de fertilizante</th>
-                          <th scope="col">Tiempo de recolección</th>
+                          <th scope="col">Area (Hectareas)</th>
+                          <th scope="col">Cantidad de semillas por Hectareas (Kg)</th>
+                          <th scope="col">Tiempo de cultivo (Semanas)</th>
+                          <th scope="col">Metros cubicos de agua (Semana)</th>
+                          <th scope="col">Cantidad de fertilizante semanal (Kg)</th>
+                          <th scope="col">Tiempo de recolección por Hectareas (Semanas)</th>
                           <th scope="col">kilogramos recolectados</th>
+                          <th scope="col"></th>
                           <th scope="col"></th>
                           <th scope="col"></th>
                         </tr>
@@ -206,6 +218,11 @@ function Cultivos({token,usuEmail}) {
                               <td>{cultivo.cantidadFertilizante}</td>
                               <td>{cultivo.tiempoRecoleccion}</td>
                               <td>{cultivo.kgRecolectados}</td>
+                              <td>
+                                <button className="btn btn-primary " data-toggle="modal" data-target="#verCostosModal" value={cultivo._id} onClick={pasarCostos}>
+                                  Ver costos
+                                </button>
+                              </td>
                               <td>
                                 <button className="btn btn-warning" data-toggle="modal" data-target="#editarCultivoModal" value={cultivo._id} onClick={pasarEditar}>
                                   Editar
@@ -230,9 +247,10 @@ function Cultivos({token,usuEmail}) {
         </div>
         <Footer /> {/*<!-- Footer -->*/}
       </div>
-      <ModalAgregarCultivo culAgr={agregar}/> {/*<!-- Modal Agregar-->*/}
+      <ModalAgregarCultivo culAgr={agregar} token={token}/> {/*<!-- Modal Agregar-->*/}
       <ModalEditarCultivo valEdit={valueEdit} culEdit={editarCultivo} token={token}/> {/*<!-- Modal Editar-->*/}
       <ModalEliminarCultivo valElim={valueElim} culElim={eliminarCultivo}/> {/*<!-- Modal Eliminar-->*/}
+      <ModalVerCostos valCosto={valueCosto} token={token}/>
       <ModalCerrarSesion /> {/*<!-- Modal Cerrar-->*/}
     </div>
   );

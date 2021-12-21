@@ -1,18 +1,21 @@
 import React from "react";
 import ModalHeader from "../modalHeader";
+import { useState, useEffect } from "react";
 
-function ModalEditarPredio({ valEdit, preEdit, token}) {
+function ModalEditarPredio({ valEdit, preEdit, token }) {
   const nombre = React.createRef("");
   const usuario = React.createRef("");
   const latitud = React.createRef("");
   const longitud = React.createRef("");
 
+  const [usuariosDB, setUsuariosDB] = useState([]);
+
   const buscarPre = (val) => {
-    fetch(`http://localhost:8000/api/predio/${val}`,{
+    fetch(`http://localhost:8000/api/predio/${val}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        "auth-token-jwt": token
+        "auth-token-jwt": token,
       },
     })
       .then((response) => response.json())
@@ -29,6 +32,22 @@ function ModalEditarPredio({ valEdit, preEdit, token}) {
   if (valEdit) {
     buscarPre(valEdit);
   }
+
+  useEffect(() => {
+    fetch("http://localhost:8000/api/usuarios", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "auth-token-jwt": token,
+      },
+    })
+      .then((response) => response.json())
+      .then((datos) => {
+        //console.log(data);
+        setUsuariosDB(datos);
+      });
+    // eslint-disable-next-line
+  }, []);
 
   var editar = (e) => {
     e.preventDefault();
@@ -61,10 +80,13 @@ function ModalEditarPredio({ valEdit, preEdit, token}) {
                   <div className="form-group">
                     <label htmlFor="tipoUsuario">Usuario</label>
                     <select className="form-control" ref={usuario} name="usuario">
-                      <option value="Seleccione">Seleccione</option>
-                      <option value="Sandra">Sandra</option>
-                      <option value="Keiny">Keiny</option>
-                      <option value="Nestor">Nestor</option>
+                      {usuariosDB.map((usu, index) => {
+                        return (
+                          <option key={index} value={usu.email}>
+                            {usu.email}
+                          </option>
+                        );
+                      })}
                     </select>
                   </div>
                 </div>

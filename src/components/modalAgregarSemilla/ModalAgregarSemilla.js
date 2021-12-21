@@ -1,16 +1,34 @@
 import React from "react";
 import ModalHeader from "../modalHeader";
+import { NotificationManager } from "react-notifications";
 
-function ModalAgregarSemilla({semAgr}) {
+function ModalAgregarSemilla({semAgr,token}) {
   var enviar = (e) => {
     e.preventDefault();
-    const datos = {
-      nombre: e.target.nombre.value,
-      costoAgua: e.target.costoAgua.value,
-      costoSemilla: e.target.costoSemilla.value,
-      costoFertilizante: e.target.costoFertilizante.value,
-    };
-    semAgr(datos)
+
+    fetch(`http://localhost:8000/api/semillaNombre/${e.target.nombre.value}`,{
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "auth-token-jwt": token
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+          if (data) {
+            NotificationManager.warning("La semilla ya existe");
+          } else {
+            const datos = {
+              nombre: e.target.nombre.value,
+              costoAgua: e.target.costoAgua.value,
+              costoSemilla: e.target.costoSemilla.value,
+              costoFertilizante: e.target.costoFertilizante.value,
+            };
+            semAgr(datos);
+          } 
+       
+      });
+
   };
   return (
     /*<!-- Agregar Modal-->*/
@@ -31,7 +49,7 @@ function ModalAgregarSemilla({semAgr}) {
                 </div>
                 <div className="col-md-6">
                   <div className="form-group">
-                    <label htmlFor="precio">Costo de Agua</label>
+                    <label htmlFor="precio">Costo de Agua (Metro cubico)</label>
                     <input type="text" className="form-control" name={"costoAgua"} placeholder="" required></input>
                   </div>
                 </div>
@@ -39,13 +57,13 @@ function ModalAgregarSemilla({semAgr}) {
               <div className="row">
                 <div className="col-md-6">
                   <div className="form-group">
-                    <label htmlFor="precio">Costo de Semilla</label>
+                    <label htmlFor="precio">Costo de Semilla (Kg)</label>
                     <input type="text" className="form-control" name={"costoSemilla"} placeholder="" required></input>
                   </div>
                 </div>
                 <div className="col-md-6">
                   <div className="form-group">
-                    <label htmlFor="precio">Costo de Fertilizante</label>
+                    <label htmlFor="precio">Costo de Fertilizante (Kg)</label>
                     <input type="text" className="form-control" name={"costoFertilizante"} placeholder="" required></input>
                   </div>
                 </div>

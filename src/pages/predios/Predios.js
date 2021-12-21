@@ -11,7 +11,7 @@ import { useNavigate } from "react-router-dom";
 
 import { useState, useEffect } from "react";
 
-function Predios({token,usuEmail}) {
+function Predios({token,usuEmail,rol}) {
 
   let navegacion = useNavigate()
 
@@ -126,9 +126,13 @@ function Predios({token,usuEmail}) {
   };
 
   useEffect(() => {
-    console.log('0')
+    //console.log('0')
     if (!token){
       navegacion('/login')
+    }else if(rol !== 'Administrador' && rol !== 'Configuracion'){
+      NotificationManager.warning('No tienes permiso para acceder a esta pagina')
+      NotificationManager.warning('Redirigido a la pagina Bienvenido')
+      navegacion('/')
     }else{
       cargarDatos();
     }
@@ -222,7 +226,7 @@ function Predios({token,usuEmail}) {
         </div>
         <Footer /> {/*<!-- Footer -->*/}
       </div>
-      <ModalAgregarPredio preAgr={agregar}/>
+      <ModalAgregarPredio preAgr={agregar} token={token}/>
       <ModalEditarPredio valEdit={valueEdit} preEdit={editarPredio} token={token}/>
       <ModalEliminarPredio valElim={valueElim} preElim={eliminarPredio}/>
       <ModalCerrarSesion /> {/*<!-- Modal Cerrar-->*/}

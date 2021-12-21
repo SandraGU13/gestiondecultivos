@@ -11,7 +11,7 @@ import { useNavigate } from "react-router-dom";
 
 import { useState, useEffect } from "react";
 
-function Usuarios({token,usuEmail}) {
+function Usuarios({token,usuEmail,rol}) {
 
   let navegacion = useNavigate()
 
@@ -127,9 +127,13 @@ function Usuarios({token,usuEmail}) {
 
 
   useEffect(() => {
-    console.log('0')
+    //console.log('0')
     if (!token){
       navegacion('/login')
+    }else if(rol !== 'Administrador'){
+      NotificationManager.warning('No tienes permiso para acceder a esta pagina')
+      NotificationManager.warning('Redirigido a la pagina Bienvenido')
+      navegacion('/')
     }else{
       cargarDatos();
     }

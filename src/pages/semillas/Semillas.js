@@ -11,7 +11,7 @@ import { useNavigate } from "react-router-dom";
 
 import { useState, useEffect } from "react";
 
-function Semillas({token,usuEmail}) {
+function Semillas({token,usuEmail,rol}) {
 
   let navegacion = useNavigate()
 
@@ -125,9 +125,13 @@ function Semillas({token,usuEmail}) {
   };
 
   useEffect(() => {
-    console.log('0')
+    //console.log('0')
     if (!token){
       navegacion('/login')
+    }else if(rol !== 'Administrador' && rol !== 'Configuracion'){
+      NotificationManager.warning('No tienes permiso para acceder a esta pagina')
+      NotificationManager.warning('Redirigido a la pagina Bienvenido')
+      navegacion('/')
     }else{
       cargarDatos();
     }
@@ -181,9 +185,9 @@ function Semillas({token,usuEmail}) {
                         <tr>
                           <th scope="col">Id</th>
                           <th scope="col">Nombre</th>
-                          <th scope="col">Costo de agua</th>
-                          <th scope="col">Costo de semilla</th>
-                          <th scope="col">Costo de fertilizante</th>
+                          <th scope="col">Costo de agua (Metros cubicos)</th>
+                          <th scope="col">Costo de semilla (Kg)</th>
+                          <th scope="col">Costo de fertilizante (Kg)</th>
                           <th scope="col"></th>
                           <th scope="col"></th>
                         </tr>
@@ -221,7 +225,7 @@ function Semillas({token,usuEmail}) {
         </div>
         <Footer /> {/*<!-- Footer -->*/}
       </div>
-      <ModalAgregarSemilla semAgr={agregar}/> {/*<!-- Modal Agregar Semilla-->*/}
+      <ModalAgregarSemilla semAgr={agregar} token={token}/> {/*<!-- Modal Agregar Semilla-->*/}
       <ModalEditarSemilla valEdit={valueEdit} semEdit={editarSemilla} token={token}/> {/*<!-- Modal Editar Semilla-->*/}
       <ModalEliminarSemilla valElim={valueElim} semElim={eliminarSemilla}/> {/*<!-- Modal Eliminar Semilla-->*/}
       <ModalCerrarSesion /> {/*<!-- Modal Cerrar-->*/}

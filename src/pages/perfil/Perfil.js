@@ -7,12 +7,18 @@ import ModalCambiarContrasena from "../../components/modalCambiarContrasena";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 
-import { useState, useEffect } from "react";
+import { useState ,useEffect } from "react";
 
 function Perfil({token,datosUsu}) {
+
+  const [valueCamb, setValueCamb] = useState('');
+
   let navegacion = useNavigate()
 
-  //const [perfilDB, setPerfilDB] = useState({});
+
+  let pasarCamb= (e) => {
+    setValueCamb(e.target.value)
+  }
 
   useEffect(() => {
     if (!token){
@@ -56,7 +62,7 @@ function Perfil({token,datosUsu}) {
               </div>
               <div className="col-md-6 col-xs-12">
                 <div className="white-box">
-                  <form className="form-horizontal form-material">
+                  
                     <br />
                     <div className="row">
                       <div className="col-sm-6">
@@ -115,14 +121,12 @@ function Perfil({token,datosUsu}) {
                     <br />
                     <div className="col-md-10 d-flex justify-content-center">
                       <div className="form-group">
-                        <Link to="#" className="btn btn-primary float-center" data-toggle="modal" data-target="#cambiarcontraseña">
-                          <span className="icon text-white-50"></span>
-
-                          <span className="text">Cambiar contraseña</span>
-                        </Link>
+                        <button onClick={pasarCamb} value={datosUsu.id} className="btn btn-primary float-center" data-toggle="modal" data-target="#cambiarcontraseña">
+                          Cambiar contraseña
+                        </button>
                       </div>
                     </div>
-                  </form>
+                 
                 </div>
               </div>
             </div>
@@ -131,7 +135,7 @@ function Perfil({token,datosUsu}) {
         </div>
         <Footer /> {/*<!-- Footer -->*/}
       </div>
-      <ModalCambiarContrasena />
+      <ModalCambiarContrasena valCamb={valueCamb} token={token}/>
       <ModalCerrarSesion /> {/*<!-- Modal Cerrar-->*/}
     </div>
   );

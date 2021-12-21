@@ -5,11 +5,11 @@ import Footer from "../../components/footer";
 import ModalCerrarSesion from "../../components/modalCerrarSesion";
 import { useNavigate } from "react-router-dom";
 
-function Bienvenido({token,usuEmail}) {
-
+function Bienvenido({token,usuEmail,rol}) {
   let navegacion = useNavigate()
 
   useEffect(() => {
+    //console.log(rol)
     if (!token){
       navegacion('/login')
     }

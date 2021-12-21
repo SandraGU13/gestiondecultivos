@@ -52,13 +52,13 @@ function ModalEditarSemilla({ valEdit, semEdit, token }) {
                 <div className="col-md-6">
                   <div className="form-group">
                     <label htmlFor="nombre">Nombre</label>
-                    <input type="text" className="form-control" ref={nombre} name={"nombre"} placeholder="" required />
+                    <input type="text" className="form-control" ref={nombre} name={"nombre"} placeholder="" disabled />
                     {/*<!--<small id="emailHelp" className="form-text text-muted">We'll never share your email with anyone else.</small>-->*/}
                   </div>
                 </div>
                 <div className="col-md-6">
                   <div className="form-group">
-                    <label htmlFor="precio">Costo de Agua</label>
+                    <label htmlFor="precio">Costo de Agua (Metros cubicos)</label>
                     <input type="text" className="form-control" ref={costoAgua} name={"costoAgua"} placeholder="" required />
                   </div>
                 </div>
@@ -66,13 +66,13 @@ function ModalEditarSemilla({ valEdit, semEdit, token }) {
               <div className="row">
                 <div className="col-md-6">
                   <div className="form-group">
-                    <label htmlFor="precio">Costo de Semilla</label>
+                    <label htmlFor="precio">Costo de Semilla (Kg)</label>
                     <input type="text" className="form-control" ref={costoSemilla} name={"costoSemilla"} placeholder="" required />
                   </div>
                 </div>
                 <div className="col-md-6">
                   <div className="form-group">
-                    <label htmlFor="precio">Costo de Fertilizante</label>
+                    <label htmlFor="precio">Costo de Fertilizante (Kg)</label>
                     <input type="text" className="form-control" ref={costoFertilizante} name={"costoFertilizante"} placeholder="" required />
                   </div>
                 </div>

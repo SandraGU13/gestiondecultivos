@@ -1,14 +1,11 @@
 import React from "react";
 import ModalHeader from "../modalHeader";
-import { useNavigate } from "react-router-dom";
 
 function ModalCerrarSesion() {
 
-  let navegacion = useNavigate()
-
   let cerrar = () => {
     document.getElementById('logoutModal').click()
-    navegacion('/login')
+    window.location.href = '/login'
   }
 
   return (
