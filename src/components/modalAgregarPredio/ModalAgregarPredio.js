@@ -17,7 +17,7 @@ function ModalAgregarPredio({ preAgr, token }) {
   };
 
   useEffect(() => {
-    fetch("https://gestiondecultivosnode.herokuapp.com/api/usuarios", {
+    fetch("http://localhost:8000/api/usuarios", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",

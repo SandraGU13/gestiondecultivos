@@ -10,7 +10,7 @@ function ModalEditarUsuario({ valEdit, usuEdit, token }) {
 
   const buscarUsu = (val) => {
     //console.log(val);
-    fetch(`https://gestiondecultivosnode.herokuapp.com/api/usuario/${val}`,{
+    fetch(`http://localhost:8000/api/usuario/${val}`,{
       method: "GET",
       headers: {
         "Content-Type": "application/json",

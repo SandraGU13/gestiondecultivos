@@ -20,7 +20,7 @@ function Semillas({token,usuEmail,rol}) {
   const [valueElim, setValueElim] = useState('');
 
   let cargarDatos = () => {
-    fetch("https://gestiondecultivosnode.herokuapp.com/api/semillas",{
+    fetch("http://localhost:8000/api/semillas",{
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -47,7 +47,7 @@ function Semillas({token,usuEmail,rol}) {
     if (text.length === 0) {
       cargarDatos();
     }else{
-      fetch("https://gestiondecultivosnode.herokuapp.com/api/buscarSemilla", {
+      fetch("http://localhost:8000/api/buscarSemilla", {
         method: 'POST', 
         body: JSON.stringify({ buscar: text}),
         headers:{
@@ -67,7 +67,7 @@ function Semillas({token,usuEmail,rol}) {
 
   var agregar = (datos) => {
 
-    fetch("https://gestiondecultivosnode.herokuapp.com/api/agregarSemilla", {
+    fetch("http://localhost:8000/api/agregarSemilla", {
       method: 'POST', 
       body: JSON.stringify(datos),
       headers:{
@@ -87,7 +87,7 @@ function Semillas({token,usuEmail,rol}) {
 
   var editarSemilla = (datos) => {
 
-    fetch(`https://gestiondecultivosnode.herokuapp.com/api/editarSemilla/${valueEdit}`, {
+    fetch(`http://localhost:8000/api/editarSemilla/${valueEdit}`, {
       method: 'PUT',
       body: JSON.stringify(datos),
       headers:{
@@ -107,7 +107,7 @@ function Semillas({token,usuEmail,rol}) {
 
   var eliminarSemilla = (id) => {
 
-    fetch(`https://gestiondecultivosnode.herokuapp.com/api/eliminarSemilla/${id}`, {
+    fetch(`http://localhost:8000/api/eliminarSemilla/${id}`, {
       method: 'DELETE',
       headers:{
         'Content-Type': 'application/json',

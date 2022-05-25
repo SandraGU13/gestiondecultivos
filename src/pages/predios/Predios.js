@@ -20,7 +20,7 @@ function Predios({token,usuEmail,rol}) {
   const [valueElim, setValueElim] = useState('');
 
   let cargarDatos = () => {
-    fetch("https://gestiondecultivosnode.herokuapp.com/api/predios",{
+    fetch("http://localhost:8000/api/predios",{
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -48,7 +48,7 @@ function Predios({token,usuEmail,rol}) {
     if (text.length === 0) {
       cargarDatos();
     }else{
-      fetch("https://gestiondecultivosnode.herokuapp.com/api/buscarPredio", {
+      fetch("http://localhost:8000/api/buscarPredio", {
         method: 'POST', 
         body: JSON.stringify({ buscar: text}),
         headers:{
@@ -68,7 +68,7 @@ function Predios({token,usuEmail,rol}) {
 
   var agregar = (datos) => {
 
-    fetch("https://gestiondecultivosnode.herokuapp.com/api/agregarPredio", {
+    fetch("http://localhost:8000/api/agregarPredio", {
       method: 'POST', 
       body: JSON.stringify(datos),
       headers:{
@@ -88,7 +88,7 @@ function Predios({token,usuEmail,rol}) {
 
   var editarPredio = (datos) => {
 
-    fetch(`https://gestiondecultivosnode.herokuapp.com/api/editarPredio/${valueEdit}`, {
+    fetch(`http://localhost:8000/api/editarPredio/${valueEdit}`, {
       method: 'PUT',
       body: JSON.stringify(datos),
       headers:{
@@ -108,7 +108,7 @@ function Predios({token,usuEmail,rol}) {
 
   var eliminarPredio = (id) => {
 
-    fetch(`https://gestiondecultivosnode.herokuapp.com/api/eliminarPredio/${id}`, {
+    fetch(`http://localhost:8000/api/eliminarPredio/${id}`, {
       method: 'DELETE',
       headers:{
         'Content-Type': 'application/json',

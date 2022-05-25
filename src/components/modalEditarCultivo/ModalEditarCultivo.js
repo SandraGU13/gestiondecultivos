@@ -15,7 +15,7 @@ function ModalEditarCultivo({ valEdit, culEdit, token }) {
   const [semillasDB, setSemillasDB] = useState([]);
 
   const buscarCul = (val) => {
-    fetch(`https://gestiondecultivosnode.herokuapp.com/api/cultivo/${val}`, {
+    fetch(`http://localhost:8000/api/cultivo/${val}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -43,7 +43,7 @@ function ModalEditarCultivo({ valEdit, culEdit, token }) {
   }
 
   useEffect(() => {
-    fetch("https://gestiondecultivosnode.herokuapp.com/api/semillas", {
+    fetch("http://localhost:8000/api/semillas", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -61,7 +61,7 @@ function ModalEditarCultivo({ valEdit, culEdit, token }) {
   var enviar = (e) => {
     e.preventDefault();
 
-    fetch(`https://gestiondecultivosnode.herokuapp.com/api/semillaNombre/${e.target.semilla.value}`, {
+    fetch(`http://localhost:8000/api/semillaNombre/${e.target.semilla.value}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",

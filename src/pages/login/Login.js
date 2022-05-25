@@ -1,7 +1,7 @@
 import React, { } from "react";
 import { useNavigate } from "react-router-dom";
 
-function Login({sesion, token}) {
+function Login({iniciarSesion, token}) {
 
   let navegacion = useNavigate()
   /*
@@ -18,7 +18,8 @@ function Login({sesion, token}) {
       email: e.target.email.value,
       contrasena: e.target.contrasena.value,
     };
-    sesion(datos,navegacion)
+    
+    iniciarSesion(datos,navegacion)
   };
   return (
     <form onSubmit={enviar}>

@@ -11,7 +11,7 @@ function ModalEditarPredio({ valEdit, preEdit, token }) {
   const [usuariosDB, setUsuariosDB] = useState([]);
 
   const buscarPre = (val) => {
-    fetch(`https://gestiondecultivosnode.herokuapp.com/api/predio/${val}`, {
+    fetch(`http://localhost:8000/api/predio/${val}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -34,7 +34,7 @@ function ModalEditarPredio({ valEdit, preEdit, token }) {
   }
 
   useEffect(() => {
-    fetch("https://gestiondecultivosnode.herokuapp.com/api/usuarios", {
+    fetch("http://localhost:8000/api/usuarios", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",

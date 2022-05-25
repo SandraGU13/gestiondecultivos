@@ -23,7 +23,7 @@ function App() {
 
   const iniciarSesion = (datos,navegacion) => {
 
-    fetch("https://gestiondecultivosnode.herokuapp.com/api/login", {
+    fetch("http://localhost:8000/api/login", {
       method: 'POST', 
       body: JSON.stringify(datos),
       headers:{
@@ -54,7 +54,7 @@ function App() {
     <div>
     <BrowserRouter>
       <Routes>
-        <Route path={"/login"} element={<Login sesion={iniciarSesion} token={token} />} />
+        <Route path={"/login"} element={<Login iniciarSesion={iniciarSesion} token={token} />} />
         <Route path={"/"} element={<Bienvenido token={token} usuEmail={usuEmail} rol={rolUsu}/>}  />
         <Route path={"/usuarios"} element={<Usuarios token={token} usuEmail={usuEmail} rol={rolUsu}/>} />
         <Route path={"/perfil"} element={<Perfil token={token} datosUsu={datosUsu}/>} rol={rolUsu}/>

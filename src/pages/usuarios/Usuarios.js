@@ -20,7 +20,7 @@ function Usuarios({token,usuEmail,rol}) {
   const [valueElim, setValueElim] = useState('');
 
   let cargarDatos = () => {
-    fetch("https://gestiondecultivosnode.herokuapp.com/api/usuarios",{
+    fetch("http://localhost:8000/api/usuarios",{
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -47,7 +47,7 @@ function Usuarios({token,usuEmail,rol}) {
     if (text.length === 0) {
       cargarDatos();
     } else {
-      fetch("https://gestiondecultivosnode.herokuapp.com/api/buscarUsuario", {
+      fetch("http://localhost:8000/api/buscarUsuario", {
         method: "POST",
         body: JSON.stringify({ buscar: text }),
         headers: {
@@ -68,7 +68,7 @@ function Usuarios({token,usuEmail,rol}) {
 
   var agregar = (datos) => {
 
-    fetch("https://gestiondecultivosnode.herokuapp.com/api/agregarUsuario", {
+    fetch("http://localhost:8000/api/agregarUsuario", {
       method: 'POST', 
       body: JSON.stringify(datos),
       headers:{
@@ -88,7 +88,7 @@ function Usuarios({token,usuEmail,rol}) {
 
   var editarUsuario = (datos) => {
 
-    fetch(`https://gestiondecultivosnode.herokuapp.com/api/editarUsuario/${valueEdit}`, {
+    fetch(`http://localhost:8000/api/editarUsuario/${valueEdit}`, {
       method: 'PUT',
       body: JSON.stringify(datos),
       headers:{
@@ -108,7 +108,7 @@ function Usuarios({token,usuEmail,rol}) {
 
   var eliminarUsuario = (id) => {
 
-    fetch(`https://gestiondecultivosnode.herokuapp.com/api/eliminarUsuario/${id}`, {
+    fetch(`http://localhost:8000/api/eliminarUsuario/${id}`, {
       method: 'DELETE',
       headers:{
         'Content-Type': 'application/json',
