@@ -6,7 +6,7 @@ function ModalAgregarSemilla({semAgr,token}) {
   var enviar = (e) => {
     e.preventDefault();
 
-    fetch(`http://localhost:8000/api/semillaNombre/${e.target.nombre.value}`,{
+    fetch(`https://gestiondecultivosnode.herokuapp.com/api/semillaNombre/${e.target.nombre.value}`,{
       method: "GET",
       headers: {
         "Content-Type": "application/json",

@@ -22,7 +22,7 @@ function Cultivos({token,usuEmail,rol}) {
   const [valueCosto, setValueCostos] = useState('');
 
   let cargarDatos = () => {
-    fetch("http://localhost:8000/api/cultivos",{
+    fetch("https://gestiondecultivosnode.herokuapp.com/api/cultivos",{
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -55,7 +55,7 @@ function Cultivos({token,usuEmail,rol}) {
     if (text.length === 0) {
       cargarDatos();
     }else{
-      fetch("http://localhost:8000/api/buscarCultivo", {
+      fetch("https://gestiondecultivosnode.herokuapp.com/api/buscarCultivo", {
         method: 'POST', 
         body: JSON.stringify({ buscar: text}),
         headers:{
@@ -75,7 +75,7 @@ function Cultivos({token,usuEmail,rol}) {
 
   var agregar = (datos) => {
 
-    fetch("http://localhost:8000/api/agregarCultivo", {
+    fetch("https://gestiondecultivosnode.herokuapp.com/api/agregarCultivo", {
       method: 'POST', 
       body: JSON.stringify(datos),
       headers:{
@@ -95,7 +95,7 @@ function Cultivos({token,usuEmail,rol}) {
 
   var editarCultivo = (datos) => {
 
-    fetch(`http://localhost:8000/api/editarCultivo/${valueEdit}`, {
+    fetch(`https://gestiondecultivosnode.herokuapp.com/api/editarCultivo/${valueEdit}`, {
       method: 'PUT',
       body: JSON.stringify(datos),
       headers:{
@@ -115,7 +115,7 @@ function Cultivos({token,usuEmail,rol}) {
 
   var eliminarCultivo = (id) => {
 
-    fetch(`http://localhost:8000/api/eliminarCultivo/${id}`, {
+    fetch(`https://gestiondecultivosnode.herokuapp.com/api/eliminarCultivo/${id}`, {
       method: 'DELETE',
       headers:{
         'Content-Type': 'application/json',

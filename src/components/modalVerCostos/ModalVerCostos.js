@@ -13,7 +13,7 @@ function ModalVerCostos({ valCosto, token }) {
     const tiempoTotalRecoleccion = useRef('');
     
   const buscarCul = (val) => {
-    fetch(`http://localhost:8000/api/cultivo/${val}`, {
+    fetch(`https://gestiondecultivosnode.herokuapp.com/api/cultivo/${val}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",

@@ -23,7 +23,7 @@ function App() {
 
   const iniciarSesion = (datos,navegacion) => {
 
-    fetch("http://localhost:8000/api/login", {
+    fetch("https://gestiondecultivosnode.herokuapp.com/api/login", {
       method: 'POST', 
       body: JSON.stringify(datos),
       headers:{

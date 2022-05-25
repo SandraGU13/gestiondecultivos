@@ -13,7 +13,7 @@ function ModalCambiarContrasena({valCamb,token}) {
       contrasenaNueva: e.target.contrasenaNueva.value
     }
 
-    fetch(`http://localhost:8000/api/verificarContrasena/${valCamb}`,{
+    fetch(`https://gestiondecultivosnode.herokuapp.com/api/verificarContrasena/${valCamb}`,{
       method: "POST",
       body: JSON.stringify(datos),
       headers: {
@@ -29,7 +29,7 @@ function ModalCambiarContrasena({valCamb,token}) {
         NotificationManager.warning('La nueva contraseña no coincide')
         }else{
           //console.log(data)
-          fetch(`http://localhost:8000/api/actualizarContrasena/${valCamb}`, {
+          fetch(`https://gestiondecultivosnode.herokuapp.com/api/actualizarContrasena/${valCamb}`, {
             method: 'PUT',
             body: JSON.stringify(datos),
             headers:{

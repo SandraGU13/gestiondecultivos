@@ -6,7 +6,7 @@ function ModalAgregarUsuario({ usuAgr, token }) {
   var enviar = (e) => {
     e.preventDefault();
 
-    fetch(`http://localhost:8000/api/usuarioEmail/${e.target.email.value}`,{
+    fetch(`https://gestiondecultivosnode.herokuapp.com/api/usuarioEmail/${e.target.email.value}`,{
       method: "GET",
       headers: {
         "Content-Type": "application/json",
